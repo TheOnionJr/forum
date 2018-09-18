@@ -24,3 +24,7 @@ HTML;
 	}
 } */
 ?>
+<head></head>
+<body>
+	"HTML is hard" - Tobias Moe
+</body>
