@@ -26,5 +26,5 @@ HTML;
 ?>
 <head></head>
 <body>
-	"HTML is hard" - Tobias Moe
+    <div id="wrapper">"HTML is hard" - Tobias Moe</div>	
 </body>
