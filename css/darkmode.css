@@ -6,13 +6,14 @@
 #header {
 	display: inline-block;
 	width: 100%;
-	height: 20%;
+	height: 10%;
 }
 
 #login {
 	display: inline-block;
 	width: auto;
 	text-align: center;
+	align-self: right;
 }
 
 body {
