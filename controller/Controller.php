@@ -1,5 +1,5 @@
 <?php
-include_once("view/view.php");
+include_once("view/forumview.php");
 
 
 

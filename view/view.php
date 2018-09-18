@@ -1,5 +1,5 @@
 <?php
-include_once("view/forumview.php");
+#include_once("view/forumview.php");
 
 	abstract Class View {
 		public function create() {
@@ -13,7 +13,16 @@ HTML;
 	echo <<<HTML
 </title>
 </head>
+
+<body>
+<h1>
+HTML;
+	echo "ECHOOO";
+	echo <<<<HTML
+</h1>
+</body>
 </html>
+HTML;
 		}
 	}
 
