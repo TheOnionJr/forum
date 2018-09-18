@@ -1,10 +1,10 @@
 <?php
-abstract Class View {
+/* abstract Class View {
 	public function create() {
 		echo <<<HTML
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
-<head>
+<head> -->
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125913159-1"></script>
         <script>
@@ -22,5 +22,5 @@ abstract Class View {
 
 HTML;
 	}
-}
+} */
 ?>
