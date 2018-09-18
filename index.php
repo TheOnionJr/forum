@@ -9,7 +9,7 @@
 
   			gtag('config', 'UA-125913159-1');
 		</script>
-
+		<link type="text/css" id="dark-mode" rel="stylesheet" href="css/darakmode.css">
 	</head>
 	<body>
 		<?php
