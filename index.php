@@ -15,3 +15,9 @@
         <img src="img/Email_symbol.png">
         Hello there, General Kenobi
 </html>
+
+<?php
+	include_once("controller/Controller.php");
+	$controller = new controller();
+	$controller->invoke();
+?>
