@@ -1,6 +1,7 @@
 <?php
-public function create() {
-	echo <<<HTML
+abstract Class View {
+	public function create() {
+		echo <<<HTML
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,4 +21,6 @@ public function create() {
 </html>
 
 HTML;
+	}
+}
 ?>
