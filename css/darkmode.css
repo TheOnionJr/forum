@@ -13,7 +13,8 @@
 	display: inline-block;
 	width: auto;
 	text-align: right;
-	align-self: right;
+	position: absolute;
+    right: 0px;
 	height: 100%;
 }
 
