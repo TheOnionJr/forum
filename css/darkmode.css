@@ -12,8 +12,9 @@
 #login {
 	display: inline-block;
 	width: auto;
-	text-align: center;
+	text-align: right;
 	align-self: right;
+	height: 100%;
 }
 
 img {
