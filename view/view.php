@@ -1,6 +1,6 @@
 <div id="wrapper">
     <div id="header">
-        <img src="img/white_logo_transparent.png" width="10%" height="10%">
+        <img src="img/white_logo_transparent.png" width="25%" height="25%">
         <div id="login">
             Username: <input type="text" name="username"><br>
             Password: <input type="password" name="password">
