@@ -24,7 +24,9 @@ HTML;
 	}
 } */
 ?>
-<head></head>
+<head>
+    <link type="text/css" id="dark-mode" rel="stylesheet" href="css/darakmode.css">
+</head>
 <body>
     <div id="wrapper">"HTML is hard" - Tobias Moe</div>	
 </body>
