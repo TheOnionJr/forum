@@ -11,14 +11,10 @@
 	</script>
 
 </head>
-
 <html>
-        <img src="img/Email_symbol.png">
-        Hello there, General Kenobi
+	<?php
+		include_once("controller/Controller.php");
+		$controller = new controller();
+		$controller->invoke();
+	?>
 </html>
-
-<?php
-	include_once("controller/Controller.php");
-	$controller = new controller();
-	$controller->invoke();
-?>
