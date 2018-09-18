@@ -1,4 +1,4 @@
 <div id="wrapper">
-    "HTML is hard" - Tobias Moe
+    <h1>"HTML is hard" - Tobias Moe</h1>
 </div>	
 
