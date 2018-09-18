@@ -1,4 +1,7 @@
 #wrapper {
 	width: 100%;
+	text-align: center;
+}
+body {
 	background-color: #3A3A3A;
 }
