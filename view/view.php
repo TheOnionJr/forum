@@ -16,7 +16,7 @@ public function create() {
 
 </head>
    	<img src="img/Email_symbol.png">
-        Hello there, General Kenobi
+        Hello there, General Kenobi this worked. 
 </html>
 
 HTML;
