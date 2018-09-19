@@ -6,7 +6,7 @@ include_once('view.php');
 <div id="content">
 	<table>
 		<?php
-			$con=mysqli_connect("localhost","user","","forum");
+			$con=mysqli_connect("localhost","guest","","forum");
 			// Check connection
 			if (mysqli_connect_errno()){
 				echo "Failed to connect to MySQL: " . mysqli_connect_error();
