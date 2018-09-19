@@ -26,7 +26,7 @@ include_once('view.php');
 				$topics = mysqli_query($con,"SELECT * FROM topics WHERE tSubForumID = $subID");
 				while($topic_row =mysqli_fetch_array($topics)) {
 					echo "<tr>";
-					echo "<td>" . $topic_row['tName'] . "</td>";
+					echo "<td><a href=\"/view/topicview.php?topic=" . $topic_row['tID'] . "\">" . $topic_row['tName'] . "</td>";
 					echo "<td>" . $topic_row['tNumThreads'] . "</td>";
 					echo "<td></td>";
 					echo "</tr>";
