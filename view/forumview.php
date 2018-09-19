@@ -21,8 +21,8 @@ include_once('view.php');
 				$subID = $row['sID'];
 				echo "<tr>";
 				echo "<th>" . $row['sName'] . "</th>";
-				echo "<th>" . $row['sNumTopic'] . "</th>";
-				echo "<th>" . $row['sNumPosts'] . "</th>";
+				echo "<th>Topics: " . $row['sNumTopic'] . "</th>";
+				echo "<th>Posts: " . $row['sNumPosts'] . "</th>";
 				echo "</tr>";
 				$topics = mysqli_query($con,"SELECT * FROM topics WHERE tSubForumID = $subID");
 				while($topic_row =mysqli_fetch_array($topics)) {
