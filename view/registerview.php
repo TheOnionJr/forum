@@ -1,6 +1,44 @@
 <?php
-include_once('view.php');
+echo<<<HTML
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registration system</title>
+  <link rel="stylesheet" type="text/css" href="../css/register.css">
+</head>
+<body>
+  <div class="header">
+  	<h2>Register</h2>
+  </div>
+
+  <form method="post" action="register.php">
+  	<div class="input-group">
+  	  <label>Username</label>
+  	  <input type="text" name="username" value="">
+  	</div>
+  	<div class="input-group">
+  	  <label>Email</label>
+  	  <input type="email" name="email" value="">
+  	</div>
+  	<div class="input-group">
+  	  <label>Password</label>
+  	  <input type="password" name="password_1">
+  	</div>
+  	<div class="input-group">
+  	  <label>Confirm password</label>
+  	  <input type="password" name="password_2">
+  	</div>
+  	<div class="input-group">
+  	  <button type="submit" class="btn" name="reg_user">Register</button>
+  	</div>
+  	<p>
+  		<a href="../index.php">Homepage</a>
+  	</p>
+  </form>
+</body>
+</html>
 
 
-
+HTML;
 ?>
