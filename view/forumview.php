@@ -19,15 +19,15 @@ include_once('view.php');
 				echo "<table border='1'>";
 				$subID = $row['sID'];
 				echo "<tr>";
-				echo "<th>" . $row['sName'] . "</th>";
-				echo "<th>Topics: " . $row['sNumTopic'] . "</th>";
-				echo "<th>Posts: " . $row['sNumPosts'] . "</th>";
+				echo "<th>" . htmlentities($row['sName'], ENT_QUOTES, 'UTF-8') . "</th>";
+				echo "<th>Topics: " . htmlentities($row['sNumTopic'], ENT_QUOTES, 'UTF-8') . "</th>";
+				echo "<th>Posts: " . htmlentities($row['sNumPosts'], ENT_QUOTES, 'UTF-8') . "</th>";
 				echo "</tr>";
 				$topics = mysqli_query($con,"SELECT * FROM topics WHERE tSubForumID = $subID");
 				while($topic_row =mysqli_fetch_array($topics)) {
 					echo "<tr>";
-					echo "<td><a href=\"/view/topicview.php?topic=" . $topic_row['tID'] . "\">" . $topic_row['tName'] . "</td>";
-					echo "<td>" . $topic_row['tNumThreads'] . "</td>";
+					echo "<td><a href=\"/view/topicview.php?topic=" . htmlentities($topic_row['tID'], ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($topic_row['tName'], ENT_QUOTES, 'UTF-8') . "</td>";
+					echo "<td>" . htmlentities($topic_row['tNumThreads'], ENT_QUOTES, 'UTF-8') . "</td>";
 					echo "<td></td>";
 					echo "</tr>";
 				}
