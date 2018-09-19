@@ -5,6 +5,7 @@
             Username: <input type="text" name="username"><br>
             Password: <input type="password" name="password">
         </div>
+        <a href="view/registerview.php" id="register">Register</a>
     </div>
     <table>
     	<?php
