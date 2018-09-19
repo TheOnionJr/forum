@@ -23,12 +23,13 @@ include_once('view.php');
 
 			while($row = mysqli_fetch_array($result))
 			{
+				$subID = $row['sID'];
 				echo "<tr>";
 				echo "<td>" . $row['sName'] . "</td>";
 				echo "<td>" . $row['sNumTopic'] . "</td>";
 				echo "<td>" . $row['sNumPosts'] . "</td>";
 				echo "</tr>";
-				$topics = mysqli_query($con,"SELECT * FROM topics WHERE tSubForumID = $row['sID']")
+				$topics = mysqli_query($con,"SELECT * FROM topics WHERE tSubForumID = $subID");
 				while($topic_row =mysqli_fetch_array($topics)) {
 					echo "<tr>";
 					echo "<td>" . $topic_row['tName'] . "</td>";
