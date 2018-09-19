@@ -28,6 +28,13 @@ include_once('view.php');
 				echo "<td>" . $row['sNumTopic'] . "</td>";
 				echo "<td>" . $row['sNumPosts'] . "</td>";
 				echo "</tr>";
+				$topics = mysqli_query($con,"SELECT * FROM topics WHERE tSubForumID = $row['sID']")
+				while($topic_row =mysqli_fetch_array($topics)) {
+					echo "<tr>";
+					echo "<td>" . $topic_row['tName'] . "</td>";
+					echo "<td>" . $topic_row['tNumThreads'] . "</td>";
+					echo "</tr>";
+				}
 			}	
 			echo "</table>";
 

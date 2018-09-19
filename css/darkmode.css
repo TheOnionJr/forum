@@ -19,6 +19,13 @@
     right: 1%;
 	height: 50%;
 }
+#content {
+	width: 100%;
+}
+table{
+	width: 100%;
+	
+}
 
 img {
     max-width: 100%;
