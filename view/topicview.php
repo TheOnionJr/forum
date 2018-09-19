@@ -1,6 +1,7 @@
 <?php
 include_once('view.php');
 
+echo '<link rel="stylesheet" type="text/css" href="../css/darkmode.css">'; #Manual workaround for css.
 ?>
 
 <div id="content">
