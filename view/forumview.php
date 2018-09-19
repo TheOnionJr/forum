@@ -14,10 +14,9 @@ include_once('view.php');
 
 			$result = mysqli_query($con,"SELECT * FROM subforums");
 
-			echo "<table border='1'>";
-
 			while($row = mysqli_fetch_array($result))
 			{
+				echo "<table border='1'>";
 				$subID = $row['sID'];
 				echo "<tr>";
 				echo "<th>" . $row['sName'] . "</th>";
@@ -32,9 +31,8 @@ include_once('view.php');
 					echo "<td></td>";
 					echo "</tr>";
 				}
+				echo "</table>";
 			}	
-			echo "</table>";
-
 			mysqli_close($con);
 		?>
 	</table>
