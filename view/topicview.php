@@ -22,21 +22,20 @@ echo '<link rel="stylesheet" type="text/css" href="../css/topicview.css">'; #Loa
 				echo "<table border='1'>";
 				$tID = $row['tID'];
 				echo "<tr>";
-				echo "<th>" . $row['tName'] . "</th>";
-				echo "<th>Threads: " . $row['tNumThreads'] . "</th>";
-				echo "<th>Posts: " . $row['tNumPosts'] . "</th>";
+				echo "<th>" . htmlentities($row['tName'], ENT_QUOTES, 'UTF-8'). "</th>";
+				echo "<th>Threads: " . htmlentities($row['tNumThreads'], ENT_QUOTES, 'UTF-8') . "</th>";
+				echo "<th>Posts: " . htmlentities($row['tNumPosts'], ENT_QUOTES, 'UTF-8') . "</th>";
 				echo "</tr>";
 				$threads = mysqli_query($con,"SELECT * FROM threads WHERE thTopicID = $tID ORDER BY thTimestamp DESC");
 				while($thread_row =mysqli_fetch_array($threads)) {
 					echo "<tr>";
 					$thID = $thread_row['thID'];
-					echo "<td>" . $thread_row['thName'] . "</td>";
-					echo "<td>" . "Posts: " . $thread_row['thNumPosts'] . "</td>";
-					echo $thID;
+					echo "<td>" . htmlentities($thread_row['thName'], ENT_QUOTES, 'UTF-8') . "</td>";
+					echo "<td>" . "Posts: " . htmlentities($thread_row['thNumPosts'], ENT_QUOTES, 'UTF-8') . "</td>";
 					$lastPost = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = $thID ORDER BY pTimestamp DESC");
 					$post_row =mysqli_fetch_array($lastPost);
-					echo "<td>" . "Created:  " . $thread_row['thTimestamp'] . "&emsp;By: " . $thread_row['thAuthor'] . "<br>" 
-								. "Last post:" . $post_row['pTimestamp'] .  "&emsp;By: " . $post_row['pAuthor'] . "</br>" . "</td>";
+					echo "<td>" . "Created:  " . htmlentities($thread_row['thTimestamp'], ENT_QUOTES, 'UTF-8') . "&emsp;By: " . htmlentities($thread_row['thAuthor'], ENT_QUOTES, 'UTF-8') . "<br>" 
+								. "Last post:" . htmlentities($post_row['pTimestamp'], ENT_QUOTES, 'UTF-8') .  "&emsp;By: " . htmlentities($post_row['pAuthor'], ENT_QUOTES, 'UTF-8') . "</br>" . "</td>";
 					echo "</tr>";
 				}
 				echo "</table>";
@@ -45,3 +44,4 @@ echo '<link rel="stylesheet" type="text/css" href="../css/topicview.css">'; #Loa
 		?>
 	</table>
 </div>
+
