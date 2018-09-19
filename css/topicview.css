@@ -1,0 +1,25 @@
+#content {
+	width: 100%;
+}
+
+table {
+	width: 100%;
+	margin-top: 10px; 
+}
+
+th {
+	color: #ffffff;
+}
+
+th:nth-child(1) {
+	width: 70%; 
+	text-align: left;
+}
+
+th:nth-child(2) {
+	width: 10%;
+}
+
+th:nth-child(3) {
+	width: 20%;
+}

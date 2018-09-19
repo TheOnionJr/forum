@@ -1,6 +1,6 @@
 <?php
-include('view.php');
-
+include_once('view.php');
+echo '<link rel="stylesheet" type="text/css" href="../css/forumview.css">'; #Loading the css for forumview
 ?>
 
 <div id="content">
