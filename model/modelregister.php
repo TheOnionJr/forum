@@ -57,9 +57,14 @@ if (isset($_POST['reg_user'])) {
 
 
 	if (count($errors) == 0) {
-		$password = md5($password_1);
-		$query = "INSERT INTO uUser (uUsername, uEmail, uPassword)
-				  VALUES('$username', '$email', '$password')";
+		$options = [
+    		'cost' => 15,
+    		'salt' => random_bytes(64),
+    	];
+    	$salt = $options['salt'];
+		$password = password_hash($password_1, PASSWORD_BCRYPT, $options);
+		$query = "INSERT INTO uUser (uUsername, uEmail, uPassword, uSalt)
+				  VALUES('$username', '$email', '$password', '$salt')";
 		mysqli_query($db, $query);
 		header('location: ../index.php');
 	}
