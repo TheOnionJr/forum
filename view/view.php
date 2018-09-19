@@ -9,7 +9,7 @@
 			gtag('js', new Date());
   			gtag('config', 'UA-125913159-1');
 		</script>
-		<link type="text/css" id="dark-mode" rel="stylesheet" href="css/darkmode.css">
+		<link type="text/css" id="dark-mode" rel="stylesheet" href="/css/darkmode.css">
 	</head>
 	<body>
 	<div id="header">

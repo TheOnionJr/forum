@@ -13,9 +13,9 @@ include('../model/modelregister.php')
   	<h2>Register</h2>
   </div>
 
-  <form method="post" action="/model/modelregister.php">
+  <form method="post" action="registerview.php">
   	<?php include('errors.php'); ?>
-  	<div class="input-group">
+  	<div class="input-group"> 
   	  <label>Username</label>
   	  <input type="text" name="username" value="<?php echo $username; ?>">
   	</div>
