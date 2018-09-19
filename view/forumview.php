@@ -14,26 +14,22 @@ include_once('view.php');
 
 			$result = mysqli_query($con,"SELECT * FROM subforums");
 
-			echo "<table border='1'>
-			<tr>
-				<th>Subforum</th>
-				<th>Topics</th>
-				<th>Posts</th>
-			</tr>";
+			echo "<table border='1'>";
 
 			while($row = mysqli_fetch_array($result))
 			{
 				$subID = $row['sID'];
 				echo "<tr>";
-				echo "<td>" . $row['sName'] . "</td>";
-				echo "<td>" . $row['sNumTopic'] . "</td>";
-				echo "<td>" . $row['sNumPosts'] . "</td>";
+				echo "<th>" . $row['sName'] . "</th>";
+				echo "<th>" . $row['sNumTopic'] . "</th>";
+				echo "<th>" . $row['sNumPosts'] . "</th>";
 				echo "</tr>";
 				$topics = mysqli_query($con,"SELECT * FROM topics WHERE tSubForumID = $subID");
 				while($topic_row =mysqli_fetch_array($topics)) {
 					echo "<tr>";
 					echo "<td>" . $topic_row['tName'] . "</td>";
 					echo "<td>" . $topic_row['tNumThreads'] . "</td>";
+					echo "<td></td>"
 					echo "</tr>";
 				}
 			}	
