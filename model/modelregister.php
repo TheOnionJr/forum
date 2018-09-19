@@ -22,7 +22,7 @@ if (isset($_POST['reg_user'])) {
 		array_push($errors, "The two password do not match");
 	}
 
-	$user_check_query = "SELECT * FROM uuser WHERE uUsername='$username' LIMIT 1";
+	$user_check_query = "SELECT * FROM uuser WHERE uUsername='$username'";
 	$result = mysqli_query($db, $user_check_query);
 	$user = mysqli_fetch_assoc($result);
 
@@ -32,7 +32,7 @@ if (isset($_POST['reg_user'])) {
 
 	if (count($errors) == 0) {
 		$password = md5($password_1);
-		$query = "INSERT INTO uuser (uEmail, uUsername, uPassword)
+		$query = "INSERT INTO uuser (uUsername, uEmail, uPassword)
 				  VALUES('$username', '$email', '$password')";
 		mysqli_query($db, $query);
 		$_SESSION['username'] = $username;
