@@ -29,7 +29,7 @@ include_once('view.php');
 					echo "<tr>";
 					echo "<td>" . $topic_row['tName'] . "</td>";
 					echo "<td>" . $topic_row['tNumThreads'] . "</td>";
-					echo "<td></td>"
+					echo "<td></td>";
 					echo "</tr>";
 				}
 			}	
