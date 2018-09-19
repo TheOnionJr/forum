@@ -8,9 +8,6 @@ $errors = array();
 
 $db = mysqli_connect("localhost", "guest", "", "forum");
 
-if (mysqli_connect_errno()){
-	echo "Failed to connect to MySQL: " . mysqli_connect_error();
-}
 
 if (isset($_POST['reg_user'])) {
 	$username = mysqli_real_escape_string($db, $_POST['username']);
@@ -34,8 +31,9 @@ if (isset($_POST['reg_user'])) {
 	}
 
 	if (count($errors) == 0) {
+		$password = md5($password_1);
 		$query = "INSERT INTO uuser (uEmail, uUsername, uPassword)
-				  VALUES('$username', '$email', '$password_1')";
+				  VALUES('$username', '$email', '$password')";
 		mysqli_query($db, $query);
 		$_SESSION['username'] = $username;
 		$_SESSION['success'] = "Your are now logged in";
