@@ -17,7 +17,7 @@
 	    <div id="login">
 	        Username: <input type="text" name="username"><br>
 	        Password: <input type="password" name="password"><br>
-	        <a href="view/registerview.php" id="register">Register</a>		
+	        <a href="/view/registerview.php" id="register">Register</a>		
 	    </div>
 	</div>	
 	</body>
