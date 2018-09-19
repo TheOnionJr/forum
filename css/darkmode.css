@@ -33,6 +33,25 @@ th {
 	color: #ffffff;
 }
 
+th:nth-child(1) {
+	width: 88%; 
+	text-align: left;
+}
+
+th:nth-child(2) {
+	width: 6%;
+}
+
+th:nth-child(3) {
+	width: 6%;
+}
+
+td {
+
+}
+
+
+
 img {
     max-width: 100%;
     max-height: 100%;
