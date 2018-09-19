@@ -7,6 +7,7 @@
             <a href="view/registerview.php" id="register">Register</a>		
         </div>
     </div>
+    <div id="content">
     <table>
     	<?php
 			$con=mysqli_connect("localhost","guest","","forum");
@@ -37,5 +38,6 @@
 			mysqli_close($con);
 		?>
     </table>
+	</div>
 </div>	
 
