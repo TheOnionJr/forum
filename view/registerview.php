@@ -1,5 +1,6 @@
-<?php
-echo<<<HTML
+<?php  
+include_once('../model/modelregister.php')
+?>
 
 <!DOCTYPE html>
 <html>
@@ -12,14 +13,15 @@ echo<<<HTML
   	<h2>Register</h2>
   </div>
 
-  <form method="post" action="register.php">
+  <form method="post" action="../model/modelregister.php">
+  	<?php include('../model/errors.php'); ?>
   	<div class="input-group">
   	  <label>Username</label>
-  	  <input type="text" name="username" value="">
+  	  <input type="text" name="username" value="<?php echo $username; ?>">
   	</div>
   	<div class="input-group">
   	  <label>Email</label>
-  	  <input type="email" name="email" value="">
+  	  <input type="email" name="email" value="<?php echo $email; ?>">
   	</div>
   	<div class="input-group">
   	  <label>Password</label>
@@ -39,6 +41,3 @@ echo<<<HTML
 </body>
 </html>
 
-
-HTML;
-?>

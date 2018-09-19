@@ -1,6 +1,5 @@
 <?php
 include_once('view.php');
-
 ?>
 
 <div id="content">
