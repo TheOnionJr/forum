@@ -15,12 +15,16 @@ echo '<link rel="stylesheet" type="text/css" href="../css/topicview.css">'; #Loa
 				echo "Failed to connect to MySQL: " . mysqli_connect_error();
 			}
 
-			$result = mysqli_query($con,"SELECT * FROM topics WHERE tID LIKE $topicID");
+			$stmt = $con->prepare("SELECT * FROM topics WHERE tID = ?");
+			$stmt->bind_param('i', $topicID);
+			$stmt->execute();
+			$result = $stmt->get_result();
+			$stmt->close();
 
 			while($row = mysqli_fetch_array($result))
 			{
 				echo "<table border='1'>";
-				$tID = $row['tID'];
+				$tID = htmlentities($row['tID'], ENT_QUOTES, 'UTF-8');
 				echo "<tr>";
 				echo "<th>" . htmlentities($row['tName'], ENT_QUOTES, 'UTF-8'). "</th>";
 				echo "<th>Threads: " . htmlentities($row['tNumThreads'], ENT_QUOTES, 'UTF-8') . "</th>";
