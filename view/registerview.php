@@ -1,5 +1,7 @@
-<?php  
-include('../model/modelregister.php')
+<?php 
+$path = $_SERVER['DOCUMENT_ROOT'];  //Find the document root
+$path .= "/model/modelregister.php";      //Set absolute path
+include($path);
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +16,13 @@ include('../model/modelregister.php')
   </div>
 
   <form method="post" action="registerview.php">
-  	<?php include('errors.php'); ?>
+  	<?php 
+
+    $path = $_SERVER['DOCUMENT_ROOT'];  //Find the document root
+    $path .= "/view/errors.php";      //Set absolute path
+    include($path);
+    
+    ?>
   	<div class="input-group"> 
   	  <label>Username</label>
   	  <input type="text" name="username" value="<?php echo $username; ?>">

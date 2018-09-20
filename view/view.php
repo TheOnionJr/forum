@@ -1,11 +1,13 @@
 <?php 
-include('model/modellogin.php');
+$path = $_SERVER['DOCUMENT_ROOT']; 	//Find the document root
+$path .= "/model/modellogin.php"; 	//Set absolute path
+include($path);
 
 
-if (isset($_GET['logout'])) {
-	session_destroy();
-	unset($_SESSION['username']);
-	header("location: index.php");
+if (isset($_GET['logout'])) {		//If user logs out
+	session_destroy();				//Destroys session
+	unset($_SESSION['username']);	//Unsets name
+	header("location: index.php");	//Returns to main page
 }
 
 ?>
@@ -25,7 +27,12 @@ if (isset($_GET['logout'])) {
 	<div id="header">
 	    <a href="/index.php"><img src="/img/white_logo_transparent.png" align="left" ></a>
 	    <form method="post" action="index.php">
-		    <?php include('view/errors.php') ?>
+		    <?php
+		    $errorpath = $_SERVER['DOCUMENT_ROOT']; //Find the document root
+		    $errorpath .= "/view/errors.php"; 		//Set absolute path
+		    include($errorpath) 
+
+		    ?>
 		    <div id="login">
 		        Username: <input type="text" name="username"><br>
 		        Password: <input type="password" name="password"><br>
