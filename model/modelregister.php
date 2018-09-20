@@ -22,7 +22,7 @@ if (isset($_POST['reg_user'])) {
 // Filter_sanitize - http://php.net/manual/en/filter.filters.sanitize.php
 // Might swap out FILTER_SANITIZE_EMAIL on username and password	
 	/*
-	 $username = filter_var($_POST['username'], FILTER_SANITIZE_EMAIL);
+	 $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
 	if (!filter_var($username, FILTER_VALIDATE_EMAIL)) {
 		array_push($errors, "Not a valid username!");
 	}
@@ -32,12 +32,12 @@ if (isset($_POST['reg_user'])) {
 		array_push($errors, "Not a valid email!");
 	}
 	
-	$password_1 = filter_var($_POST['password_1'], FILTER_SANITIZE_EMAIL);
+	$password_1 = filter_var($_POST['password_1'], FILTER_SANITIZE_STRING);
 	if (!filter_var($password_1, FILTER_VALIDATE_EMAIL)) {
 		array_push($errors, "Not a valid password!");
 	}
 	
-	$password_2 = filter_var($_POST['password_2'], FILTER_SANITIZE_EMAIL);
+	$password_2 = filter_var($_POST['password_2'], FILTER_SANITIZE_STRING);
 	if (!filter_var($password_2, FILTER_VALIDATE_EMAIL)) {
 		array_push($errors, "Not a valid password!");
 	}

@@ -25,7 +25,7 @@ if (isset($_POST['login_user'])) {
     $querypass = mysqli_query($db, $getpass);
 
 
-
+    
     $i = 0;
     while ($dbPASS = mysqli_fetch_array($querypass)) {
       $string .= $dbPASS[$i];
