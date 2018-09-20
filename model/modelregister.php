@@ -83,4 +83,6 @@ if (isset($_POST['reg_user'])) {
 	}
 }
 
+mysqli_close($db);
+
 ?>
