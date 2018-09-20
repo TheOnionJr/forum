@@ -20,6 +20,13 @@ if (isset($_POST['reg_user'])) {
 	$password_1 = filter_var($_POST['password_1'], FILTER_SANITIZE_STRING);		//Strip tags
 	$password_2 = filter_var($_POST['password_2'], FILTER_SANITIZE_STRING);		//Strip tags
 
+	/*
+	$username = mysqli_real_escape_string($db, $_POST['username']);				
+	$email = mysqli_real_escape_string($db, $_POST['email']);
+	$password_1 = mysqli_real_escape_string($db, $_POST['password_1']);
+	$password_2 = mysqli_real_escape_string($db, $_POST['password_2']);
+	*/
+
 	//Check if the inputs are empty 
 	if (empty($username)) { array_push($errors, "Username is required"); }
 	if (empty($email)) { array_push($errors, "Email is required"); }
@@ -28,11 +35,27 @@ if (isset($_POST['reg_user'])) {
 		array_push($errors, "The two passwords do not match");
 	}
 
-	//Run the query
+
+	/*
+	$stmt = $db->prepare("SELECT * FROM uUser WHERE uUsername=? OR uEmail=? LIMIT 1");
+    $stmt->bind_param("ss", $username, $email);
+    $result = $stmt->execute();
+    $stmt->close();
+    
+    $result = $stmt->get_result();
+    
+    $i = 0;   
+    while ($dbresult = mysqli_fetch_array($result)) {
+      $user .= $dbresult[$i];
+      print
+    }
+    */
+	//Run a query to see if email or username already exist
+	
 	$user_check_query = "SELECT * FROM uUser WHERE uUsername='$username' OR uEmail='$email' LIMIT 1";
 	$result = mysqli_query($db, $user_check_query);
 	$user = mysqli_fetch_assoc($result);
-
+	
 	//Check if the username OR email already exist
 	if ($user) { 
 		if ($user['uUsername'] === $username) {
@@ -40,8 +63,9 @@ if (isset($_POST['reg_user'])) {
 		}
 		if ($user['uEmail'] === $email) {
       		array_push($errors, "Email already exists");
-    	}	
+    	}
 	}
+
 
 	if (count($errors) == 0) {													//If there were no errors
 		$options = [											
@@ -55,10 +79,8 @@ if (isset($_POST['reg_user'])) {
 		mysqli_query($db, $query);
 		$_SESSION['username'] = $username;										//Logs the new registered user inn
 	  	$_SESSION['success'] = "You are now logged in";
-	  	header('location: /index.php');										//Returns to front page
+	  	header('location: /index.php');											//Returns to front page
 	}
 }
-
 mysqli_close($db);
-
 ?>
