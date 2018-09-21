@@ -22,7 +22,7 @@ echo '<link rel="stylesheet" type="text/css" href="../css/forumview.css">'; #Loa
 				$subID = $row['sID'];
 				echo "<tr>";
 				echo "<th>" . htmlentities($row['sName'], ENT_QUOTES, 'UTF-8') . "</th>";
-				echo "<th>Topics: " . htmlentities($row['sNumTopic'], ENT_QUOTES, 'UTF-8') . "</th>";
+				echo "<th>Threads: " . htmlentities($row['sNumTopic'], ENT_QUOTES, 'UTF-8') . "</th>";
 				echo "<th>Posts: " . htmlentities($row['sNumPosts'], ENT_QUOTES, 'UTF-8') . "</th>";
 				echo "</tr>";
 				$topics = mysqli_query($con,"SELECT * FROM topics WHERE tSubForumID = $subID");
