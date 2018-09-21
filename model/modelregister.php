@@ -54,6 +54,20 @@ if (isset($_POST['reg_user'])) {
 	$stmt->close();																		//Close the connection
 
 
+	if (!preg_match('/[A-Z]/', $password_1)){
+		array_push($errors, "Password does not contain a capital letter");
+	}
+	if (!preg_match('/[a-z]/', $password_1)){
+		array_push($errors, "Password does not contain a small letter");
+	}
+	if (!preg_match('[\W]', $password_1)){
+		array_push($errors, "Password does not contain a special character letter");
+	}
+	if (!preg_match('[\d]', $password_1)){
+		array_push($errors, "Password does not contain a digit");
+	}
+
+
 	if (count($errors) == 0) {													//If there were no errors
 		$options = [											
     		'cost' => 15,
@@ -61,9 +75,9 @@ if (isset($_POST['reg_user'])) {
     	];
     	$salt = $options['salt'];
 		$password = password_hash($password_1, PASSWORD_BCRYPT, $options);									//Creates a hashed password with salt
-																											//Dont think it is necessary to add the salt to the database as it is not used
-		$stmt = $db->prepare("INSERT INTO uUser (uUsername, uEmail, uPassword, uSalt) VALUES(?, ?, ?)");	//Prepeare statement
-		$stmt->bind_param("ssss", $username, $email, $password);											//Bind parameters
+																											
+		$stmt = $db->prepare("INSERT INTO uUser (uUsername, uEmail, uPassword) VALUES(?, ?, ?)");	//Prepeare statement
+		$stmt->bind_param("sss", $username, $email, $password);											//Bind parameters
 		$stmt->execute();																					//Execute
 		$stmt->close();																						//Close
 
