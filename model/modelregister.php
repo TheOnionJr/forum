@@ -62,14 +62,14 @@ if (isset($_POST['reg_user'])) {
     	$salt = $options['salt'];
 		$password = password_hash($password_1, PASSWORD_BCRYPT, $options);									//Creates a hashed password with salt
 																											//Dont think it is necessary to add the salt to the database as it is not used
-		$stmt = $db->prepare("INSERT INTO uUser (uUsername, uEmail, uPassword, uSalt) VALUES(?, ?, ?, ?)");	//Prepeare statement
-		$stmt->bind_param("ssss", $username, $email, $password, $salt);										//Bind parameters
+		$stmt = $db->prepare("INSERT INTO uUser (uUsername, uEmail, uPassword, uSalt) VALUES(?, ?, ?)");	//Prepeare statement
+		$stmt->bind_param("ssss", $username, $email, $password);											//Bind parameters
 		$stmt->execute();																					//Execute
-		$stmt->close();																						//Execute
+		$stmt->close();																						//Close
 
 		$_SESSION['username'] = $username;										//Logs the new registered user inn
 	  	$_SESSION['success'] = "You are now logged in";
-	  	header('location: /index.php');											//Returns to front page
+	  	header('location: /index.php');										//Returns to front page
 	}
 }
 mysqli_close($db);
