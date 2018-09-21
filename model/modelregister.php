@@ -36,28 +36,14 @@ if (isset($_POST['reg_user'])) {
 	}
 
 
-	/*
-	$stmt = $db->prepare("SELECT * FROM uUser WHERE uUsername=? OR uEmail=? LIMIT 1");
-    $stmt->bind_param("ss", $username, $email);
-    $result = $stmt->execute();
-    $stmt->close();
-    
-    $result = $stmt->get_result();
-    
-    $i = 0;   
-    while ($dbresult = mysqli_fetch_array($result)) {
-      $user .= $dbresult[$i];
-      print
-    }
-    */
-	//Run a query to see if email or username already exist
-	
-	$user_check_query = "SELECT * FROM uUser WHERE uUsername='$username' OR uEmail='$email' LIMIT 1";
-	$result = mysqli_query($db, $user_check_query);
-	$user = mysqli_fetch_assoc($result);
+	$stmt = $db->prepare("SELECT * FROM uUser WHERE uUsername=? OR uEmail=? LIMIT 1");	//Prepare statement
+    $stmt->bind_param("ss", $username, $email);											//Bind parameters
+    $result = $stmt->execute();															//Executes
+    $result = $stmt->get_result();														//Store the result
+    $user = mysqli_fetch_assoc($result);												//Fetch the result 
 	
 	//Check if the username OR email already exist
-	if ($user) { 
+	if (mysqli_num_rows($result)!=0) {													//If the query returned any rows
 		if ($user['uUsername'] === $username) {
 			array_push($errors, "Username already exists");
 		}
@@ -65,6 +51,7 @@ if (isset($_POST['reg_user'])) {
       		array_push($errors, "Email already exists");
     	}
 	}
+	$stmt->close();																		//Close the connection
 
 
 	if (count($errors) == 0) {													//If there were no errors
@@ -73,10 +60,13 @@ if (isset($_POST['reg_user'])) {
     		'salt' => random_bytes(64),
     	];
     	$salt = $options['salt'];
-		$password = password_hash($password_1, PASSWORD_BCRYPT, $options);		//Creates a hashed password with salt
-		$query = "INSERT INTO uUser (uUsername, uEmail, uPassword, uSalt)	
-				  VALUES('$username', '$email', '$password', '$salt')";			//Dont think it is necessary to add the salt to the database as it is not used
-		mysqli_query($db, $query);
+		$password = password_hash($password_1, PASSWORD_BCRYPT, $options);									//Creates a hashed password with salt
+																											//Dont think it is necessary to add the salt to the database as it is not used
+		$stmt = $db->prepare("INSERT INTO uUser (uUsername, uEmail, uPassword, uSalt) VALUES(?, ?, ?, ?)");	//Prepeare statement
+		$stmt->bind_param("ssss", $username, $email, $password, $salt);										//Bind parameters
+		$stmt->execute();																					//Execute
+		$stmt->close();																						//Execute
+
 		$_SESSION['username'] = $username;										//Logs the new registered user inn
 	  	$_SESSION['success'] = "You are now logged in";
 	  	header('location: /index.php');											//Returns to front page
