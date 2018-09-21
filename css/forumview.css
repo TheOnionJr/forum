@@ -1,25 +1,7 @@
-#content {
-	width: 100%;
-}
-
-table {
-	width: 100%;
-	margin-top: 10px; 
-}
-
 th {
-	color: #ffffff;
+	width: 10%;
 }
 
 th:nth-child(1) {
-	width: 88%; 
-	text-align: left;
-}
-
-th:nth-child(2) {
-	width: 6%;
-}
-
-th:nth-child(3) {
-	width: 6%;
+	width: 80%; 
 }

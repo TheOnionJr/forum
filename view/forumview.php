@@ -18,7 +18,7 @@ echo '<link rel="stylesheet" type="text/css" href="../css/forumview.css">'; #Loa
 
 			while($row = mysqli_fetch_array($result))
 			{
-				echo "<table border='1'>";
+				echo "<table>";
 				$subID = $row['sID'];
 				echo "<tr>";
 				echo "<th>" . htmlentities($row['sName'], ENT_QUOTES, 'UTF-8') . "</th>";

@@ -20,9 +20,13 @@
 	height: 50%;
 }
 
+#content {
+	width: 100%;
+}
 
-td {
-
+a {
+	color: #ffffff;
+	text-decoration: none;
 }
 
 img {
@@ -34,6 +38,23 @@ body {
 	background-color: #4d4d4d;
 }
 
-h1 {
-	color: #e6e6e6;
+table {
+	width: 100%;
+	margin-top: 10px; 
+}
+
+th {
+	color: #ffffff;
+	background-color: #262626;
+	font-size: 30px;
+	padding-left: 0.5%;
+	padding-right: 0.5%:;
+	text-align: left;
+}
+
+td {
+	font-size: 20px;
+	background-color: #333333;
+	padding-left: 0.5%;
+	padding-right: 0.5%;
 }
