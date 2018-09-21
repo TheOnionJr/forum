@@ -28,7 +28,6 @@ if (isset($_POST['login_user'])) {
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
-  
 
 
     //$getpass = "SELECT uPassword FROM uUser WHERE uUsername='$username'";   //Queries the database for the hashed password
