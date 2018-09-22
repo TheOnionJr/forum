@@ -5,6 +5,7 @@ session_start();
 $username = "";
 $email = "";
 $errors = array();  //Created to store error messages in an array
+$p = array();
 
 $db = mysqli_connect("localhost", "guest", "", "forum"); //Connect to database
 
@@ -59,18 +60,23 @@ if (isset($_POST['reg_user'])) {
 
 
 	if (!preg_match('/[A-Z]/', $password_1)){
-		array_push($errors, "Password does not contain a capital letter");
+		array_push($p, "Password does not contain a capital letter");
 	}
 	if (!preg_match('/[a-z]/', $password_1)){
-		array_push($errors, "Password does not contain a small letter");
+		array_push($p, "Password does not contain a small letter");
 	}
 	if (!preg_match('[\W]', $password_1)){
-		array_push($errors, "Password does not contain a special character");
+		array_push($p, "Password does not contain a special character");
 	}
 	if (!preg_match('[\d]', $password_1)){
-		array_push($errors, "Password does not contain a digit");
+		array_push($p, "Password does not contain a digit");
 	}
 
+	if (count($p) > 1){
+		foreach ($p as &$value) {
+			array_push($errors, $value);
+		}
+	}
 
 
 	if (count($errors) == 0) {													//If there were no errors
@@ -79,16 +85,16 @@ if (isset($_POST['reg_user'])) {
     		'salt' => random_bytes(64),
     	];
     	$salt = $options['salt'];
-		$password = password_hash($password_1, PASSWORD_BCRYPT, $options);									//Creates a hashed password with salt
+		$password = password_hash($password_1, PASSWORD_BCRYPT, $options);							//Creates a hashed password with salt
 																											
 		$stmt = $db->prepare("INSERT INTO uUser (uUsername, uEmail, uPassword) VALUES(?, ?, ?)");	//Prepeare statement
-		$stmt->bind_param("sss", $username, $email, $password);											//Bind parameters
-		$stmt->execute();																					//Execute
-		$stmt->close();																						//Close
+		$stmt->bind_param("sss", $username, $email, $password);										//Bind parameters
+		$stmt->execute();																			//Execute
+		$stmt->close();																				//Close
 
-		$_SESSION['username'] = $username;										//Logs the new registered user inn
+		$_SESSION['username'] = $username;															//Logs the new registered user inn
 	  	$_SESSION['success'] = "You are now logged in";
-	  	header('location: /index.php');										//Returns to front page
+	  	header('location: /index.php');																//Returns to front page
 	}
 }
 mysqli_close($db);
