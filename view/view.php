@@ -30,14 +30,12 @@
 		    <?php if (!isset($_SESSION['username'])) : ?> 
 		    	<div id="login">
 		       		Username: <input type="text" name="username"><br>
-		       		Password: <input type="password" name="password"><br> 
+		       		Password: <input type="password" name="password"><br>
+		       		<a href="/view/registerview.php" id="register">Register</a> 
 		        	<button type="submit" class="login_button" name="login_user">Login</button>
 		    	</div>
 		    <?php endif ?>
 		</form>
-		<?php if (!isset($_SESSION['username'])) : ?>
-	    	<a href="/view/registerview.php" id="register">Register</a>	
-	    <?php endif ?>
 	    <?php if (isset($_SESSION['username'])) : ?>
 	    	<p> Logged in as <strong><?php echo $_SESSION['username']; ?></strong></p>
 	    	<p> <a href="index.php?logout='1'" style="color: red;">Logout</a></p>
