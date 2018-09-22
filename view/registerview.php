@@ -39,13 +39,34 @@ include($path);
   	  <label>Confirm password</label>
   	  <input type="password" name="password_2">
   	</div>
+    <p> Click <b onclick="myFunction()">here</b> for the Password Policy</p>
+
+<div id="policy" style="Display:none">
+ <br>
+- At least one capital letter <br>
+- At least one small letter <br>
+- At least one special character <br>
+- At least one digit
+</div>
   	<div class="input-group">
   	  <button type="submit" class="btn" name="reg_user">Register</button>
   	</div>
+    
   	<p>
   		<a href="/index.php">Homepage</a>
   	</p>
   </form>
+  <script>
+function myFunction() {
+    var x = document.getElementById("policy");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+        
+    }
+}
+</script>
 </body>
 </html>
 

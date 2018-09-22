@@ -20,7 +20,7 @@ body {
 }
 form, .content {
   width: 30%;
-  margin: 0px auto;
+  margin: 0px auto; 
   padding: 20px;
   border: 1px solid #B0C4DE;
   background: white;
@@ -50,8 +50,6 @@ form, .content {
   border: none;
   border-radius: 5px;
 }
-
-
 .error {
   width: 92%; 
   margin: 0px auto; 
@@ -63,9 +61,3 @@ form, .content {
   text-align: left;
 }
 
-.success {
-  color: #3c763d; 
-  background: #dff0d8; 
-  border: 1px solid #3c763d;
-  margin-bottom: 20px;
-}
