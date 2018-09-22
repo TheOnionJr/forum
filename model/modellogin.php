@@ -33,7 +33,8 @@ if (isset($_POST['login_user'])) {
     //$getpass = "SELECT uPassword FROM uUser WHERE uUsername='$username'";   //Queries the database for the hashed password
     //$querypass = mysqli_query($db, $getpass);
     
-    $i = 0;   
+    $i = 0;
+    $string = NULL;
     while ($dbPASS = mysqli_fetch_array($result)) {                      //Stores the hashed password as a string (it normally returns as an array)
       $string .= $dbPASS[$i];
     }
