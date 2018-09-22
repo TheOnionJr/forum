@@ -54,25 +54,25 @@ if (isset($_POST['reg_user'])) {
 	}
 	$stmt->close();																		//Close the connection
 
-	if (strlen($password_1) < 8 || strlen($password_1) > 128) {
+	if (strlen($password_1) < 8 || strlen($password_1) > 128) {							//If password is less than 8 or greater than 128 char
 		array_push($errors, "Password length must be between 8 and 128 characters");
 	}
 
-
-	if (!preg_match('/[A-Z]/', $password_1)){
+																						//For info on preg_match http://php.net/manual/en/function.preg-match.php
+	if (!preg_match('/[A-Z]/', $password_1)){											//If the password does not contain a capital letter
 		array_push($p, "Password does not contain a capital letter");
 	}
-	if (!preg_match('/[a-z]/', $password_1)){
-		array_push($p, "Password does not contain a small letter");
+	if (!preg_match('/[a-z]/', $password_1)){											//If the password does not contain a lowercase letter
+		array_push($p, "Password does not contain a lowercase letter");
 	}
-	if (!preg_match('[\W]', $password_1)){
+	if (!preg_match('[\W]', $password_1)){												//If the password does not contain a special character
 		array_push($p, "Password does not contain a special character");
 	}
-	if (!preg_match('[\d]', $password_1)){
+	if (!preg_match('[\d]', $password_1)){												//If the character does not contain a digit
 		array_push($p, "Password does not contain a digit");
 	}
 
-	if (count($p) > 1){
+	if (count($p) > 1){																	
 		foreach ($p as &$value) {
 			array_push($errors, $value);
 		}

@@ -39,7 +39,7 @@ include($path);
   	  <label>Confirm password</label>
   	  <input type="password" name="password_2">
   	</div>
-    <p> Click <b onclick="myFunction()">here</b> for the Password Policy</p>
+    <p> Click <b onclick="myFunction()">here</b> for the Password Policy</p>  
 
 <div id="policy" style="Display:none">
  <br>
