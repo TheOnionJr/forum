@@ -4,7 +4,6 @@
 	$path .= "/model/modellogin.php"; 	//Set absolute path
 	include($path);
 
-
 	if (isset($_GET['logout'])) {		//If user logs out
 		session_destroy();				//Destroys session
 		unset($_SESSION['username']);	//Unsets name
@@ -33,12 +32,18 @@
 		       		Password: <input type="password" name="password"><br>
 		       		<a href="/view/registerview.php" id="register">Register</a> 
 		        	<button type="submit" class="login_button" name="login_user">Login</button>
+		        	<?php
+		        		
+		        	?>
 		    	</div>
 		    <?php endif ?>
 		</form>
 	    <?php if (isset($_SESSION['username'])) : ?>
 	    	<p> Logged in as <strong><?php echo $_SESSION['username']; ?></strong></p>
 	    	<p> <a href="index.php?logout='1'" style="color: red;">Logout</a></p>
+	    	<?php
+		        include($path);
+		    ?>
 	    <?php endif ?>	
 	</div>	
 	</body>
