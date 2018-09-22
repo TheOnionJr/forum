@@ -53,6 +53,10 @@ if (isset($_POST['reg_user'])) {
 	}
 	$stmt->close();																		//Close the connection
 
+	if (strlen($password_1) < 8 || strlen($password_1) > 128) {
+		array_push($errors, "Password length must be between 8 and 128 characters");
+	}
+
 
 	if (!preg_match('/[A-Z]/', $password_1)){
 		array_push($errors, "Password does not contain a capital letter");
@@ -66,6 +70,7 @@ if (isset($_POST['reg_user'])) {
 	if (!preg_match('[\d]', $password_1)){
 		array_push($errors, "Password does not contain a digit");
 	}
+
 
 
 	if (count($errors) == 0) {													//If there were no errors

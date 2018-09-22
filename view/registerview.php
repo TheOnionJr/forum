@@ -43,10 +43,11 @@ include($path);
 
 <div id="policy" style="Display:none">
  <br>
-- At least one capital letter <br>
-- At least one small letter <br>
-- At least one special character <br>
-- At least one digit
+- The password needs to be between 8 and 128 characters <br>
+- Password needs at least one capital letter <br>
+- Password needs at least one small letter <br>
+- Password needs at least one special character <br>
+- Password needs at least one digit 
 </div>
   	<div class="input-group">
   	  <button type="submit" class="btn" name="reg_user">Register</button>
