@@ -10,7 +10,8 @@ echo '<link rel="stylesheet" type="text/css" href="../css/topicview.css">'; #Loa
 <div id="content">
 	<table>
 		<?php
-			$topicID = $_GET['topic'];
+			//input validation
+			$topicID = filter_input(INPUT_GET, 'topic', FILTER_VALIDATE_INT);
 			
 			$con=mysqli_connect("localhost","guest","","forum");
 			// Check connection
@@ -23,10 +24,14 @@ echo '<link rel="stylesheet" type="text/css" href="../css/topicview.css">'; #Loa
 			$stmt->execute();
 			$result = $stmt->get_result();
 			$stmt->close();
-
+			//If topic id does not exist user error
+			if(mysqli_num_rows($result) == 0) {
+				echo "This topic does not exist";
+			}
+			//Else statement not necessary, if $result = 0 -> nothing will be printed
 			while($row = mysqli_fetch_array($result))
 			{
-				echo "<table border='1'>";
+				echo "<table>";
 				$tID = htmlentities($row['tID'], ENT_QUOTES, 'UTF-8');
 				echo "<tr>";
 				echo "<th>" . htmlentities($row['tName'], ENT_QUOTES, 'UTF-8'). "</th>";
