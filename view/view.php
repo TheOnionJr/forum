@@ -32,9 +32,6 @@
 		       		Password: <input type="password" name="password"><br>
 		       		<a href="/view/registerview.php" id="register">Register</a> 
 		        	<button type="submit" class="login_button" name="login_user">Login</button>
-		        	<?php
-		        		
-		        	?>
 		    	</div>
 		    <?php endif ?>
 		</form>

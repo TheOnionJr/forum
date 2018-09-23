@@ -42,7 +42,7 @@ echo '<link rel="stylesheet" type="text/css" href="../css/topicview.css">'; #Loa
 				while($thread_row =mysqli_fetch_array($threads)) {
 					echo "<tr>";
 					$thID = $thread_row['thID'];
-					echo "<td>" . htmlentities($thread_row['thName'], ENT_QUOTES, 'UTF-8') . "</td>";
+					echo "<td><a href=\"/view/threadview.php?topic=". htmlentities($topicID, ENT_QUOTES, 'UTF-8') . "&thread=" . htmlentities($thID) . "\">" . htmlentities($thread_row['thName'], ENT_QUOTES, 'UTF-8') . "</td>"; //Links to correct threadview. God this line is aids...
 					echo "<td>" . "Posts: " . htmlentities($thread_row['thNumPosts'], ENT_QUOTES, 'UTF-8') . "</td>";
 					$lastPost = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = $thID ORDER BY pTimestamp DESC");
 					$post_row =mysqli_fetch_array($lastPost);
