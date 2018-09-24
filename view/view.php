@@ -12,9 +12,22 @@
 ?>
 <html>
 	<head>
+		<!-- Header related security: -->
 		<?php
-			header("X-XSS-Protection: 1; mode=block"); //Browser XXS protection
+			header('X-XSS-Protection: 1; mode=block'); //Browser XXS protection
+			header('X-Frame-Options: DENY'); 
+			header('X-Content-Type-Options: nosniff');
 		?>
+		<style id="antiClickjack">body{display:none !important;}</style>
+		<script type="text/javascript">
+  			if (self === top) {
+       			var antiClickjack = document.getElementById("antiClickjack");
+       			antiClickjack.parentNode.removeChild(antiClickjack);
+   			} else {
+       			top.location = self.location;
+   			}
+		</script>
+		<!-- End header related security -->
 		<link type="text/css" id="dark-mode" rel="stylesheet" href="/css/darkmode.css">
 	</head>
 	<body>
