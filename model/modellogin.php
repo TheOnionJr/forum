@@ -23,6 +23,16 @@ if (isset($_POST['login_user'])) {
     array_push($errors, "Password is required");
   }
 
+  $stmt = $db->prepare("SELECT * FROM uUser WHERE uUsername=?");
+  $stmt->bind_param("s", $username);
+  $stmt->execute();
+  $result = $stmt->get_result();
+
+  if(mysqli_num_rows($result) == 0) {
+    array_push($errors, "Username does not exist");
+  }
+  $stmt->close();
+
   if (count($errors) == 0) {                                                //If no errors encountered (e.g., a user entered a username and password)
     $stmt = $db->prepare("SELECT uPassword FROM uUser WHERE uUsername=?");
     $stmt->bind_param("s", $username);
@@ -45,7 +55,7 @@ if (isset($_POST['login_user'])) {
       header('location: index.php');
     } 
     else {
-      array_push($errors , "Wrong username/password combination");            
+      array_push($errors , "Wrong password for $username");            
     }
   }
 }

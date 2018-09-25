@@ -68,7 +68,7 @@ if (isset($_POST['reg_user'])) {
 	if (!preg_match('[\W]', $password_1)){												//If the password does not contain a special character
 		array_push($p, "Password does not contain a special character");
 	}
-	if (!preg_match('[\d]', $password_1)){												//If the character does not contain a digit
+	if (!preg_match('[\d]', $password_1)){												//If the password does not contain a digit
 		array_push($p, "Password does not contain a digit");
 	}
 
