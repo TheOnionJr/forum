@@ -18,6 +18,7 @@
 			header('X-Frame-Options: DENY'); 
 			header('X-Content-Type-Options: nosniff');
 		?>
+		<title> ROSCIS Forum</title>
 		<style id="antiClickjack">body{display:none !important;}</style>
 		<script type="text/javascript">
   			if (self === top) {

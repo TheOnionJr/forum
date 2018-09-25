@@ -7,7 +7,7 @@ include($path);
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Registration system</title>
+  <title>ROSCIS Register</title>
   <link rel="stylesheet" type="text/css" href="/css/register.css">
 </head>
 <body>

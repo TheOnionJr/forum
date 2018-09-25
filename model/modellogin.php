@@ -58,6 +58,10 @@ if (isset($_POST['login_user'])) {
       array_push($errors , "Wrong password for $username");            
     }
   }
+
+  $stmt = $db->prepare("INSERT INTO ");
+  $stmt->bind_param("s", $username);
+  $stmt->execute();
 }
 
 mysqli_close($db);
