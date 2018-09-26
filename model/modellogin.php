@@ -5,6 +5,7 @@ session_start();                                                            //St
 $username = "";
 $email = "";
 $errors = array();  //Created to store error messages in an array
+$successful = "";
 
 $db = mysqli_connect("localhost", "guest", "", "forum");
 
@@ -48,31 +49,40 @@ if (isset($_POST['login_user'])) {
     while ($dbPASS = mysqli_fetch_array($result)) {                      //Stores the hashed password as a string (it normally returns as an array)
       $string .= $dbPASS[$i];
     }
+
     $stmt->close();
+
     if (password_verify($password_1, $string)) {                            //Verifies that the entered password is the hashed password (both parameteres needs to be a string)
       $_SESSION['username'] = $username;                                    //Sets the session username to be the logged in username
       $_SESSION['success'] = "You are now logged in";
-      header('location: index.php');
+      $successful = "yes";
+      //header('location: index.php');
     } 
     else {
       array_push($errors , "Wrong password for $username");            
     }
   }
-
+  
   /*
   CREATE TABLE loginAttempts (
     loginID INT AUTO_INCREMENT,
     loginUserName VARCHAR(50) NOT NULL,
     loginTimestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    loginSuccessful ENUM( 'yes', 'no') NOT NULL,
+    loginSuccessful ENUM( 'no', 'yes') NOT NULL,
     PRIMARY KEY (loginID),
     FOREIGN KEY (loginUserName) REFERENCES uUser(uUsername)
     )
   */
 
-  $stmt = $db->prepare("INSERT INTO loginAttemps (loginUserName, loginSuccessful) VALUES(?, ?)");
+if(mysqli_num_rows($result) != 0) {                                                                     //If username exists
+  $stmt = $db->prepare("INSERT INTO loginAttempts (loginUserName, loginSuccessful) VALUES(?,?)");        //Inserts into login attempts
+  //echo $db->error;
   $stmt->bind_param("ss", $username, $successful);
   $stmt->execute();
+  $stmt->close();
+}
+
+  
 }
 
 mysqli_close($db);
