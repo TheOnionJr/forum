@@ -54,5 +54,55 @@
 	    		<?php endif ?>
 			</div> 	
 		</div>	
+		<div id="navigationBar">
+			<?php
+				$url = $_SERVER['REQUEST_URI'];
+				$urlParts = parse_url($url);
+				$inTopic = in_array("/view/topicview.php", $urlParts);
+				$inThread = in_array("/view/threadview.php", $urlParts);
+
+				$con=mysqli_connect("localhost","guest","","forum");	//Find the server
+
+				if ($inTopic || $inThread)
+				{
+					$topicID = filter_input(INPUT_GET, 'topic', FILTER_VALIDATE_INT);
+					$threadID = filter_input(INPUT_GET, 'thread', FILTER_VALIDATE_INT);
+
+					echo "<table><th>";
+					echo '<a href="\">Home</a>';
+					if (!mysqli_connect_errno()){
+						//Topic
+						$stmt = $con->prepare("SELECT * FROM topics WHERE tID = ?");
+						$stmt->bind_param('i', $topicID);
+						$stmt->execute();
+						$result = $stmt->get_result();
+						$stmt->close();
+						if(mysqli_num_rows($result) != 0)
+						{
+							$topicName = mysqli_fetch_array(mysqli_query($con,"SELECT tName FROM topics WHERE tID = $topicID"));
+							echo " | ";
+							echo '<a href=/view/topicview.php?topic=' . htmlentities($topicID, ENT_QUOTES, 'UTF-8') . '>' . htmlentities($topicName['tName'], ENT_QUOTES, 'UTF-8') . '</a>';
+
+							if ($inThread)
+							{
+								//Thread
+								$stmt = $con->prepare("SELECT * FROM threads WHERE thID = ?");
+								$stmt->bind_param('i', $threadID);
+								$stmt->execute();
+								$result = $stmt->get_result();
+								$stmt->close();
+								if(mysqli_num_rows($result) != 0)
+								{
+									$threadName = mysqli_fetch_array(mysqli_query($con,"SELECT thName FROM threads WHERE thTopicID = $topicID AND thID = $threadID"));
+									echo " | ";
+									echo '<a href=/view/threadview.php?topic=' . htmlentities($topicID, ENT_QUOTES, 'UTF-8') . "&thread=" . htmlentities($threadID) . '>' . htmlentities($threadName['thName'], ENT_QUOTES, 'UTF-8') . '</a>';
+								}
+							}
+						}
+					}
+					echo "</th></table>";
+				}
+			?>
+		</div>	
 	</body>
 </html>
