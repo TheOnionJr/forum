@@ -59,8 +59,19 @@ if (isset($_POST['login_user'])) {
     }
   }
 
-  $stmt = $db->prepare("INSERT INTO ");
-  $stmt->bind_param("s", $username);
+  /*
+  CREATE TABLE loginAttempts (
+    loginID INT AUTO_INCREMENT,
+    loginUserName VARCHAR(50) NOT NULL,
+    loginTimestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    loginSuccessful ENUM( 'yes', 'no') NOT NULL,
+    PRIMARY KEY (loginID),
+    FOREIGN KEY (loginUserName) REFERENCES uUser(uUsername)
+    )
+  */
+
+  $stmt = $db->prepare("INSERT INTO loginAttemps (loginUserName, loginSuccessful) VALUES(?, ?)");
+  $stmt->bind_param("ss", $username, $successful);
   $stmt->execute();
 }
 
