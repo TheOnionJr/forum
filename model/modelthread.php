@@ -22,16 +22,26 @@
 		echo "<table>";
 		$thID = htmlentities($row['thID'], ENT_QUOTES, 'UTF-8');
 		echo "<tr>";
-		echo "<th>" . htmlentities($row['thName'], ENT_QUOTES, 'UTF-8'). "</th>";
+		echo "<th>" . htmlentities($row['thName'], ENT_QUOTES, 'UTF-8') . "</th>";
 		echo "</tr>";
 		$posts = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = $thID ORDER BY pTimestamp");
-		while($post_row =mysqli_fetch_array($posts)) {
+		while($post_row = mysqli_fetch_array($posts)) {
 			echo "<th>" . htmlentities($post_row['pAuthor'], ENT_QUOTES, 'UTF-8') . " | " . htmlentities($post_row['pTimestamp'], ENT_QUOTES, 'UTF-8') . "</th>";
 			echo "<tr>";
 			$pID = $post_row['pID'];
-			echo "<td>" . "" . htmlentities($post_row['pContent'], ENT_QUOTES, 'UTF-8') . "</td>";
+			if ($post_row['pDeleted'])
+				echo "<td>" . '<font color="red">This post was deleted by ' . htmlentities($post_row['pDeletedBy'], ENT_QUOTES, 'UTF-8') . ".</font></td>";
+			else
+				echo "<td>" . htmlentities($post_row['pContent'], ENT_QUOTES, 'UTF-8') . "</td>";
 			echo "</tr>";
-			echo "<tr><td>" . "Reply | Edit | Delete" . "</td></tr>";
+			if (!$post_row['pDeleted'])
+			{
+				echo "<tr><td>";
+				echo "Reply";
+				echo "| Edit";
+				echo "| Delete";
+				echo "</td></tr>";
+			}
 		}
 		echo "</table>";
 	}	
