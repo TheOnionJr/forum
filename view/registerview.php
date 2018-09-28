@@ -3,12 +3,28 @@ $path = $_SERVER['DOCUMENT_ROOT'];  //Find the document root
 $path .= "/model/modelregister.php";      //Set absolute path
 include($path);
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
   <title>ROSCIS Register</title>
   <link rel="stylesheet" type="text/css" href="/css/register.css">
+  <!-- Header related security: -->
+    <?php
+      header('X-XSS-Protection: 1; mode=block'); //Browser XXS protection
+      header('X-Frame-Options: DENY'); 
+      header('X-Content-Type-Options: nosniff');
+    ?>
+    <title> ROSCIS Forum</title>
+    <style id="antiClickjack">body{display:none !important;}</style>
+    <script type="text/javascript">
+        if (self === top) {
+            var antiClickjack = document.getElementById("antiClickjack");
+            antiClickjack.parentNode.removeChild(antiClickjack);
+        } else {
+            top.location = self.location;
+        }
+    </script>
+    <!-- End header related security -->
 </head>
 <body>
   <div class="header">
