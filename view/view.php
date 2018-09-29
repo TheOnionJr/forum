@@ -36,7 +36,7 @@
 	    	<a href="/index.php"><img src="/img/white_logo_transparent.png" align="left" ></a>
 	    	<div id="login">
 		    	<?php if (!isset($_SESSION['username'])) : ?>
-		    		<form method="post" action="index.php">
+		    		<form method="post" action="/index.php">
 			    		<?php
 			    			$errorpath = $_SERVER['DOCUMENT_ROOT']; //Find the document root
 			    			$errorpath .= "/view/errors.php"; 		//Set absolute path

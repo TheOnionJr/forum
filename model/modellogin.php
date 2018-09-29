@@ -56,7 +56,7 @@ if (isset($_POST['login_user'])) {
       $_SESSION['username'] = $username;                                    //Sets the session username to be the logged in username
       $_SESSION['success'] = "You are now logged in";
       $successful = "yes";
-      //header('location: index.php');
+      //header('location: /index.php');
     } 
     else {
       array_push($errors , "Wrong password for $username");            
