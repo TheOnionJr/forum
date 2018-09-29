@@ -17,7 +17,7 @@
 		$topics = mysqli_query($con,"SELECT * FROM topics WHERE tSubForumID = $subID");			//Query for topic data. No user input, no prepared statement requierd
 		while($topic_row =mysqli_fetch_array($topics)) {										//Table data generation
 			echo "<tr>";																		//Table data start
-			echo "<td><a href=\"/view/topicview.php?topic=" . htmlentities($topic_row['tID'], ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($topic_row['tName'], ENT_QUOTES, 'UTF-8') . "</td>";	//topic link with GET parameter
+			echo "<td><a href=\"/view/topicview.php?tID=" . htmlentities($topic_row['tID'], ENT_QUOTES, 'UTF-8') . "&sID=" . htmlentities($topic_row['tSubForumID'], ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($topic_row['tName'], ENT_QUOTES, 'UTF-8') . "</td>";	//topic link with GET parameter
 			echo "<td>" . htmlentities($topic_row['tNumThreads'], ENT_QUOTES, 'UTF-8') . "</td>";//Number of threads in topic
 			echo "<td>" . htmlentities($topic_row['tNumPosts'], ENT_QUOTES, 'UTF-8') . "</td>";	//Number of posts in topic
 			echo "</tr>";																		//End table data

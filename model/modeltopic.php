@@ -1,7 +1,6 @@
 <?php
 	//input validation
-	$topicID = filter_input(INPUT_GET, 'topic', FILTER_VALIDATE_INT);
-			
+	$topicID = filter_input(INPUT_GET, 'tID', FILTER_VALIDATE_INT);
 	$con=mysqli_connect("localhost","guest","","forum");
 	// Check connection
 	if (mysqli_connect_errno()){
