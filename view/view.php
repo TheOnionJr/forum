@@ -49,8 +49,8 @@
 					</form>
 				<?php endif ?> 
 				<?php if (isset($_SESSION['username'])) : ?>
-	   		 		<p> Logged in as <strong><?php echo $_SESSION['username']; ?></strong></p>
-	    			<p> <a href="/index.php?logout='1'" style="color: red;">Logout</a></p>
+	   		 		<p id="p"> Logged in as <strong><?php echo $_SESSION['username']; ?></strong></p>
+	    			<p id="p"> <a href="/index.php?logout='1'" style="color: red;">Logout</a></p>
 	    		<?php endif ?>
 			</div> 	
 		</div>	

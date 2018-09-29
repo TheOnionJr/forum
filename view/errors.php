@@ -1,12 +1,7 @@
-<?php  if (count($errors) > 0) : ?>							
+<?php  if (count($errors) > 0) : ?>
   <div class="error">
-  	<?php echo "
-  	<script type=\"text/javascript\">
-  	window.confirm(\"" ?>
-  			<?php foreach ($errors as $error) : ?>
-  	  		<?php echo filter_var($error, FILTER_SANITIZE_STRING)?>
-  	  		<?php endforeach ?>
-  	<?php echo "\")</script>" ?>
+    <?php foreach ($errors as $error) : ?>
+      <p><?php echo $error ?></p>
+    <?php endforeach ?>
   </div>
 <?php  endif ?>
-
