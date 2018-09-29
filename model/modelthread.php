@@ -28,9 +28,11 @@
 
 		//	Load and populate posts
 		$posts = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = $thID ORDER BY pTimestamp");
+		$i = 0;		// Int def.
 		while($post_row = mysqli_fetch_array($posts)) {
 			echo "<th>";
-
+			$i++;		//Integer to keep track of reply-boxes.
+			$txID = $i;	
 			// Username and Timestamp
 			if (false)	//	admin or mod
 				echo '<font color="gold">';	//	gold for moderators, darkorange for admins
@@ -52,12 +54,27 @@
 			if (!$post_row['pDeleted'])
 			{
 				echo "<tr><td>";
-				echo "Reply";				//	Replace these with functions
-				echo " | " . "Edit";		//	Replace these with functions
-				echo " | " . "Delete";		//	Replace these with functions
+				echo "<b onclick='textbox($txID)'>Reply</b>";	//	Calls function for post on click.
+				echo " | " . "Edit";							//	Replace these with functions
+				echo " | " . "Delete";							//	Replace these with functions
+				echo '<div id="' . $txID . '" style="Display:none">		
+						<textarea id="CBox" form="textarea" type="text" > </textarea>
+					 </div>';								//  Adds default:hidden textboxes after replies.
 				echo "</td></tr>";
 			}
 		}
+		?>
+			<script>											//  Function for displaying textbox.
+				function textbox(ID) {
+					var x = document.getElementById(ID);
+					if (x.style.display === "none") {
+						x.style.display = "block";
+					} else {
+						x.style.display = "none";
+					}
+				}
+			</script>
+		<?php
 		echo "</table>";
 	}	
 	mysqli_close($con);
