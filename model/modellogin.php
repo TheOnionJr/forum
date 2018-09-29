@@ -5,7 +5,7 @@ session_start();                                                            //St
 $username = "";
 $email = "";
 $errors = array();  //Created to store error messages in an array
-$successful = "";
+$successful = "no";
 
 $db = mysqli_connect("localhost", "guest", "", "forum");
 
@@ -81,7 +81,6 @@ if(mysqli_num_rows($result) != 0) {                                             
   $stmt->execute();
   $stmt->close();
 }
-
   
 }
 
