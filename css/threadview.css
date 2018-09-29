@@ -14,3 +14,13 @@ th {
 tr {
     color: #aaaaaa;
 }
+
+#CBox {       /* CSS for reply-textboxes. */
+	width: 400px;
+	height: 150px;
+	padding: 4px 3px;
+	box-sizing: border-box;
+	border: 2px solid #ccc;
+	border-radius: 4px;
+	background-color: #f8f8f8
+}
