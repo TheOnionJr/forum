@@ -1,13 +1,22 @@
 <?php
+	$page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
 	$con=mysqli_connect("localhost","guest","","forum");										//Database connection
 			// Check connection
 	if (mysqli_connect_errno()){																//Error handeling
 		echo "Failed to connect to MySQL: " . mysqli_connect_error();
 	}
 	$result = mysqli_query($con,"SELECT * FROM subforums"); 									//Query for subforum data. No user input, no prepared statement requierd
+	$rowNum = 0;
 	
-	while($row = mysqli_fetch_array($result))													//Table generation
+	$subs = mysqli_query($con, "SELECT COUNT(*) FROM subforums");	
+	$maxPage = mysqli_fetch_array($subs);
+	
+	if($page > 0 && $page < $maxPage['COUNT(*)'])
+		$result->data_seek(($page-1)*25);
+	
+	while(($row = mysqli_fetch_array($result)) && $rowNum < 25)									//Table generation
 	{
+		$rowNum++;
 		echo "<table>";																			//Table start
 		$subID = $row['sID'];
 		
@@ -39,6 +48,8 @@
 			echo "</tr>";																		//End table data
 		}
 		echo "</table>";																		//End table
+		
+		
 	}	
 	mysqli_close($con);																			//Closing database connection
 ?>
