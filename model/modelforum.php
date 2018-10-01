@@ -5,14 +5,22 @@
 		echo "Failed to connect to MySQL: " . mysqli_connect_error();
 	}
 	$result = mysqli_query($con,"SELECT * FROM subforums"); 									//Query for subforum data. No user input, no prepared statement requierd
+	
 	while($row = mysqli_fetch_array($result))													//Table generation
 	{
 		echo "<table>";																			//Table start
 		$subID = $row['sID'];
+		
+		$numThreads = mysqli_query($con, "SELECT COUNT(*) FROM threads INNER JOIN topics ON threads.thTopicID = topics.tID WHERE topics.tSubForumID = $subID");	
+		$threads = mysqli_fetch_array($numThreads);												//gets amount of threads for the subforum	
+		
+		$numPosts = mysqli_query($con,"SELECT COUNT(*) FROM posts INNER JOIN (threads INNER JOIN topics ON threads.thTopicID = topics.tID) ON posts.pThreadID = threads.thID WHERE topics.tSubForumID = $subID");
+		$posts = mysqli_fetch_array($numPosts);													//gets amount of posts for the subforum
+		
 		echo "<tr>";																			//Start table headers
 		echo "<th>" . htmlentities($row['sName'], ENT_QUOTES, 'UTF-8') . "</th>";  				//Subforum name with sanetazion
-		echo "<th>Threads: " . htmlentities($row['sNumTopic'], ENT_QUOTES, 'UTF-8') . "</th>";  //Threadcount with sanetazion
-		echo "<th>Posts: " . htmlentities($row['sNumPosts'], ENT_QUOTES, 'UTF-8') . "</th>";	//Postcount with sanetazion
+		echo "<th>Threads: " . htmlentities($threads['COUNT(*)'], ENT_QUOTES, 'UTF-8') . "</th>";  //Threadcount with sanetazion
+		echo "<th>Posts: " . htmlentities($posts['COUNT(*)'], ENT_QUOTES, 'UTF-8') . "</th>";	//Postcount with sanetazion
 		echo "</tr>";	//End table headers
 		$topics = mysqli_query($con,"SELECT * FROM topics WHERE tSubForumID = $subID");			//Query for topic data. No user input, no prepared statement requierd
 		while($topic_row =mysqli_fetch_array($topics)) {										//Table data generation
