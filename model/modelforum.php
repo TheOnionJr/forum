@@ -24,10 +24,18 @@
 		echo "</tr>";	//End table headers
 		$topics = mysqli_query($con,"SELECT * FROM topics WHERE tSubForumID = $subID");			//Query for topic data. No user input, no prepared statement requierd
 		while($topic_row =mysqli_fetch_array($topics)) {										//Table data generation
+			$topicID = $topic_row['tID'];
+			
+			$numThreads = mysqli_query($con, "SELECT COUNT(*) FROM threads WHERE threads.thTopicID = $topicID");	
+			$threads = mysqli_fetch_array($numThreads);												//gets amount of threads for the subforum	
+			
+			$numPosts = mysqli_query($con,"SELECT COUNT(*) FROM posts INNER JOIN threads ON posts.pThreadID = threads.thID WHERE threads.thTopicID = $topicID");
+			$posts = mysqli_fetch_array($numPosts);	
+			
 			echo "<tr>";																		//Table data start
 			echo "<td><a href=\"/view/topicview.php?tID=" . htmlentities($topic_row['tID'], ENT_QUOTES, 'UTF-8') . "&sID=" . htmlentities($topic_row['tSubForumID'], ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($topic_row['tName'], ENT_QUOTES, 'UTF-8') . "</td>";	//topic link with GET parameter
-			echo "<td>" . htmlentities($topic_row['tNumThreads'], ENT_QUOTES, 'UTF-8') . "</td>";//Number of threads in topic
-			echo "<td>" . htmlentities($topic_row['tNumPosts'], ENT_QUOTES, 'UTF-8') . "</td>";	//Number of posts in topic
+			echo "<td>Threads: " . htmlentities($threads['COUNT(*)'], ENT_QUOTES, 'UTF-8') . "</td>";//Number of threads in topic
+			echo "<td>Posts: " . htmlentities($posts['COUNT(*)'], ENT_QUOTES, 'UTF-8') . "</td>";	//Number of posts in topic
 			echo "</tr>";																		//End table data
 		}
 		echo "</table>";																		//End table
