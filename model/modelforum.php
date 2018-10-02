@@ -8,11 +8,12 @@
 	$result = mysqli_query($con,"SELECT * FROM subforums"); 									//Query for subforum data. No user input, no prepared statement requierd
 	$rowNum = 0;
 	
-	$subs = mysqli_query($con, "SELECT COUNT(*) FROM subforums");	
-	$maxPage = mysqli_fetch_array($subs);
+	$maxPage = ceil((mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM subforums"))['COUNT(*)'])/25);
 	
-	if($page > 0 && $page < $maxPage['COUNT(*)'])
+	if($page > 0 && $page <= $maxPage)
 		$result->data_seek(($page-1)*25);
+	else
+		$page = 1;
 	
 	while(($row = mysqli_fetch_array($result)) && $rowNum < 25)									//Table generation
 	{
@@ -48,8 +49,43 @@
 			echo "</tr>";																		//End table data
 		}
 		echo "</table>";																		//End table
-		
-		
 	}	
+	
+	echo "<p>";
+
+	if($page > 5)
+		echo "<a href=\"/?page=" . htmlentities($page-5, ENT_QUOTES, 'UTF-8') . "\">" . " << " . "</a>";	
+	if($page > 1)
+		echo "<a href=\"/?page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . " < " . "</a>";
+	
+	if($page > 3)
+		echo "<a href=\"/?page=1\"> 1 </a>";
+	if($page > 4)
+		echo " ... ";
+	
+	if($page > 2)
+		echo "<a href=\"/?page=" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+	if($page > 1)
+		echo "<a href=\"/?page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "</a>";
+	
+	echo " $page ";
+	
+	if($page < $maxPage)
+		echo "<a href=\"/?page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+	if($page < $maxPage-1)
+		echo "<a href=\"/?page=" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "</a>";
+	
+	if($page < $maxPage-3)
+		echo " ... ";
+	if($page < $maxPage-2)
+		echo "<a href=\"/?page=" . htmlentities($maxPage, ENT_QUOTES, 'UTF-8') . "\">" . " $maxPage " . "</a>";
+	
+	if($page < $maxPage)
+		echo "<a href=\"/?page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . " > " . "</a>";
+	if($page < $maxPage-4)
+		echo "<a href=\"/?page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
+	
+	echo "</p>";
+	
 	mysqli_close($con);																			//Closing database connection
 ?>
