@@ -81,7 +81,7 @@
 						{
 							$topicName = mysqli_fetch_array(mysqli_query($con,"SELECT tName FROM topics WHERE tID = $topicID"));
 							echo " | ";
-							echo '<a href=/view/topicview.php?topic=' . htmlentities($topicID, ENT_QUOTES, 'UTF-8') . '>' . htmlentities($topicName['tName'], ENT_QUOTES, 'UTF-8') . '</a>';
+							echo '<a href=/view/topicview.php?tID=' . htmlentities($topicID, ENT_QUOTES, 'UTF-8'). "&sID=" . htmlentities($threadID) . '>' . htmlentities($topicName['tName'], ENT_QUOTES, 'UTF-8') . '</a>';
 
 							if ($inThread)
 							{

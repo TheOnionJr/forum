@@ -74,13 +74,13 @@ if (isset($_POST['login_user'])) {
     )
   */
 
-if(mysqli_num_rows($result) != 0) {                                                                     //If username exists
-  $stmt = $db->prepare("INSERT INTO loginAttempts (loginUserName, loginSuccessful) VALUES(?,?)");        //Inserts into login attempts
-  //echo $db->error;
-  $stmt->bind_param("ss", $username, $successful);
-  $stmt->execute();
-  $stmt->close();
-}
+  if(mysqli_num_rows($result) != 0) {                                                                     //If username exists
+    $stmt = $db->prepare("INSERT INTO loginAttempts (loginUserName, loginSuccessful) VALUES(?,?)");        //Inserts into login attempts
+    //echo $db->error;
+    $stmt->bind_param("ss", $username, $successful);
+    $stmt->execute();
+    $stmt->close();
+  }
   
 }
 
