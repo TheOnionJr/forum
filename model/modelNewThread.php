@@ -8,7 +8,8 @@ $errors = array();
 
 if (isset($_POST['new_thread'])) {
 	//session_start();
-	if (isset($_SESSION['username'])) { 
+	if (isset($_SESSION['username'])) {
+		$content = true;
 		$con=mysqli_connect("localhost","guest","","forum");
 		$tID= $_GET['tID'];									//Get topic ID
 		$sID= $_GET['sID'];									//Get subforum ID
@@ -17,9 +18,10 @@ if (isset($_POST['new_thread'])) {
 		$username= filter_var($_SESSION['username'], FILTER_SANITIZE_STRING);
 		$title=filter_var($_POST['title'], FILTER_SANITIZE_STRING);
 
-		if (empty($text)) {                                   //Check if some post content was entered
-																//This might be not needed as a thread doesn't neccesarily need content to begin with
-			array_push($errors, "Some content is required, please fill out the text box");
+		if (empty($text)) {                                 //Check if some post content was entered
+															//This might be not needed as a thread doesn't neccesarily need content to begin with
+			$content = false;
+			//array_push($errors, "Some content is required, please fill out the text box");
 		}
 		if (empty($title)) {                                                 	//Check if a title was entered
 			array_push($errors, "A title is required");
@@ -51,34 +53,33 @@ if (isset($_POST['new_thread'])) {
 				$stmt->bind_param("sisi", $title, $first, $username, $tID);													//Bind parameters
 				$stmt->execute();																							//Execute
 				$stmt->close();
+				
+				if ($content) {
+					$stmt = $con->prepare("SELECT thID FROM threads WHERE thName = ? AND thTopicID = ?");		//Get thID from the newly inserted thread
+					$stmt->bind_param('si', $title, $tID);														//Bind parameters
+					$stmt->execute();																			//Execute
+					$result = $stmt->get_result();																//Get result
 
-				$stmt = $con->prepare("SELECT thID FROM threads WHERE thName = ? AND thTopicID = ?");		//Get thID from the newly inserted thread
-				$stmt->bind_param('si', $title, $tID);														//Bind parameters
-				$stmt->execute();																			//Execute
-				$result = $stmt->get_result();																//Get result
+					$i = 0;
+					$thread = NULL;
+					while ($dbPASS = mysqli_fetch_array($result)) {				//only works if the thread names are UNIQUE
+							$thread .= $dbPASS[$i];								//Stores the returned threadID
+					}
 
-				$i = 0;
-				$thread = NULL;
-				while ($dbPASS = mysqli_fetch_array($result)) {				//only works if the thread names are UNIQUE
-						$thread .= $dbPASS[$i];								//Stores the returned threadID
-																			//This while loop might be needed to altered if the check for unique thread in specific topic works
+					$stmt= $con->prepare("INSERT INTO posts (pName, pContent, pAuthor, pThreadID) VALUES(?, ?, ?, ?)");		//Prepares to insert into posts
+					$stmt->bind_param('sssi', $title, $text, $username, $thread);											//Binds params
+					$stmt->execute();																						//Executes query
+					$stmt->close();
 				}
-
-				$stmt= $con->prepare("INSERT INTO posts (pName, pContent, pAuthor, pThreadID) VALUES(?, ?, ?, ?)");		//Prepares to insert into posts
-				$stmt->bind_param('sssi', $title, $text, $username, $thread);											//Binds params
-				$stmt->execute();																						//Executes query
-				$stmt->close();
 				header("Location: /view/topicview.php?tID=".$tID."&sID=".$sID);											//Returnes to the topic
 			}
 			else {
-				array_push($errors, "Error");
+				array_push($errors, "Error please contact the administrators");
 			}
 		}
 	} else { 
 		array_push($errors, "You need to login in order to post");
 	}
-	
 }
-
 
 ?>
