@@ -17,16 +17,16 @@ if (isset($_POST['new_thread'])) {
 		$username= filter_var($_SESSION['username'], FILTER_SANITIZE_STRING);
 		$title=filter_var($_POST['title'], FILTER_SANITIZE_STRING);
 
-		  if (empty($text)) {                                   //Check if some post content was entered
-		  														//This might be not needed as a thread doesn't neccesarily need content to begin with
-		    array_push($errors, "Some content is required, please fill out the text box");
-		  }
-		  if (empty($title)) {                                                 	//Check if a title was entered
-		    array_push($errors, "A title is required");
-		  }
+		if (empty($text)) {                                   //Check if some post content was entered
+																//This might be not needed as a thread doesn't neccesarily need content to begin with
+			array_push($errors, "Some content is required, please fill out the text box");
+		}
+		if (empty($title)) {                                                 	//Check if a title was entered
+			array_push($errors, "A title is required");
+		}
 
-	  	$stmt = $con->prepare("SELECT thName, thTopicID FROM threads WHERE thName = ?");		//Prepare statement 
-		$stmt->bind_param('s', $title);															//Bind parameters
+	  	$stmt = $con->prepare("SELECT thName FROM threads WHERE thName = ? AND thTopicID = ?");		//Prepare statement 
+		$stmt->bind_param('si', $title, $tID);															//Bind parameters
 		$result = $stmt->execute();																//executes
 		$result = $stmt->get_result();															//Get result
 		$user = mysqli_fetch_assoc($result);													//Fetch result
@@ -34,13 +34,9 @@ if (isset($_POST['new_thread'])) {
 
 		//Check if title exists
 		if (mysqli_num_rows($result)!=0) {													//If the query returned any rows
-			//if (!$user['thTopicID'] === $tID) {			This is still in development
-			//The title should only be UNIQUE for the topic
 				if ($user['thName'] === $title) {
-					array_push($errors, "A thread with that title already exists. Please choose a different title");
+					array_push($errors, "A thread with that title already exists in this Topic. Please choose a different title");
 				}
-			//}
-			
 		}
 		$stmt->close();
 
@@ -56,8 +52,8 @@ if (isset($_POST['new_thread'])) {
 				$stmt->execute();																							//Execute
 				$stmt->close();
 
-				$stmt = $con->prepare("SELECT thID FROM threads WHERE thName = ?");							//Get thID from the newly inserted thread
-				$stmt->bind_param('s', $title);																//Bind parameters
+				$stmt = $con->prepare("SELECT thID FROM threads WHERE thName = ? AND thTopicID = ?");		//Get thID from the newly inserted thread
+				$stmt->bind_param('si', $title, $tID);														//Bind parameters
 				$stmt->execute();																			//Execute
 				$result = $stmt->get_result();																//Get result
 
