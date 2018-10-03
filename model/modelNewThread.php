@@ -46,9 +46,16 @@ if (isset($_POST['new_thread'])) {
 		$replyTo=NULL;
 		if(count($errors) == 0 ) {										//If there were no errors
 			if(canPost($username, $thID, $tID, $sID, $replyTo)) {
-				$stmt = $con->prepare("INSERT INTO threads (thName, thNumPosts, thAuthor, thTopicID) VALUES(?, ?, ?, ?)");	//Prepeare statement
 
-				$first = 1;			//This has to an if statement if the check for text input is not needed
+				//IF YOU GET "Call to a member function bind_param() on boolean" THEN PLEASE UPDATE THE REQUESTS FOR USER (look DROP *)
+
+				$stmt = $con->prepare("INSERT INTO threads (thName, thNumPosts, thAuthor, thTopicID) VALUES(?, ?, ?, ?)");	//Prepeare statement
+				if ($content) {																								//If content for post exists
+					$first = 1;	
+				}
+				else {
+					$first = NULL;
+				}
 
 				$stmt->bind_param("sisi", $title, $first, $username, $tID);													//Bind parameters
 				$stmt->execute();																							//Execute

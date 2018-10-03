@@ -1,6 +1,12 @@
 <?php
+/*
+	$path = $_SERVER['DOCUMENT_ROOT']; 					//Find the document root
+	$path .= "/functions/postFunctions.php"; 			//Set absolute path
+	include($path);
+	*/
 	//input validation
 	$threadID = filter_input(INPUT_GET, 'thread', FILTER_VALIDATE_INT);
+	
 	
 	$con=mysqli_connect("localhost","guest","","forum");
 	// Check connection
@@ -55,8 +61,36 @@
 			{
 				echo "<tr><td>";
 				echo "<b onclick='textbox($txID)'>Reply</b>";	//	Calls function for post on click.
-				echo " | " . "Edit";							//	Replace these with functions
-				echo " | " . "Delete";							//	Replace these with functions
+				//$author = $_GET['pAuthor'];
+				$author = $post_row['pAuthor'];
+
+				if (isset($_SESSION['username'])) { 						// If user is logged in
+					if ($_SESSION['username'] === $author) {				// If user = to the author
+						echo " | " . "Edit";								//	Replace these with functions
+						echo " | <form method='post' name='deleteform'>
+							<button type='submit' name='deletepost'>Delete</button> </form>";	//Creates the form and button
+						echo "<style type='text/css'>					
+								form[name=deleteform] {
+							    display:inline;
+							    margin:0px;
+							    padding:0px;
+								}
+								</style>";														//Added some css to keep the delete button inline
+						if (isset($_POST['deletepost'])) {
+							$name = $row['thName'];
+
+							//IF YOU GET "Call to a member function bind_param() on boolean" THEN PLEASE UPDATE THE REQUESTS FOR USER (look DROP *)
+
+							$stmt = $con->prepare("UPDATE posts SET pDeleted = 1, pDeletedBy = ? WHERE pName = ? AND pThreadID = ?");
+							$stmt->bind_param('ssi', $_SESSION['username'], $name, $thID);
+							//echo $con->error;
+							$stmt->execute();
+							$stmt->close();
+							header("Refresh: 0");	//Refreshes the page
+						}
+					}
+				}
+				
 				echo '<div id="' . $txID . '" style="Display:none">		
 						<textarea id="CBox" form="textarea" type="text" > </textarea>
 					 </div>';								//  Adds default:hidden textboxes after replies.
