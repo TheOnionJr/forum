@@ -13,11 +13,12 @@
 #login {
 	margin-top: 25px;
 	width: auto;
+	width: 20%;
 	font-size: 25px;
 	text-align: right;
 	color: #ffffff;
 	position: relative;
-    right: 1%;
+    right: -37%;
 	margin: auto;
 }
 
