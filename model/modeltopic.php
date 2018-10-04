@@ -1,6 +1,7 @@
 <?php
 	//input validation
 	$topicID = filter_input(INPUT_GET, 'tID', FILTER_VALIDATE_INT);
+	$page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
 	$con=mysqli_connect("localhost","guest","","forum");
 	// Check connection
 	if (mysqli_connect_errno()){
@@ -16,6 +17,48 @@
 		echo "This topic does not exist";
 	}
 	//Else statement not necessary, if $result = 0 -> nothing will be printed
+	
+	
+	$rowNum = 0;
+	
+	$maxPage = ceil((mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM threads WHERE thTopicID = $topicID"))['COUNT(*)'])/25);
+	
+	echo "<p>";
+
+	if($page > 5)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($page-5, ENT_QUOTES, 'UTF-8') . "\">" . " << " . "</a>";	
+	if($page > 1)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . " < " . "</a>";
+	
+	if($page > 3)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=1\"> 1 </a>";
+	if($page > 4)
+		echo " ... ";
+	
+	if($page > 2)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+	if($page > 1)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "</a>";
+	
+	echo " $page ";
+	
+	if($page < $maxPage)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+	if($page < $maxPage-1)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "</a>";
+	
+	if($page < $maxPage-3)
+		echo " ... ";
+	if($page < $maxPage-2)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($maxPage, ENT_QUOTES, 'UTF-8') . "\">" . " $maxPage " . "</a>";
+	
+	if($page < $maxPage)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . " > " . "</a>";
+	if($page < $maxPage-4)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
+	
+	echo "</p>";
+	
 	while($row = mysqli_fetch_array($result))
 	{
 		echo "<table>";
@@ -33,7 +76,14 @@
 		echo "<th>Posts: " . htmlentities($posts['COUNT(*)'], ENT_QUOTES, 'UTF-8') . "</th>";
 		echo "</tr>";
 		$threads = mysqli_query($con,"SELECT * FROM threads WHERE thTopicID = $tID ORDER BY thTimestamp DESC");
-		while($thread_row =mysqli_fetch_array($threads)) {
+		
+		if($page > 0 && $page <= $maxPage)
+			$threads->data_seek(($page-1)*25);
+		else
+			$page = 1;
+		
+		while(($thread_row =mysqli_fetch_array($threads)) && $rowNum < 25) {
+			$rowNum++;
 			$thID = $thread_row['thID'];
 			
 			$numPosts = mysqli_query($con,"SELECT COUNT(*) FROM posts WHERE posts.pThreadID = $thID");
@@ -49,5 +99,42 @@
 		}
 		echo "</table>";
 	}	
+	
+	echo "<p>";
+
+	if($page > 5)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($page-5, ENT_QUOTES, 'UTF-8') . "\">" . " << " . "</a>";	
+	if($page > 1)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . " < " . "</a>";
+	
+	if($page > 3)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=1\"> 1 </a>";
+	if($page > 4)
+		echo " ... ";
+	
+	if($page > 2)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+	if($page > 1)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "</a>";
+	
+	echo " $page ";
+	
+	if($page < $maxPage)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+	if($page < $maxPage-1)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "</a>";
+	
+	if($page < $maxPage-3)
+		echo " ... ";
+	if($page < $maxPage-2)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($maxPage, ENT_QUOTES, 'UTF-8') . "\">" . " $maxPage " . "</a>";
+	
+	if($page < $maxPage)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . " > " . "</a>";
+	if($page < $maxPage-4)
+		echo "<a href=\"/view/topicview.php?tID=" . htmlentities($topicID) . "&page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
+	
+	echo "</p>";
+	
 	mysqli_close($con);
 ?>
