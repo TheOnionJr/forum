@@ -6,7 +6,7 @@
 	*/
 	//input validation
 	$threadID = filter_input(INPUT_GET, 'thread', FILTER_VALIDATE_INT);
-	
+	$page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
 	
 	$con=mysqli_connect("localhost","guest","","forum");
 	// Check connection
@@ -23,7 +23,10 @@
 		echo "This thread does not exist";
 	}
 	//Else statement not necessary, if $result = 0 -> nothing will be printed
-
+	
+	$rowNum = 0;
+	
+	$maxPage = ceil((mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM posts WHERE pThreadID = $threadID"))['COUNT(*)'])/25);
 	
 	while($row = mysqli_fetch_array($result))
 	{
@@ -34,8 +37,15 @@
 
 		//	Load and populate posts
 		$posts = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = $thID ORDER BY pTimestamp");
+		
+		if($page > 0 && $page <= $maxPage)
+			$posts->data_seek(($page-1)*25);
+		else
+			$page = 1;
+		
 		$i = 0;		// Int def.
-		while($post_row = mysqli_fetch_array($posts)) {
+		while(($post_row = mysqli_fetch_array($posts)) && $rowNum < 25) {
+			$rowNum++;
 			echo "<th>";
 			$i++;		//Integer to keep track of reply-boxes.
 			$txID = $i;	
@@ -111,5 +121,42 @@
 		<?php
 		echo "</table>";
 	}	
+	
+	echo "<p>";
+
+	if($page > 5)
+		echo "<a href=\"/view/threadview.php?topic=". htmlentities($topicID, ENT_QUOTES, 'UTF-8') . "&thread=" . htmlentities($thID) . "&page=" . htmlentities($page-5, ENT_QUOTES, 'UTF-8') . "\">" . " << " . "</a>";	
+	if($page > 1)
+		echo "<a href=\"/view/threadview.php?topic=". htmlentities($topicID, ENT_QUOTES, 'UTF-8') . "&thread=" . htmlentities($thID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . " < " . "</a>";
+	
+	if($page > 3)
+		echo "<a href=\"/view/threadview.php?topic=". htmlentities($topicID, ENT_QUOTES, 'UTF-8') . "&thread=" . htmlentities($thID) . "&page=1\"> 1 </a>";
+	if($page > 4)
+		echo " ... ";
+	
+	if($page > 2)
+		echo "<a href=\"/view/threadview.php?topic=". htmlentities($topicID, ENT_QUOTES, 'UTF-8') . "&thread=" . htmlentities($thID) . "&page=" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+	if($page > 1)
+		echo "<a href=\"/view/threadview.php?topic=". htmlentities($topicID, ENT_QUOTES, 'UTF-8') . "&thread=" . htmlentities($thID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "</a>";
+	
+	echo " $page ";
+	
+	if($page < $maxPage)
+		echo "<a href=\"/view/threadview.php?topic=". htmlentities($topicID, ENT_QUOTES, 'UTF-8') . "&thread=" . htmlentities($thID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+	if($page < $maxPage-1)
+		echo "<a href=\"/view/threadview.php?topic=". htmlentities($topicID, ENT_QUOTES, 'UTF-8') . "&thread=" . htmlentities($thID) . "&page=" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "</a>";
+	
+	if($page < $maxPage-3)
+		echo " ... ";
+	if($page < $maxPage-2)
+		echo "<a href=\"/view/threadview.php?topic=". htmlentities($topicID, ENT_QUOTES, 'UTF-8') . "&thread=" . htmlentities($thID) . "&page=" . htmlentities($maxPage, ENT_QUOTES, 'UTF-8') . "\">" . " $maxPage " . "</a>";
+	
+	if($page < $maxPage)
+		echo "<a href=\"/view/threadview.php?topic=". htmlentities($topicID, ENT_QUOTES, 'UTF-8') . "&thread=" . htmlentities($thID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . " > " . "</a>";
+	if($page < $maxPage-4)
+		echo "<a href=\"/view/threadview.php?topic=". htmlentities($topicID, ENT_QUOTES, 'UTF-8') . "&thread=" . htmlentities($thID) . "&page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
+	
+	echo "</p>";
+	
 	mysqli_close($con);
 ?>
