@@ -15,6 +15,42 @@
 	else
 		$page = 1;
 	
+	echo "<p>";
+
+	if($page > 5)
+		echo "<a href=\"/?page=" . htmlentities($page-5, ENT_QUOTES, 'UTF-8') . "\">" . " << " . "</a>";	
+	if($page > 1)
+		echo "<a href=\"/?page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . " < " . "</a>";
+	
+	if($page > 3)
+		echo "<a href=\"/?page=1\"> 1 </a>";
+	if($page > 4)
+		echo " ... ";
+	
+	if($page > 2)
+		echo "<a href=\"/?page=" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+	if($page > 1)
+		echo "<a href=\"/?page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "</a>";
+	
+	echo " $page ";
+	
+	if($page < $maxPage)
+		echo "<a href=\"/?page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+	if($page < $maxPage-1)
+		echo "<a href=\"/?page=" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "</a>";
+	
+	if($page < $maxPage-3)
+		echo " ... ";
+	if($page < $maxPage-2)
+		echo "<a href=\"/?page=" . htmlentities($maxPage, ENT_QUOTES, 'UTF-8') . "\">" . " $maxPage " . "</a>";
+	
+	if($page < $maxPage)
+		echo "<a href=\"/?page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . " > " . "</a>";
+	if($page < $maxPage-4)
+		echo "<a href=\"/?page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
+	
+	echo "</p>";
+	
 	while(($row = mysqli_fetch_array($result)) && $rowNum < 25)									//Table generation
 	{
 		$rowNum++;
