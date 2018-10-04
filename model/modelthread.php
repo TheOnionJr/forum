@@ -103,6 +103,10 @@
 				
 				echo '<div id="' . $txID . '" style="Display:none">		
 						<textarea id="CBox" form="textarea" type="text" > </textarea>
+						<button type="submit" name="reply">Submit</button>
+						<style> button[name=reply] {
+							display:block;
+						} </style>
 					 </div>';								//  Adds default:hidden textboxes after replies.
 				echo "</td></tr>";
 			}
