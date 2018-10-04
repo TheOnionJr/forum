@@ -75,9 +75,10 @@ if (isset($_POST['login_user'])) {
   */
 
   if(mysqli_num_rows($result) != 0) {                                                                     //If username exists
-    $stmt = $db->prepare("INSERT INTO loginAttempts (loginUserName, loginSuccessful) VALUES(?,?)");        //Inserts into login attempts
+    $ip = $_SERVER['REMOTE_ADDR'];                            // This should work aslong as a reverse proxy isn't used https://stackoverflow.com/questions/4773969/is-it-safe-to-trust-serverremote-addr
+    $stmt = $db->prepare("INSERT INTO loginAttempts (loginUserName, loginSuccessful, loginIP) VALUES(?,?,?)");        //Inserts into login attempts
     //echo $db->error;
-    $stmt->bind_param("ss", $username, $successful);
+    $stmt->bind_param("sss", $username, $successful, $ip);
     $stmt->execute();
     $stmt->close();
   }
