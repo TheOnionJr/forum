@@ -3,10 +3,11 @@
 	$path = $_SERVER['DOCUMENT_ROOT']; 					//Find the document root
 	$path .= "/functions/postFunctions.php"; 			//Set absolute path
 	include($path);
-	*/
+*/	
 	//input validation
 	$threadID = filter_input(INPUT_GET, 'thread', FILTER_VALIDATE_INT);
 	$page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
+	$errors = array();
 	
 	$con=mysqli_connect("localhost","guest","","forum");
 	// Check connection
@@ -115,7 +116,7 @@
 
 				if (isset($_SESSION['username'])) { 						// If user is logged in
 					if ($_SESSION['username'] === $author) {				// If user = to the author
-						echo " | " . "Edit";								//	Replace these with functions
+						echo " | " . "Edit";								//	Replace this with functions
 						echo " | <form method='post' name='deleteform'>
 							<button type='submit' name='deletepost'>Delete</button> </form>";	//Creates the form and button
 						echo "<style type='text/css'>					
@@ -142,14 +143,25 @@
 				
 				echo '<div id="' . $txID . '" style="Display:none">		
 						<textarea id="CBox" form="textarea" type="text" > </textarea>
-						<button type="submit" name="reply">Submit</button>
-						<style> button[name=reply] {
-							display:block;
-						} </style>
+						<form method="post" name="replyform">
+							<button type="submit" name="reply">Submit</button>
+						</form>
+						<style> 
+						form[name=replyform] {
+						    display:block;
+						    margin:0px;
+						    padding:0px;
+						}
+						</style>
 					 </div>';								//  Adds default:hidden textboxes after replies.
 				echo "</td></tr>";
+
+				if (isset($_SESSION['username'])) {
+					if (isset($_POST['reply'])) {
+						header("Refresh: 0");
+					}
+				}
 			}
-		}
 		?>
 			<script>											//  Function for displaying textbox.
 				function textbox(ID) {
@@ -163,6 +175,7 @@
 			</script>
 		<?php
 		echo "</table>";
+	}
 	}	
 	
 	echo "<p>";
@@ -199,7 +212,6 @@
 	if($page < $maxPage-4)
 		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
 	
-	echo "</p>";
-	
+	echo "</p>"; 
 	mysqli_close($con);
 ?>
