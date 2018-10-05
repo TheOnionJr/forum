@@ -1,9 +1,11 @@
 <?php
-/*
-	$path = $_SERVER['DOCUMENT_ROOT']; 					//Find the document root
-	$path .= "/functions/postFunctions.php"; 			//Set absolute path
+	$path = $_SERVER['DOCUMENT_ROOT']; 					//  Find the document root.
+	$path .= "/functions/postFunctions.php"; 			//  Set absolute path for functions.
 	include($path);
-*/	
+	
+	$path2 = $_SERVER['DOCUMENT_ROOT'];					//  Find document root.
+	$path2 .= "/view/errors.php";						//  Setting absolute path for errors.
+	include($path2);
 	//input validation
 	$threadID = filter_input(INPUT_GET, 'thread', FILTER_VALIDATE_INT);
 	$page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
@@ -89,6 +91,7 @@
 			echo "<th>";
 			$i++;		//Integer to keep track of reply-boxes.
 			$txID = $i;	
+			$delID = $i;
 			// Username and Timestamp
 			if (false)	//	admin or mod
 				echo '<font color="gold">';	//	gold for moderators, darkorange for admins
@@ -118,7 +121,7 @@
 					if ($_SESSION['username'] === $author) {				// If user = to the author
 						echo " | " . "Edit";								//	Replace this with functions
 						echo " | <form method='post' name='deleteform'>
-							<button type='submit' name='".$txID."'>Delete</button> </form>";	//Creates the form and button
+							<button type='submit' name='".$delID."'>Delete</button> </form>";	//Creates the form and button
 						echo "<style type='text/css'>					
 								form[name=deleteform] {
 							    display:inline;
@@ -126,7 +129,7 @@
 							    padding:0px;
 								}
 								</style>";														//Added some css to keep the delete button inline
-						if (isset($_POST[$txID])) {
+						if (isset($_POST[$delID])) {
 							$name = $row['thName'];
 
 							//IF YOU GET "Call to a member function bind_param() on boolean" THEN PLEASE UPDATE THE REQUESTS FOR USER (look DROP *)
@@ -136,15 +139,15 @@
 							//echo $con->error;
 							$stmt->execute();
 							$stmt->close();
-							header("Refresh: 0");	//Refreshes the page
+							exit(header("Refresh: 0"));	//Refreshes the page
 						}
 					}
 				}
 				
 				echo '<div id="' . $txID . '" style="Display:none">		
-						<textarea id="CBox" form="textarea" type="text" > </textarea>
-						<form method="post" name="replyform">
-							<button type="submit" name="reply">Submit</button>
+						<form method="post">
+						<textarea id="CBox" name="postContent" type="text" > </textarea>											  
+							<button type="submit" name="' . $txID . '">Submit</button>
 						</form>
 						<style> 
 						form[name=replyform] {
@@ -153,31 +156,44 @@
 						    padding:0px;
 						}
 						</style>
-					 </div>';								//  Adds default:hidden textboxes after replies.
+					 </div>';								//  Adds default:hidden textboxes and button after replies.
 				echo "</td></tr>";
 
 				if (isset($_SESSION['username'])) {
-					if (isset($_POST['reply'])) {
-						//header("Refresh: 0");
+					if (isset($_POST[$txID])) {
+						 $rplyContent = filter_var($_POST['postContent'], FILTER_SANITIZE_STRING);
+						if (!empty($rplyContent)){
+							$postNm = $row["thName"];
+							$rplyTo = $pID;
+							$rplyUsrnm = filter_var($_SESSION['username'], FILTER_SANITIZE_STRING);
+							$rplyThID = $threadID;
+						
+							if (post($postNm, $rplyContent, $rplyTo, $rplyUsrnm, $rplyThID, $con)) {
+								// header("Refresh: 0");
+							} else {
+								//echo "<p> $con->error </p>";
+								array_push($errors, "Could not post reply.");
+								echo "<p>Committa kys</p>";
+							}
+						}
 					}
 				}
+				?>
+					<script>											//  Function for displaying textbox.
+						function textbox(ID) {
+							var x = document.getElementById(ID);
+							if (x.style.display === "none") {
+								x.style.display = "block";
+							} else {
+								x.style.display = "none";
+							}
+						}
+					</script>
+				<?php
+				echo "</table>";
 			}
-		?>
-			<script>											//  Function for displaying textbox.
-				function textbox(ID) {
-					var x = document.getElementById(ID);
-					if (x.style.display === "none") {
-						x.style.display = "block";
-					} else {
-						x.style.display = "none";
-					}
-				}
-			</script>
-		<?php
-		echo "</table>";
+		}	
 	}
-	}	
-	
 	echo "<p>";
 
 	if($page > 5)
