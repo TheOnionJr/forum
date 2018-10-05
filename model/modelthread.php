@@ -88,10 +88,11 @@
 		$i = 0;		// Int def.
 		while(($post_row = mysqli_fetch_array($posts)) && $rowNum < 25) {
 			$rowNum++;
+			$pID = $post_row['pID'];
 			echo "<th>";
 			$i++;		//Integer to keep track of reply-boxes.
 			$txID = $i;	
-			$delID = $i;
+			$delID = "delete" . $i;
 			// Username and Timestamp
 			if (false)	//	admin or mod
 				echo '<font color="gold">';	//	gold for moderators, darkorange for admins
@@ -102,7 +103,7 @@
 
 			//	Post content
 			echo "<tr>";
-			$pID = $post_row['pID'];
+			
 			if ($post_row['pDeleted'])	//	Deleted post
 				echo "<td>" . '<font color="red">This post was deleted by ' . htmlentities($post_row['pDeletedBy'], ENT_QUOTES, 'UTF-8') . ".</font></td>";
 			else						//	Post content
@@ -169,7 +170,7 @@
 							$rplyThID = $threadID;
 						
 							if (post($postNm, $rplyContent, $rplyTo, $rplyUsrnm, $rplyThID, $con)) {
-								// header("Refresh: 0");
+								exit(header("Refresh: 0"));
 							} else {
 								//echo "<p> $con->error </p>";
 								array_push($errors, "Could not post reply.");
