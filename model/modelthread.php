@@ -118,7 +118,7 @@
 					if ($_SESSION['username'] === $author) {				// If user = to the author
 						echo " | " . "Edit";								//	Replace this with functions
 						echo " | <form method='post' name='deleteform'>
-							<button type='submit' name='deletepost'>Delete</button> </form>";	//Creates the form and button
+							<button type='submit' name='".$txID."'>Delete</button> </form>";	//Creates the form and button
 						echo "<style type='text/css'>					
 								form[name=deleteform] {
 							    display:inline;
@@ -126,13 +126,13 @@
 							    padding:0px;
 								}
 								</style>";														//Added some css to keep the delete button inline
-						if (isset($_POST['deletepost'])) {
+						if (isset($_POST[$txID])) {
 							$name = $row['thName'];
 
 							//IF YOU GET "Call to a member function bind_param() on boolean" THEN PLEASE UPDATE THE REQUESTS FOR USER (look DROP *)
 
-							$stmt = $con->prepare("UPDATE posts SET pDeleted = 1, pDeletedBy = ? WHERE pName = ? AND pThreadID = ?");
-							$stmt->bind_param('ssi', $_SESSION['username'], $name, $thID);
+							$stmt = $con->prepare("UPDATE posts SET pDeleted = 1, pDeletedBy = ? WHERE pName = ? AND pThreadID = ? AND pID = ?");
+							$stmt->bind_param('ssii', $_SESSION['username'], $name, $thID, $pID);
 							//echo $con->error;
 							$stmt->execute();
 							$stmt->close();
@@ -158,7 +158,7 @@
 
 				if (isset($_SESSION['username'])) {
 					if (isset($_POST['reply'])) {
-						header("Refresh: 0");
+						//header("Refresh: 0");
 					}
 				}
 			}
