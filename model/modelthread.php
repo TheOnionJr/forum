@@ -107,7 +107,7 @@
 			if ($post_row['pDeleted'])	//	Deleted post
 				echo "<td>" . '<font color="red">This post was deleted by ' . htmlentities($post_row['pDeletedBy'], ENT_QUOTES, 'UTF-8') . ".</font></td>";
 			else						//	Post content
-				echo "<td>" . htmlentities($post_row['pContent'], ENT_QUOTES, 'UTF-8') . "</td>";
+				echo "<td>" . htmlentities($post_row['pContent'], ENT_QUOTES, 'UTF-8') . "</font></td>";
 			echo "</tr>";
 
 			//	Reply, Edit, Delete functions
@@ -174,7 +174,6 @@
 							} else {
 								//echo "<p> $con->error </p>";
 								array_push($errors, "Could not post reply.");
-								echo "<p>Committa kys</p>";
 							}
 						}
 					}
@@ -191,7 +190,6 @@
 						}
 					</script>
 				<?php
-				echo "</table>";
 			}
 		}	
 	}
