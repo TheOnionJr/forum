@@ -174,7 +174,6 @@
 							} else {
 								//echo "<p> $con->error </p>";
 								array_push($errors, "Could not post reply.");
-								echo "<p>Committa kys</p>";
 							}
 						}
 					}
@@ -191,7 +190,7 @@
 						}
 					</script>
 				<?php
-				
+
 			}
 		}	
 	}
