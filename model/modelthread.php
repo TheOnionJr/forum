@@ -91,10 +91,11 @@
 		while(($post_row = mysqli_fetch_array($posts)) && $rowNum < 25) {
 			$rowNum++;
 			$pID = $post_row['pID'];
-			echo "<th>";
 			$i++;		//Integer to keep track of reply-boxes.
 			$txID = $i;	
 			$delID = "delete" . $i;
+			$contID = "content" . $i;
+			echo "<th>";
 
 			// Username and Timestamp
 			if (false)	//	admin or mod
@@ -110,13 +111,14 @@
 			if ($post_row['pDeleted'])	//	Deleted post
 				echo "<td>" . '<font color="red">This post was deleted by ' . htmlentities($post_row['pDeletedBy'], ENT_QUOTES, 'UTF-8') . ".</font></td>";
 			else						//	Post content
-				echo "<td>" . htmlentities($post_row['pContent'], ENT_QUOTES, 'UTF-8') . "</font></td>";
+				echo "<td name='".$contID."'>" . htmlentities($post_row['pContent'], ENT_QUOTES, 'UTF-8') . "</font></td>";
+			
 			echo "</tr>";
 
 			//	Reply, Edit, Delete functions
 			if (!$post_row['pDeleted'])
 			{
-				echo "<tr><td>";
+				echo "<tr><td name='".$contID."'>";
 				echo "<b onclick='textbox($txID)'>Reply</b>";	//	Calls function for post on click.
 				//$author = $_GET['pAuthor'];
 				$author = $post_row['pAuthor'];
@@ -162,6 +164,12 @@
 						</style>
 					 </div>';								//  Adds default:hidden textboxes and button after replies.
 				echo "</td></tr>";
+				if ($post_row['pReplyTo'] != NULL)  {
+					echo "<style type='text/css'>
+							td[name=".$contID."] {
+								text-indent: 40px;
+							} </style>";
+				}
 
 				if (isset($_SESSION['username'])) {
 					if (isset($_POST[$txID])) {
