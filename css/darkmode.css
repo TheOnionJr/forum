@@ -82,3 +82,13 @@ td {
 	padding-left: 0.5%;
 	padding-right: 0.5%;
 }
+
+#CBox { /* CSS for reply-textboxes. */
+    width: 400px;
+    height: 150px;
+    padding: 4px 3px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8
+}
