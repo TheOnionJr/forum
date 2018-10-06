@@ -69,6 +69,8 @@
 		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
 	
 	echo "</p>";
+
+	$txID = 0;
 	
 	while($row = mysqli_fetch_array($result))
 	{

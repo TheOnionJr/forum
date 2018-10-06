@@ -19,9 +19,7 @@ if (isset($_POST['new_thread'])) {
 		$title=filter_var($_POST['title'], FILTER_SANITIZE_STRING);
 
 		if (empty($text)) {                                 //Check if some post content was entered
-															//This might be not needed as a thread doesn't neccesarily need content to begin with
-			$content = false;
-			//array_push($errors, "Some content is required, please fill out the text box");
+			array_push($errors, "Some content is required, please fill out the text box");
 		}
 		if (empty($title)) {                                                 	//Check if a title was entered
 			array_push($errors, "A title is required");
