@@ -18,18 +18,13 @@
 	}
 	//Else statement not necessary, if $result = 0 -> nothing will be printed
 
+	//	Find out if the user should have privileges in this topic
 	$privileges = false; 	//	If the current user should have deletion / locking privileges
-
 	$subforumname = htmlentities(mysqli_fetch_array(mysqli_query($con, "SELECT * FROM subforums JOIN topics ON subforums.sID = topics.tSubForumID WHERE tID = {$topicID}"))['sName'], ENT_QUOTES, 'UTF-8');
-	
 	if (isset($_SESSION['username'])) 			// If user is logged in
-	{
 		if (mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM uuser JOIN urole ON uuser.uID = urole.urID WHERE uuser.uUsername = \"{$_SESSION['username']}\" AND ( urType = \"admin\" OR urType = \"mod{$subforumname}\")"))[0])
-		{
-			//echo mysqli_fetch_array($roletable);
 			$privileges = true;
-		}
-	}
+
 	$rowNum = 0;
 	
 	$maxPage = ceil((mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM threads WHERE thTopicID = $topicID"))['COUNT(*)'])/25);
