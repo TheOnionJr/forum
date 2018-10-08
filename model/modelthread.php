@@ -100,6 +100,7 @@
 			//	Post content
 			echo "<tr>";
 			$pID = $post_row['pID'];
+			
 			if ($post_row['pDeleted'])	//	Deleted post
 				echo "<td>" . '<font color="red">This post was deleted by ' . htmlentities($post_row['pDeletedBy'], ENT_QUOTES, 'UTF-8') . ".</font></td>";
 			else						//	Post content
@@ -158,7 +159,7 @@
 
 				if (isset($_SESSION['username'])) {
 					if (isset($_POST['reply'])) {
-						header("Refresh: 0");
+						header(	"Refresh: 0");
 					}
 				}
 			}
