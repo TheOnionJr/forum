@@ -54,10 +54,13 @@ if (isset($_POST['reg_user'])) {
 	}
 	$stmt->close();																		//Close the connection
 
+	if (preg_match('[\W]', $username)){													//If username contains special character
+		array_push($errors, "You cannot use a special character in your username");
+	}
+
 	if (strlen($password_1) < 8 || strlen($password_1) > 128) {							//If password is less than 8 or greater than 128 char
 		array_push($errors, "Password length must be between 8 and 128 characters");
 	}
-
 																						//For info on preg_match http://php.net/manual/en/function.preg-match.php
 	if (!preg_match('/[A-Z]/', $password_1)){											//If the password does not contain a capital letter
 		array_push($p, "Password does not contain a capital letter");
@@ -74,7 +77,7 @@ if (isset($_POST['reg_user'])) {
 
 	if (count($p) > 1){																	
 		foreach ($p as &$value) {
-			array_push($errors, $value);
+			array_push($errors, $value);												//Push all errors from password policy into errors
 		}
 	}
 
