@@ -166,7 +166,7 @@
 							<form method="post">
 							<textarea id="CBox" name="postContent" type="text" > </textarea>											  
 								<button type="submit" name="' . $txID . '">Submit</button>
-							<input type=\'hidden\' name=\'csrfToken\' value=\'<?php echo($_SESSION[\'csrfTOken\']) ?>\' />
+							<input type="hidden" name="csrfToken" value="<?php echo($_SESSION[\'csrfTOken\']) ?>" />
 							</form>
 							<style> 
 							form[name=replyform] {
@@ -180,11 +180,11 @@
 
 					if (isset($_SESSION['username'])) {
 						if (isset($_POST[$txID])) {
-							 $rplyContent = filter_var($_POST['postContent'], FILTER_SANITIZE_STRING);
+							 $rplyContent = htmlentities($_POST['postContent'], ENT_SUBSTITUTE, 'UTF-8');
 							if (!empty($rplyContent)){
 								$postNm = $row["thName"];
 								$rplyTo = $pID;
-								$rplyUsrnm = filter_var($_SESSION['username'], FILTER_SANITIZE_STRING);
+								$rplyUsrnm = htmlentities($_SESSION['username'], ENT_QUOTES, 'UTF-8');
 								$rplyThID = $threadID;
 							
 								if (post($postNm, $rplyContent, $rplyTo, $rplyUsrnm, $rplyThID, $con)) {
@@ -297,7 +297,7 @@
 								<form method="post">
 								<textarea id="CBox" name="postContent" type="text" > </textarea>											  
 									<button type="submit" name="' . $replytxID . '">Submit</button>
-								<input type=\'hidden\' name=\'csrfToken\' value=\'<?php echo($_SESSION[\'csrfTOken\']) ?>\' />
+								<input type="hidden" name="csrfToken" value="<?php echo($_SESSION[\'csrfTOken\']) ?>" />
 								</form>
 								<style> 
 								form[name=replyform] {
@@ -312,11 +312,11 @@
 
 						if (isset($_SESSION['username'])) {			
 							if (isset($_POST[$replytxID])) {		//This is the only different
-								 $rplyContent = filter_var($_POST['postContent'], FILTER_SANITIZE_STRING);
+								 $rplyContent = htmlentities($_POST['postContent'], ENT_SUBSTITUTE, 'UTF-8');
 								if (!empty($rplyContent)){
 									$postNm = $row["thName"];
 									$rplyTo = $pID;					//Change this to replypID if we want a reply to be to a reply
-									$rplyUsrnm = filter_var($_SESSION['username'], FILTER_SANITIZE_STRING);
+									$rplyUsrnm = htmlentities($_SESSION['username'], ENT_QUOTES, 'UTF-8');
 									$rplyThID = $threadID;
 								
 									if (post($postNm, $rplyContent, $rplyTo, $rplyUsrnm, $rplyThID, $con)) {
