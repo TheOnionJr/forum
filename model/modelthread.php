@@ -134,7 +134,7 @@
 				if (isset($_SESSION['username'])) { 						// If user is logged in
 					if ($_SESSION['username'] === $author || $privileges) {				// If user = to the author
 						echo " | <form method='post' name='deleteform'>
-							<button type='submit' name='".$delID."'>Delete</button> </form>";	//Creates the form and button
+									<button type='submit' name='".$delID."'>Delete</button> </form>";	//Creates the form and button
 						echo "<style type='text/css'>					
 								form[name=deleteform] {
 							    display:inline;
