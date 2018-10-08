@@ -54,7 +54,6 @@ if (isset($_POST['login_user'])) {
 
     if (password_verify($password_1, $string)) {                            //Verifies that the entered password is the hashed password (both parameteres needs to be a string)
       $_SESSION['username'] = $username;                                    //Sets the session username to be the logged in username
-      $_SESSION['success'] = "You are now logged in";
       $successful = "yes";
       //header('location: /index.php');
     } 
@@ -62,20 +61,10 @@ if (isset($_POST['login_user'])) {
       array_push($errors , "Wrong password for $username");            
     }
   }
-  
-  /*
-  CREATE TABLE loginAttempts (
-    loginID INT AUTO_INCREMENT,
-    loginUserName VARCHAR(50) NOT NULL,
-    loginTimestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    loginSuccessful ENUM( 'no', 'yes') NOT NULL,
-    PRIMARY KEY (loginID),
-    FOREIGN KEY (loginUserName) REFERENCES uUser(uUsername)
-    )
-  */
 
   if(mysqli_num_rows($result) != 0) {                                                                     //If username exists
     $ip = $_SERVER['REMOTE_ADDR'];                            // This should work aslong as a reverse proxy isn't used https://stackoverflow.com/questions/4773969/is-it-safe-to-trust-serverremote-addr
+
     $stmt = $db->prepare("INSERT INTO loginAttempts (loginUserName, loginSuccessful, loginIP) VALUES(?,?,?)");        //Inserts into login attempts
     //echo $db->error;
     $stmt->bind_param("sss", $username, $successful, $ip);

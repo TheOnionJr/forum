@@ -27,9 +27,16 @@
 	}
 	//Else statement not necessary, if $result = 0 -> nothing will be printed
 	
+	//	Find out if the user should have privileges in this topic
+	$privileges = false; 	//	If the current user should have deletion / locking privileges
+	$subforumname = htmlentities(mysqli_fetch_array(mysqli_query($con, "SELECT * FROM subforums JOIN topics ON subforums.sID = topics.tSubForumID JOIN threads ON threads.thTopicID = topics.tID WHERE thID = {$threadID}"))['sName'], ENT_QUOTES, 'UTF-8');
+	if (isset($_SESSION['username'])) 			// If user is logged in
+		if (mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM uuser JOIN urole ON uuser.uID = urole.urID WHERE uuser.uUsername = \"{$_SESSION['username']}\" AND ( urType = \"admin\" OR urType = \"mod{$subforumname}\")"))[0])
+			$privileges = true;
+
 	$rowNum = 0;
 	
-	$maxPage = ceil((mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM posts WHERE pThreadID = $threadID"))['COUNT(*)'])/25);
+	$maxPage = ceil((mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM posts WHERE pThreadID = $threadID AND pReplyTo IS NULL"))['COUNT(*)'])/25);
 	
 	if($page > $maxPage || $page < 1)
 		$page = 1;
@@ -125,7 +132,7 @@
 				$author = $post_row['pAuthor'];
 
 				if (isset($_SESSION['username'])) { 						// If user is logged in
-					if ($_SESSION['username'] === $author) {				// If user = to the author
+					if ($_SESSION['username'] === $author || $privileges) {				// If user = to the author
 						echo " | " . "Edit";								//	Replace this with functions
 						echo " | <form method='post' name='deleteform'>
 							<button type='submit' name='".$delID."'>Delete</button> </form>";	//Creates the form and button
@@ -254,7 +261,7 @@
 					$author = $reply_row['pAuthor'];
 
 					if (isset($_SESSION['username'])) { 						// If user is logged in
-						if ($_SESSION['username'] === $author) {				// If user = to the author
+						if ($_SESSION['username'] === $author || $privileges) {				// If user = to the author
 							echo " | " . "Edit";								//	Replace this with functions
 							echo " | <form method='post' name='deleteform'>
 								<button type='submit' name='".$replydelID."'>Delete</button> </form>";	//Creates the form and button
@@ -362,6 +369,20 @@
 						}
 					}
 				}
+
+				?>
+					<script>											//  Function for displaying textbox.
+						function textbox(ID) {
+							var x = document.getElementById(ID);
+							if (x.style.display === "none") {
+								x.style.display = "block";
+							} else {
+								x.style.display = "none";
+							}
+						}
+					</script>
+				<?php
+
 	echo "</td></tr></table>";
 	}
 
