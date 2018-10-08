@@ -57,4 +57,13 @@ function post($postName, $content, $replyTo, $username, $threadID, $con) {
 	//	return false;																				//Returns false if not completed
 	//}
 }
+
+
+function deltopic($con, $thID) {
+	$stmt = $con->prepare("UPDATE threads SET thLock = 1 WHERE thID = ?");
+	$stmt->bind_param('i', $thID);
+	$stmt->execute();
+	$stmt->close();
+	return true;
+}
 ?>

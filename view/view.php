@@ -34,7 +34,7 @@
 	<body>
 		<?php
 		$randomtoken = md5(uniqid(rand(), true));
-		$_SESSION['csrfToken']=$randomtoken
+		$_SESSION['csrfTOken']=$randomtoken
 		?>
 		<div id="header">
 	    	<a href="/index.php"><img src="/img/white_logo_transparent.png" align="left" ></a>

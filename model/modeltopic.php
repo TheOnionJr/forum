@@ -1,4 +1,7 @@
 <?php
+	$path = $_SERVER['DOCUMENT_ROOT']; 					//  Find the document root.
+	$path .= "/functions/postFunctions.php"; 			//  Set absolute path for functions.
+	include($path);
 	//input validation
 	$topicID = filter_input(INPUT_GET, 'tID', FILTER_VALIDATE_INT);
 	$page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
@@ -92,23 +95,40 @@
 			$threads->data_seek(($page-1)*25);
 		else
 			$page = 1;
-		
+
+		$topicdelID = 0;
 		while(($thread_row =mysqli_fetch_array($threads)) && $rowNum < 25) {
-			$rowNum++;
-			$thID = $thread_row['thID'];
-			
-			$numPosts = mysqli_query($con,"SELECT COUNT(*) FROM posts WHERE posts.pThreadID = $thID");
-			$posts = mysqli_fetch_array($numPosts);	
-			
-			echo "<tr>";
-			echo "<td><a href=\"/view/threadview.php?topic=". htmlentities($topicID, ENT_QUOTES, 'UTF-8') . "&thread=" . htmlentities($thID) . "\">" . htmlentities($thread_row['thName'], ENT_QUOTES, 'UTF-8') . "</td>"; //Links to correct threadview. God this line is aids...
-			echo "<td>" . "Posts: " . htmlentities($posts['COUNT(*)'], ENT_QUOTES, 'UTF-8') . "</td>";
-			$lastPost = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = $thID ORDER BY pTimestamp DESC");
-			$post_row =mysqli_fetch_array($lastPost);
-			echo "<td>" . "Created:  " . htmlentities($thread_row['thTimestamp'], ENT_QUOTES, 'UTF-8') . "&emsp;By: " . htmlentities($thread_row['thAuthor'], ENT_QUOTES, 'UTF-8') . "<br>" . "Last post:" . htmlentities($post_row['pTimestamp'], ENT_QUOTES, 'UTF-8') .  "&emsp;By: " . htmlentities($post_row['pAuthor'], ENT_QUOTES, 'UTF-8') . "</br>" . "</td>";
-			if ($privileges)
-				echo "<td>Lock\nDelete</td>";
-			echo "</tr>";
+			if($thread_row['thLock'] == NULL) {
+
+
+				$topicdelID++;
+				$rowNum++;
+				$thID = $thread_row['thID'];
+				
+				$numPosts = mysqli_query($con,"SELECT COUNT(*) FROM posts WHERE posts.pThreadID = $thID");
+				$posts = mysqli_fetch_array($numPosts);	
+				
+				echo "<tr>";
+				echo "<td><a href=\"/view/threadview.php?topic=". htmlentities($topicID, ENT_QUOTES, 'UTF-8') . "&thread=" . htmlentities($thID) . "\">" . htmlentities($thread_row['thName'], ENT_QUOTES, 'UTF-8') . "</td>"; //Links to correct threadview. God this line is aids...
+				echo "<td>" . "Posts: " . htmlentities($posts['COUNT(*)'], ENT_QUOTES, 'UTF-8') . "</td>";
+				$lastPost = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = $thID ORDER BY pTimestamp DESC");
+				$post_row =mysqli_fetch_array($lastPost);
+				echo "<td>" . "Created:  " . htmlentities($thread_row['thTimestamp'], ENT_QUOTES, 'UTF-8') . "&emsp;By: " . htmlentities($thread_row['thAuthor'], ENT_QUOTES, 'UTF-8') . "<br>" . "Last post:" . htmlentities($post_row['pTimestamp'], ENT_QUOTES, 'UTF-8') .  "&emsp;By: " . htmlentities($post_row['pAuthor'], ENT_QUOTES, 'UTF-8') . "</br>" . "</td>";
+				if ($privileges)
+					$csrf = $_SESSION['csrfTOken'];
+					echo "<td>Lock\n";
+					echo "<form method='post' name='deleteform'>
+							<button type='submit' name='".$topicdelID."'>Delete</button> 
+							<input type='hidden' name='csrfToken' value='" . $csrf . "' />
+						</form>";
+
+					if (isset($_POST[$topicdelID])) {
+						if(deltopic($con, $thID)) {
+							echo '<meta http-equiv="refresh" content="0">';
+						}
+					}
+				echo "</tr>";
+			}
 		}
 		echo "</table>";
 	}	
