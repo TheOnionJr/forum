@@ -46,15 +46,15 @@ function canPost($username, $thread, $topic, $subforum, $replyTo) {
 }
 
 function post($postName, $content, $replyTo, $username, $threadID, $con) {
-	if (canPost($username, $thread, $topic, $subforum, $replyTo, $con)) {							//Checks that the post can be posted
-		$stmt= $con->prepare("INSERT INTO posts (pName, pContent, replyTo, pAuthor, pThreadID) VALUES(?, ?, ?, ?, ?)");
-		$stmt->bind_param('ssisi', $pName, $text, $replyTo, $username, $thread);					//Binds params
+	//if (canPost($username, $content, $topic, $subforum, $replyTo, $con)) {							//Checks that the post can be posted
+		$stmt= $con->prepare("INSERT INTO posts (pName, pContent, pReplyTo, pAuthor, pThreadID) VALUES(?, ?, ?, ?, ?)");
+		$stmt->bind_param('ssisi', $postName, $content, $replyTo, $username, $threadID);					//Binds params
 		$stmt->execute();																			//Executes query
 		$stmt->close();																				//Closes statement
 		return true;																				//Returns true if completed correctly
-	}
-	else {
-		return false;																				//Returns false if not completed
-	}
+	//}
+	//else {
+	//	return false;																				//Returns false if not completed
+	//}
 }
 ?>

@@ -17,8 +17,14 @@
 		echo "This topic does not exist";
 	}
 	//Else statement not necessary, if $result = 0 -> nothing will be printed
-	
-	
+
+	//	Find out if the user should have privileges in this topic
+	$privileges = false; 	//	If the current user should have deletion / locking privileges
+	$subforumname = htmlentities(mysqli_fetch_array(mysqli_query($con, "SELECT * FROM subforums JOIN topics ON subforums.sID = topics.tSubForumID WHERE tID = {$topicID}"))['sName'], ENT_QUOTES, 'UTF-8');
+	if (isset($_SESSION['username'])) 			// If user is logged in
+		if (mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM uuser JOIN urole ON uuser.uID = urole.urID WHERE uuser.uUsername = \"{$_SESSION['username']}\" AND ( urType = \"admin\" OR urType = \"mod{$subforumname}\")"))[0])
+			$privileges = true;
+
 	$rowNum = 0;
 	
 	$maxPage = ceil((mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM threads WHERE thTopicID = $topicID"))['COUNT(*)'])/25);
@@ -74,6 +80,8 @@
 		echo "<th>" . htmlentities($row['tName'], ENT_QUOTES, 'UTF-8'). "</th>";
 		echo "<th>Threads: " . htmlentities($threads['COUNT(*)'], ENT_QUOTES, 'UTF-8') . "</th>";
 		echo "<th>Posts: " . htmlentities($posts['COUNT(*)'], ENT_QUOTES, 'UTF-8') . "</th>";
+		if ($privileges)
+			echo "<th></th>";
 		echo "</tr>";
 		$threads = mysqli_query($con,"SELECT * FROM threads WHERE thTopicID = $tID ORDER BY thTimestamp DESC");
 		
@@ -95,6 +103,8 @@
 			$lastPost = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = $thID ORDER BY pTimestamp DESC");
 			$post_row =mysqli_fetch_array($lastPost);
 			echo "<td>" . "Created:  " . htmlentities($thread_row['thTimestamp'], ENT_QUOTES, 'UTF-8') . "&emsp;By: " . htmlentities($thread_row['thAuthor'], ENT_QUOTES, 'UTF-8') . "<br>" . "Last post:" . htmlentities($post_row['pTimestamp'], ENT_QUOTES, 'UTF-8') .  "&emsp;By: " . htmlentities($post_row['pAuthor'], ENT_QUOTES, 'UTF-8') . "</br>" . "</td>";
+			if ($privileges)
+				echo "<td>Lock\nDelete</td>";
 			echo "</tr>";
 		}
 		echo "</table>";
