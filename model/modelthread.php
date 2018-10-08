@@ -133,7 +133,6 @@
 
 				if (isset($_SESSION['username'])) { 						// If user is logged in
 					if ($_SESSION['username'] === $author || $privileges) {				// If user = to the author
-						echo " | " . "Edit";								//	Replace this with functions
 						echo " | <form method='post' name='deleteform'>
 							<button type='submit' name='".$delID."'>Delete</button><input type='hidden' name='csrfToken' value='<?php echo($_SESSION['csrfTOken']) ?>' /> </form>";	//Creates the form and button
 						echo "<style type='text/css'>					
@@ -221,14 +220,14 @@
 
 			$replies = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = $threadID AND pReplyTo = $pID ORDER BY pTimestamp");
 											//Selects all replies for a post
-			$indent = 0;					//resets indent
+			$indent = 40;								//indent px
 			while($reply_row = mysqli_fetch_array($replies)) {
 				$j++;
 				$replytxID = 1000 + $j;						//This is not safe, and should try to find another way of using it
 				$replydelID = "replydelete" . $j;
 				$replycontID = "replycontent" . $j;
 				$replypID = $reply_row['pID'];				//gets pID for the reply post
-				$indent = 40;								//indent px
+				
 
 				//DELETED POSTS ARE CURRENTLY NOT INDENTED 
 
@@ -263,7 +262,6 @@
 
 					if (isset($_SESSION['username'])) { 						// If user is logged in
 						if ($_SESSION['username'] === $author || $privileges) {				// If user = to the author
-							echo " | " . "Edit";								//	Replace this with functions
 							echo " | <form method='post' name='deleteform'>
 								<button type='submit' name='".$replydelID."'>Delete</button> 
 								<input type='hidden' name='csrfToken' value='<?php echo($_SESSION['csrfTOken']) ?>' /></form>";	//Creates the form and button
@@ -329,6 +327,7 @@
 								text-indent: ".$indent."px;
 							} 
 							</style>";						//Displays indent for replies
+					//$indent += 40;
 				}
 			}
 		}	
