@@ -114,9 +114,11 @@
 				$lastPost = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = $thID ORDER BY pTimestamp DESC");
 				$post_row =mysqli_fetch_array($lastPost);
 				echo "<td>" . "Created:  " . htmlentities($thread_row['thTimestamp'], ENT_QUOTES, 'UTF-8') . "&emsp;By: " . htmlentities($thread_row['thAuthor'], ENT_QUOTES, 'UTF-8') . "<br>" . "Last post:" . htmlentities($post_row['pTimestamp'], ENT_QUOTES, 'UTF-8') .  "&emsp;By: " . htmlentities($post_row['pAuthor'], ENT_QUOTES, 'UTF-8') . "</br>" . "</td>";
-				if ($privileges)
+				
+				if ($privileges) { 
+
 					$csrf = $_SESSION['csrfTOken'];
-					echo "<td>Lock\n";
+					echo "<td>";
 					echo "<form method='post' name='deleteform'>
 							<button type='submit' name='".$topicdelID."'>Delete</button> 
 							<input type='hidden' name='csrfToken' value='" . $csrf . "' />
@@ -127,6 +129,7 @@
 							echo '<meta http-equiv="refresh" content="0">';
 						}
 					}
+				}
 				echo "</tr>";
 			}
 		}
