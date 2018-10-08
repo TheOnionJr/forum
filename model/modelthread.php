@@ -135,7 +135,7 @@
 					if ($_SESSION['username'] === $author || $privileges) {				// If user = to the author
 						echo " | " . "Edit";								//	Replace this with functions
 						echo " | <form method='post' name='deleteform'>
-							<button type='submit' name='".$delID."'>Delete</button> </form>";	//Creates the form and button
+							<button type='submit' name='".$delID."'>Delete</button><input type='hidden' name='csrfToken' value='<?php echo($_SESSION['csrfTOken']) ?>' /> </form>";	//Creates the form and button
 						echo "<style type='text/css'>					
 								form[name=deleteform] {
 							    display:inline;
@@ -162,6 +162,7 @@
 						<form method="post">
 						<textarea id="CBox" name="postContent" type="text" > </textarea>											  
 							<button type="submit" name="' . $txID . '">Submit</button>
+						<input type=\'hidden\' name=\'csrfToken\' value=\'<?php echo($_SESSION[\'csrfTOken\']) ?>\' />
 						</form>
 						<style> 
 						form[name=replyform] {
@@ -264,7 +265,8 @@
 						if ($_SESSION['username'] === $author || $privileges) {				// If user = to the author
 							echo " | " . "Edit";								//	Replace this with functions
 							echo " | <form method='post' name='deleteform'>
-								<button type='submit' name='".$replydelID."'>Delete</button> </form>";	//Creates the form and button
+								<button type='submit' name='".$replydelID."'>Delete</button> 
+								<input type='hidden' name='csrfToken' value='<?php echo($_SESSION['csrfTOken']) ?>' /></form>";	//Creates the form and button
 							echo "<style type='text/css'>					
 									form[name=deleteform] {
 								    display:inline;
@@ -291,6 +293,7 @@
 							<form method="post">
 							<textarea id="CBox" name="postContent" type="text" > </textarea>											  
 								<button type="submit" name="' . $replytxID . '">Submit</button>
+							<input type=\'hidden\' name=\'csrfToken\' value=\'<?php echo($_SESSION[\'csrfTOken\']) ?>\' />
 							</form>
 							<style> 
 							form[name=replyform] {
@@ -339,6 +342,7 @@
 						<form method="post">
 						<textarea id="CBox" name="postContent" type="text" > </textarea>											  
 							<button type="submit" name="' . ($txID+1) . '">Submit</button>
+						<input type=\'hidden\' name=\'csrfToken\' value=\'<?php echo($_SESSION[\'csrfTOken\']) ?>\' />
 						</form>
 						<style> 
 						form[name=replyform] {

@@ -14,7 +14,10 @@ $tID = filter_input(INPUT_GET, 'tID', FILTER_VALIDATE_INT);
 $sID = filter_input(INPUT_GET, 'sID', FILTER_VALIDATE_INT);
 ?>
 
-<?php echo "<form method=\"post\" action=\"/view/postview.php?tID=" . $tID . "&sID=" . $sID . "\">" ?>
+<?php 
+echo "<form method=\"post\" action=\"/view/postview.php?tID=" . $tID . "&sID=" . $sID . "\">" 
+echo "<input type='hidden' name='csrfToken' value='<?php echo($_SESSION['csrfTOken']) ?>' /> </form>"
+?>
 <?php //echo "<a href=\"/view/postview.php?tID=" . $tID . "&sID=" . $sID . "\" id=\"newThread\">New Thread</a>" ?>
 
 <?php //echo <form method=\"post\" action=\"/model/modelNewThread.php?tID=" . $topic . "&sID=" . $subforum . ">"
@@ -62,4 +65,5 @@ $sID = filter_input(INPUT_GET, 'sID', FILTER_VALIDATE_INT);
     $errorpath .= "/view/errors.php";     //Set absolute path
     include($errorpath);
     ?>
+    <input type='hidden' name='csrfToken' value='<?php echo($_SESSION['csrfTOken']) ?>' />
 </form>
