@@ -88,6 +88,8 @@
 			$thID = htmlentities($row['thID'], ENT_QUOTES, 'UTF-8');
 			echo "<tr><th>" . htmlentities($row['thName'], ENT_QUOTES, 'UTF-8') . "</th></tr>";
 
+			fetchPosts(NULL);
+
 			//	Load and populate posts except replies
 			$posts = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = $thID AND pReplyTo IS NULL ORDER BY pTimestamp");
 			
@@ -98,299 +100,6 @@
 			
 			$i = 0;		// Int def.
 			$j = 0;
-			while(($post_row = mysqli_fetch_array($posts)) && $rowNum < 25) {
-				$rowNum++;
-				$pID = $post_row['pID'];
-				$i++;		//Integer to keep track of reply-boxes.
-				$txID = $i;	
-				$delID = "delete" . $i;
-				$contID = "content" . $i;
-				echo "<th>";
-
-				// Username and Timestamp
-				if (false)	//	admin or mod
-					echo '<font color="gold">';	//	gold for moderators, darkorange for admins
-				echo htmlentities($post_row['pAuthor'], ENT_QUOTES, 'UTF-8');
-				if (false)	//	admin or mod
-					echo '</font>';
-				echo " | " . htmlentities($post_row['pTimestamp'], ENT_QUOTES, 'UTF-8') . "</th>";
-
-				//	Post content
-				echo "<tr>";
-				
-				if ($post_row['pDeleted'])	//	Deleted post
-					echo "<td>" . '<font color="red">This post was deleted by ' . htmlentities($post_row['pDeletedBy'], ENT_QUOTES, 'UTF-8') . ".</font></td>";
-				else						//	Post content
-					echo "<td name='".$contID."'>" . htmlentities($post_row['pContent'], ENT_QUOTES, 'UTF-8') . "</font></td>";
-				
-				echo "</tr>";
-
-				//	Reply, Edit, Delete functions
-				if (!$post_row['pDeleted'])
-				{
-					echo "<tr><td name='".$contID."'>";
-					echo "<b onclick='textbox($txID)'>Reply</b>";	//	Calls function for post on click.
-					//$author = $_GET['pAuthor'];
-					$author = $post_row['pAuthor'];
-
-					if (isset($_SESSION['username'])) { 						// If user is logged in
-						if ($_SESSION['username'] === $author || $privileges) {				// If user = to the author
-							$csrf = $_SESSION['csrfTOken'];
-							echo " | <form method='post' name='deleteform'>
-								<button type='submit' name='" . $delID . "'>Delete</button>";
-							echo "<input type='hidden' name='csrfToken' value='" . $csrf . "' /> 
-								</form>";	//Creates the form and button
-							echo "<style type='text/css'>					
-									form[name=deleteform] {
-								    display:inline;
-								    margin:0px;
-								    padding:0px;
-									}
-									</style>";														//Added some css to keep the delete button inline
-							if (isset($_POST[$delID])) {
-								$name = $row['thName'];
-
-								//IF YOU GET "Call to a member function bind_param() on boolean" THEN PLEASE UPDATE THE REQUESTS FOR USER (look DROP *)
-
-								$stmt = $con->prepare("UPDATE posts SET pDeleted = 1, pDeletedBy = ? WHERE pName = ? AND pThreadID = ? AND pID = ?");
-								$stmt->bind_param('ssii', $_SESSION['username'], $name, $thID, $pID);
-								//echo $con->error;
-								$stmt->execute();
-								$stmt->close();
-								echo '<meta http-equiv="refresh" content="0">';	//Refreshes the page
-							}
-						}
-					}
-					
-					echo '<div id="' . $txID . '" style="Display:none">		
-							<form method="post">
-							<textarea id="CBox" name="postContent" type="text" > </textarea>											  
-								<button type="submit" name="' . $txID . '">Submit</button>
-							<input type="hidden" name="csrfToken" value="<?php echo($_SESSION[\'csrfTOken\']) ?>" />
-							</form>
-							<style> 
-							form[name=replyform] {
-							    display:block;
-							    margin:0px;
-							    padding:0px;
-							}
-							</style>
-						 </div>';								//  Adds default:hidden textboxes and button after replies.
-					echo "</td></tr>";
-
-					if (isset($_SESSION['username'])) {
-						if (isset($_POST[$txID])) {
-							 $rplyContent = htmlentities($_POST['postContent'], ENT_SUBSTITUTE, 'UTF-8');
-							if (!empty($rplyContent)){
-								$postNm = $row["thName"];
-								$rplyTo = $pID;
-								$rplyUsrnm = htmlentities($_SESSION['username'], ENT_QUOTES, 'UTF-8');
-								$rplyThID = $threadID;
-							
-								if (post($postNm, $rplyContent, $rplyTo, $rplyUsrnm, $rplyThID, $con)) {
-									echo '<meta http-equiv="refresh" content="0">';
-								} else {
-									//echo "<p> $con->error </p>";
-									array_push($errors, "Could not post reply.");
-								}
-							}
-						}
-					}
-					?>
-						<script>											//  Function for displaying textbox.
-							function textbox(ID) {
-								var x = document.getElementById(ID);
-								if (x.style.display === "none") {
-									x.style.display = "block";
-								} else {
-									x.style.display = "none";
-								}
-							}
-						</script>
-					<?php
-
-				}
-
-				//Code below is almost a duplicate of code above, should probably move some stuff into functions
-
-				//Tried solving the duplicate code differently by replacing the first select statement for post on line 83 so that it displays the replies after the post
-
-				//If we want to still try on doing that we can use the select statements below as a base for figuring it out
-				//SELECT * FROM posts WHERE posts.pThreadID = 55 AND posts.pReplyTo = (SELECT A.pReplyTo FROM posts AS A, posts AS B WHERE A.pThreadID = 55 AND A.pReplyTo = B.pID LIMIT 1)					This is not gonna work but might be useful info... 
-
-				//Closest i got 
-				//SELECT * FROM posts WHERE pThreadID = 55 ORDER BY (pID = ANY (SELECT A.pReplyTo FROM posts AS A, posts AS B WHERE A.pThreadID = 55 AND A.pReplyTo = B.pID)) ASC, pTimestamp 				This might be on to something..
-				//SELECT * FROM posts WHERE pThreadID = 55 ORDER BY CASE WHEN pID = ANY (SELECT A.pReplyTo FROM posts AS A, posts AS B WHERE A.pThreadID = 55 AND A.pReplyTo = B.pID) THEN pID ELSE pTimestamp END 			Returns the same as above, just done differently
-
-
-				$replies = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = $threadID AND pReplyTo = $pID ORDER BY pTimestamp");
-												//Selects all replies for a post
-				$indent = 40;								//indent px
-				while($reply_row = mysqli_fetch_array($replies)) {
-					$j++;
-					$replytxID = 1000 + $j;						//This is not safe, and should try to find another way of using it
-					$replydelID = "replydelete" . $j;
-					$replycontID = "replycontent" . $j;
-					$replypID = $reply_row['pID'];				//gets pID for the reply post
-					
-
-					//DELETED POSTS ARE CURRENTLY NOT INDENTED 
-
-					echo "<th>";
-
-					// Username and Timestamp
-					if (false)	//	admin or mod
-						echo '<font color="gold">';	//	gold for moderators, darkorange for admins
-					echo htmlentities($reply_row['pAuthor'], ENT_QUOTES, 'UTF-8');
-					if (false)	//	admin or mod
-						echo '</font>';
-					echo " | " . htmlentities($reply_row['pTimestamp'], ENT_QUOTES, 'UTF-8') . "</th>";
-
-					//	Post content
-					echo "<tr>";
-					
-					if ($reply_row['pDeleted'])	//	Deleted post
-						echo "<td>" . '<font color="red">This post was deleted by ' . htmlentities($reply_row['pDeletedBy'], ENT_QUOTES, 'UTF-8') . ".</font></td>";
-					else						//	Post content
-						echo "<td name='".$replycontID."'>" . htmlentities($reply_row['pContent'], ENT_QUOTES, 'UTF-8') . "</font></td>";
-					
-					echo "</tr>";
-
-					//	Reply, Edit, Delete functions
-					if (!$reply_row['pDeleted'])
-					{
-
-						echo "<tr><td name='".$replycontID."'>";
-						echo "<b onclick='textbox($replytxID)'>Reply</b>";	//	Calls function for post on click.
-						//$author = $_GET['pAuthor'];
-						$author = $reply_row['pAuthor'];
-
-						if (isset($_SESSION['username'])) { 						// If user is logged in
-							if ($_SESSION['username'] === $author || $privileges) {				// If user = to the author
-								$csrf = $_SESSION['csrfTOken'];
-								echo " | <form method='post' name='deleteform'>
-									<button type='submit' name='".$replydelID."'>Delete</button> 
-									<input type='hidden' name='csrfToken' value='" . $csrf . "' /></form>";	//Creates the form and button
-								echo "<style type='text/css'>					
-										form[name=deleteform] {
-									    display:inline;
-									    margin:0px;
-									    padding:0px;
-										}
-										</style>";														//Added some css to keep the delete button inline
-								if (isset($_POST[$replydelID])) {
-									$name = $row['thName'];
-
-									//IF YOU GET "Call to a member function bind_param() on boolean" THEN PLEASE UPDATE THE REQUESTS FOR USER (look DROP *)
-
-									$stmt = $con->prepare("UPDATE posts SET pDeleted = 1, pDeletedBy = ? WHERE pName = ? AND pThreadID = ? AND pID = ?");
-									$stmt->bind_param('ssii', $_SESSION['username'], $name, $thID, $replypID);
-									//echo $con->error;
-									$stmt->execute();
-									$stmt->close();
-									echo '<meta http-equiv="refresh" content="0">';	//Refreshes the page
-								}
-							}
-						}
-						
-						echo '<div id="' . $replytxID . '" style="Display:none">		
-								<form method="post">
-								<textarea id="CBox" name="postContent" type="text" > </textarea>											  
-									<button type="submit" name="' . $replytxID . '">Submit</button>
-								<input type="hidden" name="csrfToken" value="<?php echo($_SESSION[\'csrfTOken\']) ?>" />
-								</form>
-								<style> 
-								form[name=replyform] {
-								    display:block;
-								    margin:0px;
-								    padding:0px;
-								}
-								</style>
-							 </div>';								//  Adds default:hidden textboxes and button after replies.
-
-						echo "</td></tr>";
-
-						if (isset($_SESSION['username'])) {			
-							if (isset($_POST[$replytxID])) {		//This is the only different
-								 $rplyContent = htmlentities($_POST['postContent'], ENT_SUBSTITUTE, 'UTF-8');
-								if (!empty($rplyContent)){
-									$postNm = $row["thName"];
-									$rplyTo = $pID;					//Change this to replypID if we want a reply to be to a reply
-									$rplyUsrnm = htmlentities($_SESSION['username'], ENT_QUOTES, 'UTF-8');
-									$rplyThID = $threadID;
-								
-									if (post($postNm, $rplyContent, $rplyTo, $rplyUsrnm, $rplyThID, $con)) {
-										echo '<meta http-equiv="refresh" content="0">';
-									} else {
-										//echo "<p> $con->error </p>";
-										array_push($errors, "Could not post reply.");
-									}
-								}
-							}
-						}					
-						echo "<style type='text/css'>			
-								td[name=".$replycontID."] {
-									text-indent: ".$indent."px;
-								} 
-								</style>";						//Displays indent for replies
-						//$indent += 40;
-					}
-				}
-			}	
-		
-			echo "</table>";
-
-			echo "<table><tr><td>";
-			echo "<b onclick='textbox(" . ($txID+1) . ")'>New Post</b>";	//	Calls function for post
-
-			echo '<div id="' . ($txID+1) . '" style="Display:none">		
-							<form method="post">
-							<textarea id="CBox" name="postContent" type="text" > </textarea>											  
-								<button type="submit" name="' . ($txID+1) . '">Submit</button>
-							<input type=\'hidden\' name=\'csrfToken\' value=\'<?php echo($_SESSION[\'csrfTOken\']) ?>\' />
-							</form>
-							<style> 
-							form[name=replyform] {
-							    display:block;
-							    margin:0px;
-							    padding:0px;
-							}
-							</style>
-						 </div>';								//  Adds default:hidden textboxes and button after replies.
-
-					if (isset($_SESSION['username'])) {
-						if (isset($_POST[$txID+1])) {
-							 $content = filter_var($_POST['postContent'], FILTER_SANITIZE_STRING);
-							if (!empty($content)){
-								$postNm = $row["thName"];
-								$rplyTo = null;
-								$usrnm = filter_var($_SESSION['username'], FILTER_SANITIZE_STRING);
-								$thID = $threadID;
-							
-								if (post($postNm, $content, $rplyTo, $usrnm, $thID, $con)) {
-									echo '<meta http-equiv="refresh" content="0">';
-								} else {
-									//echo "<p> $con->error </p>";
-									array_push($errors, "Could not post.");
-									echo "<p>Committa kys</p>";
-								}
-							}
-						}
-					}
-
-					?>
-						<script>											//  Function for displaying textbox.
-							function textbox(ID) {
-								var x = document.getElementById(ID);
-								if (x.style.display === "none") {
-									x.style.display = "block";
-								} else {
-									x.style.display = "none";
-								}
-							}
-						</script>
-					<?php
-
 			echo "</td></tr></table>";
 		} else {
 			echo "This thread has been deleted by an admin.";
@@ -434,4 +143,136 @@
 	
 	echo "</p>"; 
 	mysqli_close($con);
+
+	function fetchPosts($replyTo, $indent = 0)
+	{
+		global $con;
+		global $thID;
+		global $rowNum;
+		global $i;
+		global $privileges;
+
+        if ($replyTo)
+            $posts = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = {$thID} AND pReplyTo = {$replyTo} ORDER BY pTimestamp");
+        else
+            $posts = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = {$thID} AND pReplyTo IS NULL ORDER BY pTimestamp");
+
+		while(($post_row = mysqli_fetch_array($posts)) && $rowNum < 25) 
+		{
+			$rowNum++;
+			$pID = $post_row['pID'];
+			$i++;		//Integer to keep track of reply-boxes.
+			$txID = $i;	
+			$delID = "delete" . $i;
+			$contID = "content" . $i;
+            $indpx = $indent * 40 . "px";
+            echo "<th><p style=\"text-indent: {$indpx}\">";
+
+
+			// Username and Timestamp
+			if (false)	//	admin or mod
+				echo '<font color="gold">';	//	gold for moderators, darkorange for admins
+			echo htmlentities($post_row['pAuthor'], ENT_QUOTES, 'UTF-8');
+			if (false)	//	admin or mod
+				echo '</font>';
+			echo " | " . htmlentities($post_row['pTimestamp'], ENT_QUOTES, 'UTF-8') . "</p></th>";
+
+			//	Post content
+			echo "<tr>";
+			
+			if ($post_row['pDeleted'])	//	Deleted post
+				echo "<td><p style=\"text-indent: {$indpx}\">" . '<font color="red">This post was deleted by ' . htmlentities($post_row['pDeletedBy'], ENT_QUOTES, 'UTF-8') . ".</font></p></td>";
+			else						//	Post content
+				echo "<td name='".$contID."'><p style=\"text-indent: {$indpx}\">" . htmlentities($post_row['pContent'], ENT_QUOTES, 'UTF-8') . "</font></p></td>";
+			
+			echo "</tr>";
+
+			//	Reply, Edit, Delete functions
+			if (!$post_row['pDeleted'])
+			{
+				echo "<tr><p style=\"text-indent: {$indpx}\"><td name='".$contID."'>";
+				echo "<b onclick='textbox($txID)'>Reply</b>";	//	Calls function for post on click.
+				//$author = $_GET['pAuthor'];
+				$author = $post_row['pAuthor'];
+
+				if (isset($_SESSION['username'])) { 						// If user is logged in
+					if ($_SESSION['username'] === $author || $privileges) {				// If user = to the author
+						$csrf = $_SESSION['csrfTOken'];
+						echo " | <form method='post' name='deleteform'>
+							<button type='submit' name='" . $delID . "'>Delete</button>";
+						echo "<input type='hidden' name='csrfToken' value='" . $csrf . "' /> 
+							</form>";	//Creates the form and button
+						echo "<style type='text/css'>					
+								form[name=deleteform] {
+							    display:inline;
+							    margin:0px;
+							    padding:0px;
+								}
+								</style>";														//Added some css to keep the delete button inline
+						if (isset($_POST[$delID])) {
+							$name = $post_row['pName'];
+
+							//IF YOU GET "Call to a member function bind_param() on boolean" THEN PLEASE UPDATE THE REQUESTS FOR USER (look DROP *)
+
+							$stmt = $con->prepare("UPDATE posts SET pDeleted = 1, pDeletedBy = ? WHERE pName = ? AND pThreadID = ? AND pID = ?");
+							$stmt->bind_param('ssii', $_SESSION['username'], $name, $thID, $pID);
+							//echo $con->error;
+							$stmt->execute();
+							$stmt->close();
+							echo '<meta http-equiv="refresh" content="0">';	//Refreshes the page
+						}
+					}
+				}
+				
+				echo '<div id="' . $txID . '" style="Display:none">		
+						<form method="post">
+						<textarea id="CBox" name="postContent" type="text" > </textarea>											  
+							<button type="submit" name="' . $txID . '">Submit</button>
+						<input type="hidden" name="csrfToken" value="<?php echo($_SESSION[\'csrfTOken\']) ?>" />
+						</form>
+						<style> 
+						form[name=replyform] {
+						    display:block;
+						    margin:0px;
+						    padding:0px;
+						}
+						</style>
+					 </div>';								//  Adds default:hidden textboxes and button after replies.
+				echo "</td></p></tr>";
+
+				if (isset($_SESSION['username'])) {
+					if (isset($_POST[$txID])) {
+						 $rplyContent = htmlentities($_POST['postContent'], ENT_SUBSTITUTE, 'UTF-8');
+						if (!empty($rplyContent)){
+							$postNm = $post_row["pName"];
+							echo '<pre>'; print_r($post_row); echo '</pre>';
+							$rplyTo = $pID;
+							$rplyUsrnm = htmlentities($_SESSION['username'], ENT_QUOTES, 'UTF-8');
+							$rplyThID = $thID;
+						
+							if (post($postNm, $rplyContent, $rplyTo, $rplyUsrnm, $rplyThID, $con)) {
+								echo '<meta http-equiv="refresh" content="0">';
+							} else {
+								//echo "<p> $con->error </p>";
+								array_push($errors, "Could not post reply.");
+							}
+						}
+					}
+				}
+				?>
+					<script>				//  Function for displaying textbox.
+						function textbox(ID) {
+							var x = document.getElementById(ID);
+							if (x.style.display === "none") {
+								x.style.display = "block";
+							} else {
+								x.style.display = "none";
+							}
+						}
+					</script>
+				<?php
+			}
+			fetchPosts($pID, $indent + 1);
+		}
+	}
 ?>
