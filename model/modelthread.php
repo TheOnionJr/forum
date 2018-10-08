@@ -133,7 +133,6 @@
 
 				if (isset($_SESSION['username'])) { 						// If user is logged in
 					if ($_SESSION['username'] === $author || $privileges) {				// If user = to the author
-						echo " | " . "Edit";								//	Replace this with functions
 						echo " | <form method='post' name='deleteform'>
 							<button type='submit' name='".$delID."'>Delete</button> </form>";	//Creates the form and button
 						echo "<style type='text/css'>					
@@ -262,7 +261,6 @@
 
 					if (isset($_SESSION['username'])) { 						// If user is logged in
 						if ($_SESSION['username'] === $author || $privileges) {				// If user = to the author
-							echo " | " . "Edit";								//	Replace this with functions
 							echo " | <form method='post' name='deleteform'>
 								<button type='submit' name='".$replydelID."'>Delete</button> </form>";	//Creates the form and button
 							echo "<style type='text/css'>					
