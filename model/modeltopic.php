@@ -29,6 +29,9 @@
 	
 	$maxPage = ceil((mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM threads WHERE thTopicID = $topicID"))['COUNT(*)'])/25);
 	
+	if($page > $maxPage || $page < 1)
+		$page = 1;
+	
 	echo "<p>";
 
 	if($page > 5)
