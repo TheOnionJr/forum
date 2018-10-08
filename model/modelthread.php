@@ -204,6 +204,7 @@
 		global $i;
 		global $privileges;
 		global $txID;
+		global $subforumname;
 
         if ($replyTo)
             $posts = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = {$thID} AND pReplyTo = {$replyTo} ORDER BY pTimestamp");
@@ -221,13 +222,27 @@
             $indpx = $indent * 40 . "px";
             echo "<th><p style=\"text-indent: {$indpx}\">";
 
+            $rolecolour = 0;     //    What colour the author's name should be
+            if (mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM uuser JOIN urole ON uuser.uID = urole.urID WHERE uuser.uUsername = \"{$post_row['pAuthor']}\" AND urType = \"admin\""))[0])
+                $rolecolour = 1;
+            else if (mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM uuser JOIN urole ON uuser.uID = urole.urID WHERE uuser.uUsername = \"{$post_row['pAuthor']}\" AND urType = \"mod{$subforumname}\""))[0])
+                $rolecolour = 2;
+            else if (mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM uuser JOIN urole ON uuser.uID = urole.urID WHERE uuser.uUsername = \"{$post_row['pAuthor']}\""))[0])
+                $rolecolour = 3;
 
-			// Username and Timestamp
-			if (false)	//	admin or mod
-				echo '<font color="gold">';	//	gold for moderators, darkorange for admins
-			echo htmlentities($post_row['pAuthor'], ENT_QUOTES, 'UTF-8');
-			if (false)	//	admin or mod
-				echo '</font>';
+
+			            // Username and Timestamp
+            if ($rolecolour == 1)    //    admin or mod
+                echo '<font color="gold">';        //    gold for admins
+            else if ($rolecolour == 2) 
+                echo '<font color="purple">';    //    purple for local moderators
+            else if ($rolecolour == 3) 
+                echo '<font color="blue">';        //    blue for other moderators
+
+            echo htmlentities($post_row['pAuthor'], ENT_QUOTES, 'UTF-8');
+            if ($rolecolour != 0)    //    admin or mod
+                echo '</font>';
+
 			echo " | " . htmlentities($post_row['pTimestamp'], ENT_QUOTES, 'UTF-8') . "</p></th>";
 
 			//	Post content
