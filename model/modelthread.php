@@ -100,6 +100,58 @@
 			
 			$i = 0;		// Int def.
 			$j = 0;
+
+			echo "</table><table><tr><td>";
+			echo "<b onclick='textbox(" . ($txID+1) . ")'>New Post</b>";	//	Calls function for post
+
+			echo '<div id="' . ($txID+1) . '" style="Display:none">		
+							<form method="post">
+							<textarea id="CBox" name="postContent" type="text" > </textarea>											  
+								<button type="submit" name="' . ($txID+1) . '">Submit</button>
+							<input type=\'hidden\' name=\'csrfToken\' value=\'<?php echo($_SESSION[\'csrfTOken\']) ?>\' />
+							</form>
+							<style> 
+							form[name=replyform] {
+							    display:block;
+							    margin:0px;
+							    padding:0px;
+							}
+							</style>
+						 </div>';								//  Adds default:hidden textboxes and button after replies.
+
+					if (isset($_SESSION['username'])) {
+						if (isset($_POST[$txID+1])) {
+							 $content = filter_var($_POST['postContent'], FILTER_SANITIZE_STRING);
+							if (!empty($content)){
+								$postNm = $row["thName"];
+								$rplyTo = null;
+								$usrnm = filter_var($_SESSION['username'], FILTER_SANITIZE_STRING);
+								$thID = $threadID;
+							
+								if (post($postNm, $content, $rplyTo, $usrnm, $thID, $con)) {
+									echo '<meta http-equiv="refresh" content="0">';
+								} else {
+									//echo "<p> $con->error </p>";
+									array_push($errors, "Could not post.");
+									echo "<p>Committa kys</p>";
+								}
+							}
+						}
+					}
+
+					?>
+						<script>											//  Function for displaying textbox.
+							function textbox(ID) {
+								var x = document.getElementById(ID);
+								if (x.style.display === "none") {
+									x.style.display = "block";
+								} else {
+									x.style.display = "none";
+								}
+							}
+						</script>
+					<?php
+
 			echo "</td></tr></table>";
 		} else {
 			echo "This thread has been deleted by an admin.";
@@ -151,6 +203,7 @@
 		global $rowNum;
 		global $i;
 		global $privileges;
+		global $txID;
 
         if ($replyTo)
             $posts = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = {$thID} AND pReplyTo = {$replyTo} ORDER BY pTimestamp");
