@@ -73,6 +73,7 @@ include($path);
   	<p>
   		<a href="/index.php">Homepage</a>
   	</p>
+    <input type='hidden' name='csrfToken' value='<?php echo($_SESSION['csrfTOken']) ?>' />
   </form>
   <script>
 function myFunction() {

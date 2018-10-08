@@ -32,6 +32,10 @@
 		<link type="text/css" id="dark-mode" rel="stylesheet" href="/css/darkmode.css">
 	</head>
 	<body>
+		<?php
+		$randomtoken = md5(uniqid(rand(), true));
+		$_SESSION['csrfToken']=$randomtoken
+		?>
 		<div id="header">
 	    	<a href="/index.php"><img src="/img/white_logo_transparent.png" align="left" ></a>
 	    	<div id="login">
@@ -45,7 +49,8 @@
 			       		Username: <input type="text" name="username"><br>
 			       		Password: <input type="password" name="password"><br>
 			       		<a href="/view/registerview.php" id="register">Register</a> 
-			        	<button type="submit" class="login_button" name="login_user">Login</button> 
+			        	<button type="submit" class="login_button" name="login_user">Login</button>
+			        	<input type='hidden' name='csrfToken' value='<?php echo($_SESSION['csrfTOken']) ?>' /> 
 					</form>
 				<?php endif ?> 
 				<?php if (isset($_SESSION['username'])) : ?>
