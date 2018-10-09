@@ -33,51 +33,14 @@
 		if (mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM uuser JOIN urole ON uuser.uID = urole.urID WHERE uuser.uUsername = \"{$_SESSION['username']}\" AND ( urType = \"admin\" OR urType = \"mod{$subforumname}\")"))[0])
 			$privileges = true;
 
-
-	//--------------------------------------------------------------
-	//	Upper Page Navigation
-	//--------------------------------------------------------------
+		
 	
-	$maxPage = ceil((mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM posts WHERE pThreadID = $threadID AND pReplyTo IS NULL"))['COUNT(*)'])/25);
+	$maxPage = ceil((mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM posts WHERE pThreadID = $threadID AND pReplyTo IS NULL"))['COUNT(*)'])/25);	//max amount of pages needed 
 	
-	if($page > $maxPage || $page < 1)
-		$page = 1;
+	if($page > $maxPage || $page < 1)	//if current page is outside legal range
+		$page = 1;		//sets current page to default	
 	
-	echo "<p>";
-
-	if($page > 5)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-5, ENT_QUOTES, 'UTF-8') . "\">" . " << " . "</a>";	
-	if($page > 1)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . " < " . "</a>";
-	
-	if($page > 3)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=1\"> 1 </a>";
-	if($page > 4)
-		echo " ... ";
-	
-	if($page > 2)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . " " . "</a>";
-	if($page > 1)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "</a>";
-	
-	echo " $page ";
-	
-	if($page < $maxPage)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . " " . "</a>";
-	if($page < $maxPage-1)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "</a>";
-	
-	if($page < $maxPage-3)
-		echo " ... ";
-	if($page < $maxPage-2)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($maxPage, ENT_QUOTES, 'UTF-8') . "\">" . " $maxPage " . "</a>";
-	
-	if($page < $maxPage)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . " > " . "</a>";
-	if($page < $maxPage-4)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
-	
-	echo "</p>";
+	paging();	//upper page navigation
 
 	$txID = 0;
 
@@ -174,45 +137,8 @@
 	$path2 .= "/view/errors.php";						//  Setting absolute path for errors.
 	include($path2);
 
-	//--------------------------------------------------------------
-	//	Lower Page Navigation
-	//--------------------------------------------------------------
-
-	echo "<p>";
-
-	if($page > 5)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-5, ENT_QUOTES, 'UTF-8') . "\">" . " << " . "</a>";	
-	if($page > 1)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . " < " . "</a>";
+	paging();	//lower page navigation
 	
-	if($page > 3)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=1\"> 1 </a>";
-	if($page > 4)
-		echo " ... ";
-	
-	if($page > 2)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . " " . "</a>";
-	if($page > 1)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "</a>";
-	
-	echo " $page ";
-	
-	if($page < $maxPage)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . " " . "</a>";
-	if($page < $maxPage-1)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "</a>";
-	
-	if($page < $maxPage-3)
-		echo " ... ";
-	if($page < $maxPage-2)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($maxPage, ENT_QUOTES, 'UTF-8') . "\">" . " $maxPage " . "</a>";
-	
-	if($page < $maxPage)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . " > " . "</a>";
-	if($page < $maxPage-4)
-		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
-	
-	echo "</p>";
 	mysqli_close($con);
 
 	//--------------------------------------------------------------
@@ -396,5 +322,45 @@
 			fetchPosts($pID, $indent + 1);
 		}
 	}
+	
+	function paging()		//Sets up the paging
+	{                       
+		global $page;       //Current page
+		global $maxPage;    //Maximum pages needed
+		echo "<p>";         //Start of paging 
 
+		if($page > 5)		//If more than 4 pages before current page
+			echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-5, ENT_QUOTES, 'UTF-8') . "\">" . " << " . "</a>";		//Enables skipping back 5 pages
+		if($page > 1)		//If current page is not the first page	                                                                                                                                                                            
+			echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . " < " . "</a>";      //Enables going back one page	
+
+		if($page > 3)		//If more than 2 pages before current page	
+			echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=1\"> 1 </a>";	//Enable skipping to first page
+		if($page > 4)		//If more than 3 pages before current page
+			echo " ... ";   //Shows that there is more pages between 
+
+		if($page > 2)		//If there is more than one page before current page
+			echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . " " . "</a>";	//Enables going back two pages
+		if($page > 1)		//If there is pages before current page                                                                                                                                                                                         
+			echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "</a>";         //Enables going back one page
+
+		echo " $page ";		//prints current page
+
+		if($page < $maxPage)	//If not last page
+			echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . " " . "</a>";	//Enables going forwards one page
+		if($page < $maxPage-1)	//If more than one page after current                                                                                                                                                                                        
+			echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "</a>";         //Enable going forwards two pages
+
+		if($page < $maxPage-3)	//If more than 3 pages after current page
+			echo " ... ";       //Shows that there is more pages between
+		if($page < $maxPage-2)  //If more than 2 pages after current page
+			echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($maxPage, ENT_QUOTES, 'UTF-8') . "\">" . " $maxPage " . "</a>";	//Enable skipping to last page	
+
+		if($page < $maxPage)	//If current page is not the last page
+			echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . " > " . "</a>";	//Enable going forward one page
+		if($page < $maxPage-4)	//If more than 4 pages after current page                                                                                                                                          
+			echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>"; //Enables skipping forward 5 pages
+
+		echo "</p>";	//paging end
+	}
 ?>
