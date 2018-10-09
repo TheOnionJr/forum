@@ -6,6 +6,7 @@
 
 	//input validation
 	$threadID = filter_input(INPUT_GET, 'thread', FILTER_VALIDATE_INT);
+	$topicID = filter_input(INPUT_GET, 'topic', FILTER_VALIDATE_INT);
 	$page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
 	$errorsthread = array();
 	
@@ -32,9 +33,9 @@
 		if (mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM uuser JOIN urole ON uuser.uID = urole.urID WHERE uuser.uUsername = \"{$_SESSION['username']}\" AND ( urType = \"admin\" OR urType = \"mod{$subforumname}\")"))[0])
 			$privileges = true;
 
-	$rowNum = 0;
+
 	
-	$maxPage = ceil((mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM posts WHERE pThreadID = $threadID"))['COUNT(*)'])/25);
+	$maxPage = ceil((mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM posts WHERE pThreadID = $threadID AND pReplyTo IS NULL"))['COUNT(*)'])/25);
 	
 	if($page > $maxPage || $page < 1)
 		$page = 1;
@@ -42,36 +43,36 @@
 	echo "<p>";
 
 	if($page > 5)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-5, ENT_QUOTES, 'UTF-8') . "\">" . " << " . "</a>";	
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-5, ENT_QUOTES, 'UTF-8') . "\">" . " << " . "</a>";	
 	if($page > 1)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . " < " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . " < " . "</a>";
 	
 	if($page > 3)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=1\"> 1 </a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=1\"> 1 </a>";
 	if($page > 4)
 		echo " ... ";
 	
 	if($page > 2)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . " " . "</a>";
 	if($page > 1)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "</a>";
 	
 	echo " $page ";
 	
 	if($page < $maxPage)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . " " . "</a>";
 	if($page < $maxPage-1)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "</a>";
 	
 	if($page < $maxPage-3)
 		echo " ... ";
 	if($page < $maxPage-2)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($maxPage, ENT_QUOTES, 'UTF-8') . "\">" . " $maxPage " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($maxPage, ENT_QUOTES, 'UTF-8') . "\">" . " $maxPage " . "</a>";
 	
 	if($page < $maxPage)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . " > " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . " > " . "</a>";
 	if($page < $maxPage-4)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
 	
 	echo "</p>";
 
@@ -168,45 +169,45 @@
 	echo "<p>";
 
 	if($page > 5)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-5, ENT_QUOTES, 'UTF-8') . "\">" . " << " . "</a>";	
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-5, ENT_QUOTES, 'UTF-8') . "\">" . " << " . "</a>";	
 	if($page > 1)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . " < " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . " < " . "</a>";
 	
 	if($page > 3)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=1\"> 1 </a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=1\"> 1 </a>";
 	if($page > 4)
 		echo " ... ";
 	
 	if($page > 2)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . " " . "</a>";
 	if($page > 1)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "</a>";
 	
 	echo " $page ";
 	
 	if($page < $maxPage)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . " " . "</a>";
 	if($page < $maxPage-1)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "</a>";
 	
 	if($page < $maxPage-3)
 		echo " ... ";
 	if($page < $maxPage-2)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($maxPage, ENT_QUOTES, 'UTF-8') . "\">" . " $maxPage " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($maxPage, ENT_QUOTES, 'UTF-8') . "\">" . " $maxPage " . "</a>";
 	
 	if($page < $maxPage)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . " > " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . " > " . "</a>";
 	if($page < $maxPage-4)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
 	
-	echo "</p>"; 
+	echo "</p>";
 	mysqli_close($con);
 
 	function fetchPosts($replyTo, $indent = 0)
 	{
 		global $con;
 		global $thID;
-		global $rowNum;
+		//global $rowNum;
 		global $i;
 		global $privileges;
 		global $txID;
@@ -214,6 +215,8 @@
 		global $page;
 		global $maxPage;
 		global $errorsthread;
+		
+		$rowNum = 0;
 
         if ($replyTo)
             $posts = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = {$thID} AND pReplyTo = {$replyTo} ORDER BY pTimestamp");
@@ -225,7 +228,7 @@
 		else
 			$page = 1;
 
-		while(($post_row = mysqli_fetch_array($posts)) && $rowNum <  25 * $page) 
+		while(($post_row = mysqli_fetch_array($posts)) && $rowNum <  25 /** $page*/) 
 		{
 			$rowNum++;
 			$pID = $post_row['pID'];
@@ -233,7 +236,7 @@
 			$txID = $i;	
 			$delID = "delete" . $i;
 			$contID = "content" . $i;
-			if ($rowNum > 25 * ($page-1))
+			//if ($rowNum > 25 * ($page-1))
 			{
 	            $rolecolour = 0;     //    What colour the author's name should be
 	            if (mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM uuser JOIN urole ON uuser.uID = urole.urID WHERE uuser.uUsername = \"{$post_row['pAuthor']}\" AND urType = \"admin\""))[0])
