@@ -21,12 +21,6 @@ if (isset($_POST['reg_user'])) {
 	$password_1 = filter_var($_POST['password_1'], FILTER_SANITIZE_STRING);		//Strip tags
 	$password_2 = filter_var($_POST['password_2'], FILTER_SANITIZE_STRING);		//Strip tags
 
-	/*
-	$username = mysqli_real_escape_string($db, $_POST['username']);				
-	$email = mysqli_real_escape_string($db, $_POST['email']);
-	$password_1 = mysqli_real_escape_string($db, $_POST['password_1']);
-	$password_2 = mysqli_real_escape_string($db, $_POST['password_2']);
-	*/
 
 	//Removes whitespace (and other things) FROM THE LEFTSIDE OF STRING ONLY - https://www.w3schools.com/php/func_string_ltrim.asp
 	$username = ltrim($username);
@@ -102,7 +96,6 @@ if (isset($_POST['reg_user'])) {
 		$stmt->close();																				//Close
 
 		$_SESSION['username'] = $username;															//Logs the new registered user inn
-	  	$_SESSION['success'] = "You are now logged in";
 	  	header('location: /index.php');																//Returns to front page
 	}
 }

@@ -65,8 +65,6 @@
 
 		$topicdelID = 0;
 		while(($thread_row =mysqli_fetch_array($threads)) && $rowNum < 25) {
-			if($thread_row['thLock'] == NULL) {
-
 
 				$topicdelID++;
 				$rowNum++;		//increments row counter
@@ -76,7 +74,10 @@
 				$posts = mysqli_fetch_array($numPosts);				//gets amount of posts for the thread
 				
 				echo "<tr>";
-				echo "<td><a href=\"/view/threadview.php?topic=". htmlentities($topicID, ENT_QUOTES, 'UTF-8') . "&thread=" . htmlentities($thID) . "\">" . htmlentities($thread_row['thName'], ENT_QUOTES, 'UTF-8') . "</td>"; //Links to correct threadview. God this line is aids...
+				if($thread_row['thLock'] != NULL)
+					echo '<td><font color="red">DELETED </font></td>';
+				else 
+					echo "<td><a href=\"/view/threadview.php?topic=". htmlentities($topicID, ENT_QUOTES, 'UTF-8') . "&thread=" . htmlentities($thID) . "\">" . htmlentities($thread_row['thName'], ENT_QUOTES, 'UTF-8') . "</td>"; //Links to correct threadview. God this line is aids...
 				echo "<td>" . "Posts: " . htmlentities($posts['COUNT(*)'], ENT_QUOTES, 'UTF-8') . "</td>";
 				$lastPost = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = $thID ORDER BY pTimestamp DESC");
 				$post_row =mysqli_fetch_array($lastPost);
@@ -98,7 +99,6 @@
 					}
 				}
 				echo "</tr>";
-			}
 		}
 		echo "</table>";
 	}	

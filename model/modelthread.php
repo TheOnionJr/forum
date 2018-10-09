@@ -158,7 +158,9 @@
 
 			echo "</td></tr></table>";
 		} else {
+			echo "<font color=red>";
 			echo "This thread has been deleted by an admin.";
+			echo "</font>";
 	}
 
 }
@@ -278,17 +280,17 @@
 				{
 					echo "<tr><p style=\"text-indent: {$indpx}\"><td name='".$contID."'>";
 					echo "<div class='some' style=\"text-indent: {$indpx}\">";
-					echo "<b onclick='textbox($txID)'><button >Reply</button></b>";	//	Calls function for post on click.
+					echo "<b onclick='textbox($txID)'><button >Reply</button></b>";		//	Calls function for post on click.
 					//$author = $_GET['pAuthor'];
 					$author = $post_row['pAuthor'];
 
-					if (isset($_SESSION['username'])) { 						// If user is logged in
-						if ($_SESSION['username'] === $author || $privileges) {				// If user = to the author
+					if (isset($_SESSION['username'])) { 									// If user is logged in
+						if ($_SESSION['username'] === $author || $privileges) {					// If user = to the author
 							$csrf = $_SESSION['csrfTOken'];
 							echo " <form method='post' name='deleteform'>
 								<button type='submit' name='" . $delID . "'>Delete</button>";
 							echo "<input type='hidden' name='csrfToken' value='" . $csrf . "' /> 
-								</form>";	//Creates the form and button
+								</form>";															//Creates the form and button
 							echo "<style type='text/css'>					
 									form[name=deleteform] {
 								    display:inline;
@@ -327,32 +329,31 @@
 							    padding:0px;
 							}
 							</style>
-						 </div>';								//  Adds default:hidden textboxes and button after replies.
+						 </div>';																		//  Adds default:hidden textboxes and button after replies.
 					echo "</td></p></tr>";
 
 					
-					if (isset($_POST[$txID])) {
-						if (isset($_SESSION['username'])) {
-							$rplyContent = htmlentities($_POST['postContent'], ENT_SUBSTITUTE, 'UTF-8');
-							$rplyContent = ltrim($rplyContent);											//Removes whitespace from left side of text
-							if (!empty($rplyContent)){
-								$postNm = $post_row["pName"];
-								$rplyTo = $pID;
-								$rplyUsrnm = htmlentities($_SESSION['username'], ENT_QUOTES, 'UTF-8');
-								$rplyThID = $thID;
+					if (isset($_POST[$txID])) {															// Gets called when reply-button is pressed.
+						if (isset($_SESSION['username'])) {													// Checks if user is logged in.
+							$rplyContent = htmlentities($_POST['postContent'], ENT_SUBSTITUTE, 'UTF-8');		// Retrieves and sanitizes content from reply-textbox.
+							$rplyContent = ltrim($rplyContent);													// Removes whitespace from left side of text
+							if (!empty($rplyContent)){																// Checks if the reply actually contains content.
+								$postNm = $post_row["pName"];														// Gets post name.
+								$rplyTo = $pID;																		// Gets post-ID.
+								$rplyUsrnm = htmlentities($_SESSION['username'], ENT_QUOTES, 'UTF-8');				// Gets current users username.
+								$rplyThID = $thID;																	// Gets thread-ID.
 							
-								if (post($postNm, $rplyContent, $rplyTo, $rplyUsrnm, $rplyThID, $con)) {
-									//echo '<meta http-equiv="refresh" content="0">';
-								} else {
-									//echo "<p> $con->error </p>";
-									array_push($errorsthread, "Could not post reply.");
+								if (post($postNm, $rplyContent, $rplyTo, $rplyUsrnm, $rplyThID, $con)) {		// If post is succsessful.
+									echo '<meta http-equiv="refresh" content="0">';									// Refresh page. (To display updates)
+								} else {																		// Post unsuccessful.
+									array_push($errorsthread, "Could not post reply.");								// Display error.
 								}
-							} else {
-								array_push($errorsthread, "Textbox cannot be empty");
+							} else {																			// Reply contains no content.
+								array_push($errorsthread, "Textbox cannot be empty");								// Display error.
 							}
 						}
-						else {
-							array_push($errorsthread, "Please login in order to reply to a post");
+						else {																					// User is not logged in.
+							array_push($errorsthread, "Please login in order to reply to a post");					//Display error.
 						}
 					}
 					?>

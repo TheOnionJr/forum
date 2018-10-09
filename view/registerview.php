@@ -1,4 +1,5 @@
 <?php 
+error_reporting(0);
 $path = $_SERVER['DOCUMENT_ROOT'];  //Find the document root
 $path .= "/model/modelregister.php";      //Set absolute path
 include($path);
