@@ -15,8 +15,9 @@ $sID = filter_input(INPUT_GET, 'sID', FILTER_VALIDATE_INT);
 ?>
 
 <?php 
-echo "<form method=\"post\" action=\"/view/postview.php?tID=" . $tID . "&sID=" . $sID . "\">" 
-echo "<input type='hidden' name='csrfToken' value='<?php echo($_SESSION['csrfTOken']) ?>' /> </form>"
+echo "<form method=\"post\" action=\"/view/postview.php?tID=" . $tID . "&sID=" . $sID . "\">";
+$csrf = $_SESSION['csrfTOken'];
+echo "<input type='hidden' name='csrfToken' value='" . $csrf . "' /> </form>";
 ?>
 <?php //echo "<a href=\"/view/postview.php?tID=" . $tID . "&sID=" . $sID . "\" id=\"newThread\">New Thread</a>" ?>
 
