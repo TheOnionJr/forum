@@ -10,7 +10,6 @@ $errorsthread = array();
 
 if (isset($_POST['new_thread'])) {
 	if (isset($_SESSION['username'])) {
-		$content = true;
 		$con=mysqli_connect("localhost","guest","","forum");
 		$tID= $_GET['tID'];									//Get topic ID
 		$sID= $_GET['sID'];									//Get subforum ID
@@ -48,19 +47,12 @@ if (isset($_POST['new_thread'])) {
 
 				//IF YOU GET "Call to a member function bind_param() on boolean" THEN PLEASE UPDATE THE REQUESTS FOR USER (look DROP *)
 
-				$stmt = $con->prepare("INSERT INTO threads (thName, thNumPosts, thAuthor, thTopicID) VALUES(?, ?, ?, ?)");	//Prepeare statement
-				if ($content) {																								//If content for post exists
-					$first = 1;	
-				}
-				else {
-					$first = NULL;
-				}
+				$stmt = $con->prepare("INSERT INTO threads (thName, thAuthor, thTopicID) VALUES(?, ?, ?)");	//Prepeare statement
 
-				$stmt->bind_param("sisi", $title, $first, $username, $tID);													//Bind parameters
+				$stmt->bind_param("ssi", $title, $username, $tID);													//Bind parameters
 				$stmt->execute();																							//Execute
 				$stmt->close();
 				
-				if ($content) {
 					$stmt = $con->prepare("SELECT thID FROM threads WHERE thName = ? AND thTopicID = ?");		//Get thID from the newly inserted thread
 					$stmt->bind_param('si', $title, $tID);														//Bind parameters
 					$stmt->execute();																			//Execute
@@ -76,7 +68,7 @@ if (isset($_POST['new_thread'])) {
 					$stmt->bind_param('sssi', $title, $text, $username, $thread);											//Binds params
 					$stmt->execute();																						//Executes query
 					$stmt->close();
-				}
+				
 				header("Location: /view/topicview.php?tID=".$tID."&sID=".$sID);											//Returnes to the topic
 			}
 			else {
