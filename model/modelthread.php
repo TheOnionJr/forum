@@ -7,7 +7,7 @@
 	//input validation
 	$threadID = filter_input(INPUT_GET, 'thread', FILTER_VALIDATE_INT);
 	$page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
-	$errors = array();
+	$errorsthread = array();
 	
 	$con=mysqli_connect("localhost","guest","","forum");
 	// Check connection
@@ -130,16 +130,16 @@
 									echo '<meta http-equiv="refresh" content="0">';
 								} else {
 									//echo "<p> $con->error </p>";
-									array_push($errors, "Could not post.");
+									array_push($errorsthread, "Could not post.");
 									echo "<p>Committa kys</p>";
 								}
 							}
 							else {
-								array_push($errors, "Textbox cannot be empty");
+								array_push($errorsthread, "Textbox cannot be empty");
 							}
 						}
 						else {
-							array_push($errors, "You need to login in order to post");
+							array_push($errorsthread, "You need to login in order to post");
 						}
 					}
 
@@ -214,7 +214,7 @@
 		global $subforumname;
 		global $page;
 		global $maxPage;
-		global $errors;
+		global $errorsthread;
 
         if ($replyTo)
             $posts = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = {$thID} AND pReplyTo = {$replyTo} ORDER BY pTimestamp");
@@ -340,14 +340,14 @@
 									echo '<meta http-equiv="refresh" content="0">';
 								} else {
 									//echo "<p> $con->error </p>";
-									array_push($errors, "Could not post reply.");
+									array_push($errorsthread, "Could not post reply.");
 								}
 							} else {
-								array_push($errors, "Textbox cannot be empty");
+								array_push($errorsthread, "Textbox cannot be empty");
 							}
 						}
 						else {
-							array_push($errors, "Please login in order to reply to a post");
+							array_push($errorsthread, "Please login in order to reply to a post");
 						}
 					}
 					?>
