@@ -11,8 +11,8 @@ $errorsthread = array();
 if (isset($_POST['new_thread'])) {
 	if (isset($_SESSION['username'])) {
 		$con=mysqli_connect("localhost","guest","","forum");
-		$tID= $_GET['tID'];									//Get topic ID
-		$sID= $_GET['sID'];									//Get subforum ID
+		$tID = filter_input(INPUT_GET, 'tID', FILTER_VALIDATE_INT);				//Get topic ID
+		$sID = filter_input(INPUT_GET, 'sID', FILTER_VALIDATE_INT);				//Get subforum ID
 
 		$text=htmlentities($_POST['text'], ENT_QUOTES, 'UTF-8');
 		$username= filter_var($_SESSION['username'], FILTER_SANITIZE_STRING);

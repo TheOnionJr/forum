@@ -76,3 +76,6 @@ Note: Unless otherwise specified, when adding to "the config" (httpd.conf), add 
 			databaseWithData.sql for database with test-data.
 				Credentials for existing users can be found in testUserCreds.txt if you want to log in as an admin or pre-existing user.
 	
+	
+If you encounter any issues, you can send an e-mail to:
+	Tobias Moe: tobiasmo@stud.ntnu.no
