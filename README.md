@@ -3,7 +3,7 @@
 Source code for AppDev Ultras webforum
 
 Installation:
-We have used XAMPP to launch Apache and MySQL (phpmyadmin).
+We have used XAMPP on Windows to launch Apache and MySQL (phpmyadmin).
 
 Note: Unless otherwise specified, when adding to "the config" (httpd.conf), add under "#Supplemental configuration".
 
