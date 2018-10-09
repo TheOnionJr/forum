@@ -2,7 +2,7 @@
 //Verifying everything about the post:
 function canPost($username, $thread, $topic, $subforum, $replyTo) {
 	$con=mysqli_connect("localhost","guest","","forum");
-	$stmt = $con->prepare("SELECT threads.thLock, threads.thMoved, threads.thID, topics.tID, subforums.sID FROM topics INNER JOIN threads ON threads.thTopicID = topics.tID INNER JOIN subforums ON subforums.sID = topics.tSubForumID WHERE thID = ?"); 						   		//Fuuuuck me this query
+	$stmt = $con->prepare("SELECT threads.thLock, threads.thID, topics.tID, subforums.sID FROM topics INNER JOIN threads ON threads.thTopicID = topics.tID INNER JOIN subforums ON subforums.sID = topics.tSubForumID WHERE thID = ?"); 						   		//Fuuuuck me this query
 	$stmt->bind_param('i', $thread);																//Binding parameter type
 	$stmt->execute();																				//Execute query
 	$idverify = $stmt->get_result();																//Store result
@@ -21,7 +21,7 @@ function canPost($username, $thread, $topic, $subforum, $replyTo) {
 		if ($idverify['thID'] != $thread) {
 			return false;
 		}
-		if ($idverify['thLock'] == 1 or $idverify['thMoved'] == 1){										//Checks if the thread is locked or moved.
+		if ($idverify['thLock'] == 1) {																	//Checks if the thread is locked or moved.
 			return false;																				//Return can not post
 		}
 		if (!mysqli_numrows($idverify)) {
