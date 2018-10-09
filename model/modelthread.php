@@ -158,7 +158,9 @@
 
 			echo "</td></tr></table>";
 		} else {
+			echo "<font color=red>";
 			echo "This thread has been deleted by an admin.";
+			echo "</font>";
 	}
 
 }
