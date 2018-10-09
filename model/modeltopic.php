@@ -111,6 +111,7 @@
 	{							
 		global $page;			//Current page
 		global $maxPage;		//Maximum pages needed
+		global $topicID;		//topic id
 		echo "<p>";             //Start of paging 
 		
 

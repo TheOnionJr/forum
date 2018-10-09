@@ -327,6 +327,8 @@
 	{                       
 		global $page;       //Current page
 		global $maxPage;    //Maximum pages needed
+		global $topicID;	//topic id
+		global $threadID; 	//thread id
 		echo "<p>";         //Start of paging 
 
 		if($page > 5)		//If more than 4 pages before current page
