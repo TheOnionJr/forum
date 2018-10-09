@@ -339,7 +339,7 @@
 								$rplyThID = $thID;
 							
 								if (post($postNm, $rplyContent, $rplyTo, $rplyUsrnm, $rplyThID, $con)) {
-									//echo '<meta http-equiv="refresh" content="0">';
+									echo '<meta http-equiv="refresh" content="0">';
 								} else {
 									//echo "<p> $con->error </p>";
 									array_push($errorsthread, "Could not post reply.");
