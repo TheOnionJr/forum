@@ -1,5 +1,5 @@
 <?php 
-
+	error_reporting(0);
 	$path = $_SERVER['DOCUMENT_ROOT']; 	//Find the document root
 	$path .= "/model/modellogin.php"; 	//Set absolute path
 	include($path);
