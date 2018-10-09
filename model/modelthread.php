@@ -6,6 +6,7 @@
 
 	//input validation
 	$threadID = filter_input(INPUT_GET, 'thread', FILTER_VALIDATE_INT);
+	$topicID = filter_input(INPUT_GET, 'topic', FILTER_VALIDATE_INT);
 	$page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
 	$errorsthread = array();
 	
@@ -42,36 +43,36 @@
 	echo "<p>";
 
 	if($page > 5)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-5, ENT_QUOTES, 'UTF-8') . "\">" . " << " . "</a>";	
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-5, ENT_QUOTES, 'UTF-8') . "\">" . " << " . "</a>";	
 	if($page > 1)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . " < " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . " < " . "</a>";
 	
 	if($page > 3)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=1\"> 1 </a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=1\"> 1 </a>";
 	if($page > 4)
 		echo " ... ";
 	
 	if($page > 2)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . " " . "</a>";
 	if($page > 1)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "</a>";
 	
 	echo " $page ";
 	
 	if($page < $maxPage)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . " " . "</a>";
 	if($page < $maxPage-1)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "</a>";
 	
 	if($page < $maxPage-3)
 		echo " ... ";
 	if($page < $maxPage-2)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($maxPage, ENT_QUOTES, 'UTF-8') . "\">" . " $maxPage " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($maxPage, ENT_QUOTES, 'UTF-8') . "\">" . " $maxPage " . "</a>";
 	
 	if($page < $maxPage)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . " > " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . " > " . "</a>";
 	if($page < $maxPage-4)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
 	
 	echo "</p>";
 
@@ -168,38 +169,38 @@
 	echo "<p>";
 
 	if($page > 5)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-5, ENT_QUOTES, 'UTF-8') . "\">" . " << " . "</a>";	
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-5, ENT_QUOTES, 'UTF-8') . "\">" . " << " . "</a>";	
 	if($page > 1)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . " < " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . " < " . "</a>";
 	
 	if($page > 3)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=1\"> 1 </a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=1\"> 1 </a>";
 	if($page > 4)
 		echo " ... ";
 	
 	if($page > 2)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-2, ENT_QUOTES, 'UTF-8') . " " . "</a>";
 	if($page > 1)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page-1, ENT_QUOTES, 'UTF-8') . "</a>";
 	
 	echo " $page ";
 	
 	if($page < $maxPage)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . " " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . " " . "</a>";
 	if($page < $maxPage-1)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "\">" . htmlentities($page+2, ENT_QUOTES, 'UTF-8') . "</a>";
 	
 	if($page < $maxPage-3)
 		echo " ... ";
 	if($page < $maxPage-2)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($maxPage, ENT_QUOTES, 'UTF-8') . "\">" . " $maxPage " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($maxPage, ENT_QUOTES, 'UTF-8') . "\">" . " $maxPage " . "</a>";
 	
 	if($page < $maxPage)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . " > " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+1, ENT_QUOTES, 'UTF-8') . "\">" . " > " . "</a>";
 	if($page < $maxPage-4)
-		echo "<a href=\"/view/threadview.php?thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
+		echo "<a href=\"/view/threadview.php?topic=" . htmlentities($topicID) . "&thread=" . htmlentities($threadID) . "&page=" . htmlentities($page+5, ENT_QUOTES, 'UTF-8') . "\">" . " >> " . "</a>";
 	
-	echo "</p>"; 
+	echo "</p>";
 	mysqli_close($con);
 
 	function fetchPosts($replyTo, $indent = 0)
