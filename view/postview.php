@@ -32,14 +32,12 @@ echo "<input type='hidden' name='csrfToken' value='" . $csrf . "' /> </form>";
 		Text
 		<textarea id="CBox" name="text" type="text" > </textarea>											  
 			<button type="submit" class="btn" name="new_thread">Post</button>
+			<input type='hidden' name='csrfToken' value='<?php echo($_SESSION['csrfTOken']) ?>' />
 		</form>
 
-	 </div>
-
     <?php
-    $errorpath = $_SERVER['DOCUMENT_ROOT']; //Find the document root
-    $errorpath .= "/view/errors.php";     //Set absolute path
-    include($errorpath);
+$errorpath = $_SERVER['DOCUMENT_ROOT']; //Find the document root
+$errorpath .= "/view/errorsthread.php"; 		//Set absolute path
+include($errorpath); 
     ?>
-    <input type='hidden' name='csrfToken' value='<?php echo($_SESSION['csrfTOken']) ?>' />
-</form>
+   

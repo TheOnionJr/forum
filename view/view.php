@@ -44,7 +44,7 @@
 			    		<?php
 			    			$errorpath = $_SERVER['DOCUMENT_ROOT']; //Find the document root
 			    			$errorpath .= "/view/errors.php"; 		//Set absolute path
-			    			include($errorpath) 
+			    			include($errorpath); 
 			   			?>
 			       		Username: <input type="text" name="username"><br>
 			       		Password: <input type="password" name="password"><br>
