@@ -10,7 +10,7 @@ $sID = filter_input(INPUT_GET, 'sID', FILTER_VALIDATE_INT);
 ?>
 
 <div id="content">
-	<?php echo "<a href=\"/view/postview.php?tID=" . $tID . "&sID=" . $sID . "\" id=\"newThread\">New Thread</a>" ?>
+	<?php echo "<a href=\"/view/postview.php?tID=" . $tID . "&sID=" . $sID . "\" id=\"newThread\"><button>New Thread</button></a>" ?>
 	<table>
 		<?php
 			$model = $_SERVER['DOCUMENT_ROOT']; 	//Find the document root

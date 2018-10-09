@@ -98,7 +98,7 @@
 			$j = 0;
 
 			echo "</table><table><tr><td>";
-			echo "<b onclick='textbox(" . ($txID+1) . ")'>New Post</b>";	//	Calls function for post
+			echo "<b onclick='textbox(" . ($txID+1) . ")'><button>New Post</button></b>";	//	Calls function for post
 			$csrf = $_SESSION['csrfTOken'];
 			echo '<div id="' . ($txID+1) . '" style="Display:none">		
 							<form method="post">
@@ -275,14 +275,14 @@
 				if (!$post_row['pDeleted'])
 				{
 					echo "<tr><p style=\"text-indent: {$indpx}\"><td name='".$contID."'>";
-					echo "<b onclick='textbox($txID)'>Reply</b>";	//	Calls function for post on click.
+					echo "<b onclick='textbox($txID)'><button>Reply</button></b>";	//	Calls function for post on click.
 					//$author = $_GET['pAuthor'];
 					$author = $post_row['pAuthor'];
 
 					if (isset($_SESSION['username'])) { 						// If user is logged in
 						if ($_SESSION['username'] === $author || $privileges) {				// If user = to the author
 							$csrf = $_SESSION['csrfTOken'];
-							echo " | <form method='post' name='deleteform'>
+							echo " <form method='post' name='deleteform'>
 								<button type='submit' name='" . $delID . "'>Delete</button>";
 							echo "<input type='hidden' name='csrfToken' value='" . $csrf . "' /> 
 								</form>";	//Creates the form and button
