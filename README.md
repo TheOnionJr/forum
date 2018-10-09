@@ -67,9 +67,10 @@ Note: Unless otherwise specified, when adding to "the config" (httpd.conf), add 
 	2.1 a. Copy the mysql statements from files
 			Copy the contents of "databaseInit.txt" to build the database.
 			You can then optionally copy the contents of "testData.txt" into the database, if you want pre-filled test-data. 
-				The credentials for the users in the test-data is written in testUserCreds.txt, if you want to log in as an admin or an old user.
+				Credentials for existing users can be found in testUserCreds.txt if you want to log in as an admin or pre-existing user.
 	2.1 b. Import the database file into MySQL.
 			Import the .sql files you want into the database. 
-			database.sql for a clean database
-	
+			databaseOnlyStructure.sql for a clean database
+			databaseWithData.sql for database with test-data.
+				Credentials for existing users can be found in testUserCreds.txt if you want to log in as an admin or pre-existing user.
 	
