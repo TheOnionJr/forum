@@ -99,12 +99,12 @@
 
 			echo "</table><table><tr><td>";
 			echo "<b onclick='textbox(" . ($txID+1) . ")'>New Post</b>";	//	Calls function for post
-
+			$csrf = $_SESSION['csrfTOken'];
 			echo '<div id="' . ($txID+1) . '" style="Display:none">		
 							<form method="post">
 							<textarea id="CBox" name="postContent" type="text" > </textarea>											  
 								<button type="submit" name="' . ($txID+1) . '">Submit</button>
-							<input type=\'hidden\' name=\'csrfToken\' value=\'<?php echo($_SESSION[\'csrfTOken\']) ?>\' />
+							<input type=\'hidden\' name=\'csrfToken\' value=\'' . $csrf . '\' />
 							</form>
 							<style> 
 							form[name=replyform] {

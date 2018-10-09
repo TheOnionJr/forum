@@ -36,8 +36,6 @@ echo "<input type='hidden' name='csrfToken' value='" . $csrf . "' /> </form>";
 
 	 </div>
 
-					
-
     <?php
     $errorpath = $_SERVER['DOCUMENT_ROOT']; //Find the document root
     $errorpath .= "/view/errors.php";     //Set absolute path
