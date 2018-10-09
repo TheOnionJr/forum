@@ -1,0 +1,26 @@
+Users with existing posts, can be used for testing.
+(Hashes are here mostly for convenience during pre-release testing :))) )
+
+Username:	Basel
+Email:		basel.katt@ntnu.no
+Password:	Password123
+Hash: 		$2y$15$arnmA3VlggeUnuDWU6ldDuJ2QyTt/YZLbH4PFx/4xboKhxU/sNkLC
+Role:		Admin
+
+Username:	Kari
+Email:		Kari@Ylve.Se
+Password:	Password1
+Hash:		$2y$15$Stxs6WFx82PHhIgdXjkWVuB5XzhwzUDh.XyDpEz7WaErFaJnaSfjm
+Role:		User
+
+Username:	Kanye
+Email:		West@whoop.descoop
+Password:	Password1
+Hash:		$2y$15$T60o6jycev8VGghhEaOEBuRgmmsk.ZUtCk1G.P1QhpAF/u/tiWCyS
+Role:		User
+
+Username:	Project
+Email:		Project@Approved.no
+Password:	Password1
+Hash:		$2y$15$TC9s31Cs3TBeSYwlmsT4Luuf2FLAB2Kzs5p.VVfU8EWDPR9UlX1U2
+Role:		User
