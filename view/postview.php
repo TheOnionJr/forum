@@ -15,6 +15,7 @@ $sID = filter_input(INPUT_GET, 'sID', FILTER_VALIDATE_INT);
 ?>
 
 <?php 
+//	Text Field
 echo "<form method=\"post\" action=\"/view/postview.php?tID=" . $tID . "&sID=" . $sID . "\">";
 $csrf = $_SESSION['csrfTOken'];
 echo "<input type='hidden' name='csrfToken' value='" . $csrf . "' /> </form>";
