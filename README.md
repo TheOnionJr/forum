@@ -57,7 +57,7 @@ Note: Unless otherwise specified, when adding to "the config" (httpd.conf), add 
 		to the config.
 				
 	
-2.	Add the database (and testdata) to MySQL.
+2. Add the database (and testdata) to MySQL.
 	2.1	Copy the contents of "databaseInit.txt", or import the database file into MySQL.
 	
 	
