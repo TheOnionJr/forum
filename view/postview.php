@@ -43,6 +43,7 @@ echo "<input type='hidden' name='csrfToken' value='" . $csrf . "' /> </form>";
 
 	<div id=0 style="Display:none">		
 						<form method="post">
+						<input type='hidden' name='csrfToken' value='<?php echo($_SESSION['csrfTOken']) ?>' />
 						Text
 						<textarea id="CBox" name="text" type="text" > </textarea>											  
 							<button type="submit" class="btn" name="new_thread">Post</button>
