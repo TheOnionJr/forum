@@ -14,13 +14,6 @@ if (isset($_POST['login_user'])) {
   $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);       //Strip tags
   $password_1 = filter_var($_POST['password'], FILTER_SANITIZE_STRING);     //Strip tags
 
-  //$username = mysqli_real_escape_string($db, $_POST['username']);
-  //$password_1 = mysqli_real_escape_string($db, $_POST['password']);
-
-  //Removes whitespace (and other things) FROM THE LEFTSIDE OF STRING ONLY - https://www.w3schools.com/php/func_string_ltrim.asp
-  //$username = ltrim($username);
-  //$password_1 = ltrim($username);
-
   if (empty($username)) {                                                   //Check if a username was entered
     array_push($errors, "Username is required");
   }
@@ -28,12 +21,12 @@ if (isset($_POST['login_user'])) {
     array_push($errors, "Password is required");
   }
 
-  $stmt = $db->prepare("SELECT * FROM uUser WHERE uUsername=?");
+  $stmt = $db->prepare("SELECT * FROM uUser WHERE uUsername=?");            //See if the user exists
   $stmt->bind_param("s", $username);
   $stmt->execute();
   $result = $stmt->get_result();
 
-  if(mysqli_num_rows($result) == 0) {
+  if(mysqli_num_rows($result) == 0) {                                       //If the user does not exists
     array_push($errors, "Username does not exist");
   }
   $stmt->close();
@@ -44,10 +37,6 @@ if (isset($_POST['login_user'])) {
     $stmt->execute();
     $result = $stmt->get_result();
 
-
-    //$getpass = "SELECT uPassword FROM uUser WHERE uUsername='$username'";   //Queries the database for the hashed password
-    //$querypass = mysqli_query($db, $getpass);
-    
     $i = 0;
     $string = NULL;
     while ($dbPASS = mysqli_fetch_array($result)) {                      //Stores the hashed password as a string (it normally returns as an array)
@@ -59,7 +48,6 @@ if (isset($_POST['login_user'])) {
     if (password_verify($password_1, $string)) {                            //Verifies that the entered password is the hashed password (both parameteres needs to be a string)
       $_SESSION['username'] = $username;                                    //Sets the session username to be the logged in username
       $successful = "yes";
-      //header('location: /index.php');
     } 
     else {
       array_push($errors , "Wrong password for $username");            
@@ -70,7 +58,6 @@ if (isset($_POST['login_user'])) {
     $ip = $_SERVER['REMOTE_ADDR'];                            // This should work aslong as a reverse proxy isn't used https://stackoverflow.com/questions/4773969/is-it-safe-to-trust-serverremote-addr
 
     $stmt = $db->prepare("INSERT INTO loginAttempts (loginUserName, loginSuccessful, loginIP) VALUES(?,?,?)");        //Inserts into login attempts
-    //echo $db->error;
     $stmt->bind_param("sss", $username, $successful, $ip);
     $stmt->execute();
     $stmt->close();

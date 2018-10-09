@@ -9,7 +9,6 @@ include($path);
 $errorsthread = array();
 
 if (isset($_POST['new_thread'])) {
-	//session_start();
 	if (isset($_SESSION['username'])) {
 		$content = true;
 		$con=mysqli_connect("localhost","guest","","forum");
