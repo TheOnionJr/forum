@@ -24,41 +24,18 @@ echo "<input type='hidden' name='csrfToken' value='" . $csrf . "' /> </form>";
 <?php //echo <form method=\"post\" action=\"/model/modelNewThread.php?tID=" . $topic . "&sID=" . $subforum . ">"
 ?>
 
-	<div class="input-group"> 
-  	  <label>Title</label>
-  	  <input type="text" name="title" value="">
-  	</div>
+		<form method="post">
+			<div class="input-group"> 
+		  	  <label>Title</label>
+		  	  <input type="text" name="title" value="">
+		  	</div>
+		Text
+		<textarea id="CBox" name="text" type="text" > </textarea>											  
+			<button type="submit" class="btn" name="new_thread">Post</button>
+		</form>
 
-	<script>											//  Function for displaying textbox.
-						function textbox(ID) {
-							var x = document.getElementById(ID);
-							if (x.style.display === "none") {
-								x.style.display = "block";
-							} else {
-								x.style.display = "none";
-							}
-						}
-					</script>
+	 </div>
 
-
-	<div id=0 style="Display:none">		
-						<form method="post">
-						Text
-						<textarea id="CBox" name="text" type="text" > </textarea>											  
-							<button type="submit" class="btn" name="new_thread">Post</button>
-						</form>
-						<style> 
-						form[name=threadform] {
-						    display:block;
-						    margin:0px;
-						    padding:0px;
-						}
-						</style>
-					 </div>
-
-	<?php
-	echo "<script> textbox(0); </script>";
-	?>
 					
 
     <?php

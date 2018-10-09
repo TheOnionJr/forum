@@ -18,8 +18,8 @@ if (isset($_POST['login_user'])) {
   //$password_1 = mysqli_real_escape_string($db, $_POST['password']);
 
   //Removes whitespace (and other things) FROM THE LEFTSIDE OF STRING ONLY - https://www.w3schools.com/php/func_string_ltrim.asp
-  $username = ltrim($username);
-  $password_1 = ltrim($username);
+  //$username = ltrim($username);
+  //$password_1 = ltrim($username);
 
   if (empty($username)) {                                                   //Check if a username was entered
     array_push($errors, "Username is required");

@@ -18,6 +18,7 @@
 	//If topic id does not exist user error
 	if(mysqli_num_rows($result) == 0) {
 		echo "This topic does not exist";
+		http_response_code(404);
 	}
 	//Else statement not necessary, if $result = 0 -> nothing will be printed
 
