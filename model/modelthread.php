@@ -75,7 +75,6 @@
 	
 	echo "</p>";
 
-
 	$txID = 0;
 	
 	while($row = mysqli_fetch_array($result))
@@ -275,7 +274,8 @@
 				if (!$post_row['pDeleted'])
 				{
 					echo "<tr><p style=\"text-indent: {$indpx}\"><td name='".$contID."'>";
-					echo "<b onclick='textbox($txID)'><button>Reply</button></b>";	//	Calls function for post on click.
+					echo "<div class='some' style=\"text-indent: {$indpx}\">";
+					echo "<b onclick='textbox($txID)'><button >Reply</button></b>";	//	Calls function for post on click.
 					//$author = $_GET['pAuthor'];
 					$author = $post_row['pAuthor'];
 
@@ -293,6 +293,7 @@
 								    padding:0px;
 									}
 									</style>";														//Added some css to keep the delete button inline
+
 							if (isset($_POST[$delID])) {
 								$name = $post_row['pName'];
 
@@ -307,6 +308,8 @@
 							}
 						}
 					}
+					echo "</div>";
+
 					
 					echo '<div id="' . $txID . '" style="Display:none">		
 							<form method="post">
@@ -337,7 +340,7 @@
 								$rplyThID = $thID;
 							
 								if (post($postNm, $rplyContent, $rplyTo, $rplyUsrnm, $rplyThID, $con)) {
-									echo '<meta http-equiv="refresh" content="0">';
+									//echo '<meta http-equiv="refresh" content="0">';
 								} else {
 									//echo "<p> $con->error </p>";
 									array_push($errorsthread, "Could not post reply.");
