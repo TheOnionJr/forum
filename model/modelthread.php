@@ -32,7 +32,7 @@
 		if (mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM uuser JOIN urole ON uuser.uID = urole.urID WHERE uuser.uUsername = \"{$_SESSION['username']}\" AND ( urType = \"admin\" OR urType = \"mod{$subforumname}\")"))[0])
 			$privileges = true;
 
-	$rowNum = 0;
+
 	
 	$maxPage = ceil((mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM posts WHERE pThreadID = $threadID"))['COUNT(*)'])/25);
 	
@@ -206,7 +206,7 @@
 	{
 		global $con;
 		global $thID;
-		global $rowNum;
+		//global $rowNum;
 		global $i;
 		global $privileges;
 		global $txID;
@@ -214,6 +214,8 @@
 		global $page;
 		global $maxPage;
 		global $errorsthread;
+		
+		$rowNum = 0;
 
         if ($replyTo)
             $posts = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = {$thID} AND pReplyTo = {$replyTo} ORDER BY pTimestamp");
@@ -225,7 +227,7 @@
 		else
 			$page = 1;
 
-		while(($post_row = mysqli_fetch_array($posts)) && $rowNum <  25 * $page) 
+		while(($post_row = mysqli_fetch_array($posts)) && $rowNum <  25 /** $page*/) 
 		{
 			$rowNum++;
 			$pID = $post_row['pID'];
@@ -233,7 +235,7 @@
 			$txID = $i;	
 			$delID = "delete" . $i;
 			$contID = "content" . $i;
-			if ($rowNum > 25 * ($page-1))
+			//if ($rowNum > 25 * ($page-1))
 			{
 	            $rolecolour = 0;     //    What colour the author's name should be
 	            if (mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM uuser JOIN urole ON uuser.uID = urole.urID WHERE uuser.uUsername = \"{$post_row['pAuthor']}\" AND urType = \"admin\""))[0])
