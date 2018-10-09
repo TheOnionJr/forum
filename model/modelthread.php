@@ -3,9 +3,7 @@
 	$path .= "/functions/postFunctions.php"; 			//  Set absolute path for functions.
 	include($path);
 	
-	$path2 = $_SERVER['DOCUMENT_ROOT'];					//  Find document root.
-	$path2 .= "/view/errors.php";						//  Setting absolute path for errors.
-	include($path2);
+
 	//input validation
 	$threadID = filter_input(INPUT_GET, 'thread', FILTER_VALIDATE_INT);
 	$page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
@@ -77,6 +75,7 @@
 	
 	echo "</p>";
 
+
 	$txID = 0;
 	
 	while($row = mysqli_fetch_array($result))
@@ -116,13 +115,15 @@
 							</style>
 						 </div>';								//  Adds default:hidden textboxes and button after replies.
 
-					if (isset($_SESSION['username'])) {
-						if (isset($_POST[$txID+1])) {
-							 $content = filter_var($_POST['postContent'], FILTER_SANITIZE_STRING);
+					
+					if (isset($_POST[$txID+1])) {
+						if (isset($_SESSION['username'])) {
+							 $content = htmlentities($_POST['postContent'], ENT_SUBSTITUTE, 'UTF-8');
+							 $content = ltrim($content);											//Removes whitespace from left side of text
 							if (!empty($content)){
 								$postNm = $row["thName"];
 								$rplyTo = null;
-								$usrnm = filter_var($_SESSION['username'], FILTER_SANITIZE_STRING);
+								$usrnm = htmlentities($_SESSION['username'], ENT_QUOTES, 'UTF-8');
 								$thID = $threadID;
 							
 								if (post($postNm, $content, $rplyTo, $usrnm, $thID, $con)) {
@@ -133,6 +134,12 @@
 									echo "<p>Committa kys</p>";
 								}
 							}
+							else {
+								array_push($errors, "Textbox cannot be empty");
+							}
+						}
+						else {
+							array_push($errors, "You need to login in order to post");
 						}
 					}
 
@@ -153,8 +160,11 @@
 		} else {
 			echo "This thread has been deleted by an admin.";
 	}
-}
 
+}
+	$path2 = $_SERVER['DOCUMENT_ROOT'];					//  Find document root.
+	$path2 .= "/view/errors.php";						//  Setting absolute path for errors.
+	include($path2);
 
 	echo "<p>";
 
@@ -204,6 +214,7 @@
 		global $subforumname;
 		global $page;
 		global $maxPage;
+		global $errors;
 
         if ($replyTo)
             $posts = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = {$thID} AND pReplyTo = {$replyTo} ORDER BY pTimestamp");
@@ -313,9 +324,11 @@
 						 </div>';								//  Adds default:hidden textboxes and button after replies.
 					echo "</td></p></tr>";
 
-					if (isset($_SESSION['username'])) {
-						if (isset($_POST[$txID])) {
-							 $rplyContent = htmlentities($_POST['postContent'], ENT_SUBSTITUTE, 'UTF-8');
+					
+					if (isset($_POST[$txID])) {
+						if (isset($_SESSION['username'])) {
+							$rplyContent = htmlentities($_POST['postContent'], ENT_SUBSTITUTE, 'UTF-8');
+							$rplyContent = ltrim($rplyContent);											//Removes whitespace from left side of text
 							if (!empty($rplyContent)){
 								$postNm = $post_row["pName"];
 								echo '<pre>'; print_r($post_row); echo '</pre>';
@@ -329,7 +342,12 @@
 									//echo "<p> $con->error </p>";
 									array_push($errors, "Could not post reply.");
 								}
+							} else {
+								array_push($errors, "Textbox cannot be empty");
 							}
+						}
+						else {
+							array_push($errors, "Please login in order to reply to a post");
 						}
 					}
 					?>
@@ -349,4 +367,5 @@
 			fetchPosts($pID, $indent + 1);
 		}
 	}
+
 ?>
