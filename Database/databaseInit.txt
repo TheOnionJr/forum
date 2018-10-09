@@ -1,0 +1,87 @@
+CREATE DATABASE IF NOT EXISTS forum;
+
+CREATE TABLE IF NOT EXISTS roles (
+    rType VARCHAR(20),
+    PRIMARY KEY (rType)
+    );
+
+CREATE TABLE IF NOT EXISTS uUser (
+    uID INT AUTO_INCREMENT,
+    uEmail VARCHAR(50) NOT NULL UNIQUE,
+    uUsername VARCHAR(50) NOT NULL UNIQUE,
+    uPassword VARCHAR(60) NOT NULL,
+    uCreated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (uID)
+    );
+
+CREATE TABLE IF NOT EXISTS loginAttempts (
+    loginID INT AUTO_INCREMENT,
+    loginUserName VARCHAR(50) NOT NULL,
+    loginTimestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    loginSuccessful ENUM( 'no', 'yes') NOT NULL,
+    loginIP VARCHAR(15) NOT NULL,
+    PRIMARY KEY (loginID),
+    FOREIGN KEY (loginUserName) REFERENCES uUser(uUsername)
+    );
+
+CREATE TABLE IF NOT EXISTS uRole (
+    urID INT,
+    urType VARCHAR(50) NOT NULL,
+    FOREIGN KEY (urID) REFERENCES uUser(uID),
+    FOREIGN KEY (urType) REFERENCES roles(rType),
+    PRIMARY KEY (urID, urType)
+    );
+    
+CREATE TABLE IF NOT EXISTS subforums (
+    sID INT AUTO_INCREMENT,
+    sName VARCHAR(200) NOT NULL,
+    PRIMARY KEY (sID)
+	);
+    
+CREATE TABLE IF NOT EXISTS topics (
+    tID INT AUTO_INCREMENT,
+    tName VARCHAR(200) NOT NULL,
+    tSubForumID INT,
+    FOREIGN KEY (tSubForumID) REFERENCES subforums(sID),
+    PRIMARY KEY (tID)
+    );
+
+CREATE TABLE IF NOT EXISTS threads (
+    thID INT AUTO_INCREMENT,
+    thName VARCHAR(200) NOT NULL UNIQUE,
+    thTimestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    thLock BOOLEAN,
+    thAuthor VARCHAR(50) NOT NULL,
+    thTopicID INT,
+    FOREIGN KEY (thAuthor) REFERENCES uUser(uUsername),
+    FOREIGN KEY (thTopicID) REFERENCES topics(tID),
+    PRIMARY KEY (thID)
+    );
+    
+CREATE TABLE IF NOT EXISTS posts ( 
+    pID INT AUTO_INCREMENT,
+    pName VARCHAR(50) NOT NULL,
+    pContent VARCHAR(2500),
+    pTimestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    pReplyTo INT,
+    pDeleted BOOLEAN,
+    pDeletedBy VARCHAR(50),
+    pAuthor VARCHAR(50) NOT NULL,
+    pThreadID INT,
+    FOREIGN KEY (pAuthor) REFERENCES uUser(uUsername),
+    FOREIGN KEY (pThreadID) REFERENCES threads(thID),
+    PRIMARY KEY (pID)
+    );
+
+FLUSH PRIVILEGES;
+DROP USER 'guest'@'localhost';
+CREATE USER 'guest'@'localhost' IDENTIFIED BY '';
+GRANT SELECT ON * . * TO 'guest'@'localhost';
+GRANT INSERT ON forum.uUser TO 'guest'@'localhost';
+GRANT INSERT ON forum.loginAttempts TO 'guest'@'localhost';
+GRANT INSERT ON forum.posts to 'guest'@'localhost';
+GRANT INSERT ON forum.threads to 'guest'@'localhost';
+GRANT UPDATE ON forum.posts to 'guest'@'localhost';
+GRANT UPDATE ON forum.threads to 'guest'@'localhost';
+FLUSH PRIVILEGES;
+
