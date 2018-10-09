@@ -99,11 +99,10 @@
 			//	Load and populate posts except replies
 			$posts = mysqli_query($con,"SELECT * FROM posts WHERE pThreadID = $thID AND pReplyTo IS NULL ORDER BY pTimestamp");
 			
-			
-			
 			$i = 0;		// Int def.
 			$j = 0;
 
+			//	New Post Button
 			echo "</table><table><tr><td>";
 			echo "<b onclick='textbox(" . ($txID+1) . ")'><button>New Post</button></b>";	//	Calls function for post
 			$csrf = $_SESSION['csrfTOken'];
@@ -246,6 +245,7 @@
 		else
 			$page = 1;
 
+		//	Load posts for the current page
 		while(($post_row = mysqli_fetch_array($posts)) && $rowNum <  25 /** $page*/) 
 		{
 			$rowNum++;
@@ -281,6 +281,8 @@
 
 				echo " | " . htmlentities($post_row['pTimestamp'], ENT_QUOTES, 'UTF-8') . "</p></th>";
 
+
+
 				//	Post content
 				echo "<tr>";
 				
@@ -291,15 +293,20 @@
 				
 				echo "</tr>";
 
+
+
 				//	Reply, Delete functions
 				if (!$post_row['pDeleted'])
 				{
+					//	Reply function
 					echo "<tr><p style=\"text-indent: {$indpx}\"><td name='".$contID."'>";
 					echo "<div class='some' style=\"text-indent: {$indpx}\">";
 					echo "<b onclick='textbox($txID)'><button >Reply</button></b>";		//	Calls function for post on click.
 					//$author = $_GET['pAuthor'];
 					$author = $post_row['pAuthor'];
 
+
+					//	Delete function
 					if (isset($_SESSION['username'])) { 									// If user is logged in
 						if ($_SESSION['username'] === $author || $privileges) {					// If user = to the author
 							$csrf = $_SESSION['csrfTOken'];
