@@ -34,6 +34,9 @@
 			$privileges = true;
 
 
+	//--------------------------------------------------------------
+	//	Upper Page Navigation
+	//--------------------------------------------------------------
 	
 	$maxPage = ceil((mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) FROM posts WHERE pThreadID = $threadID AND pReplyTo IS NULL"))['COUNT(*)'])/25);
 	
@@ -77,6 +80,10 @@
 	echo "</p>";
 
 	$txID = 0;
+
+	//--------------------------------------------------------------
+	//	Load Posts
+	//--------------------------------------------------------------
 	
 	while($row = mysqli_fetch_array($result))
 	{
@@ -157,16 +164,20 @@
 					<?php
 
 			echo "</td></tr></table>";
-		} else {
+		} else {	//	If the thread is locked, print error
 			echo "<font color=red>";
 			echo "This thread has been deleted by an admin.";
 			echo "</font>";
-	}
+		}
 
-}
+	}
 	$path2 = $_SERVER['DOCUMENT_ROOT'];					//  Find document root.
 	$path2 .= "/view/errors.php";						//  Setting absolute path for errors.
 	include($path2);
+
+	//--------------------------------------------------------------
+	//	Lower Page Navigation
+	//--------------------------------------------------------------
 
 	echo "<p>";
 
@@ -205,6 +216,11 @@
 	echo "</p>";
 	mysqli_close($con);
 
+	//--------------------------------------------------------------
+	//	Functions
+	//--------------------------------------------------------------
+
+	//	Fetches posts from the server
 	function fetchPosts($replyTo, $indent = 0)
 	{
 		global $con;
@@ -275,7 +291,7 @@
 				
 				echo "</tr>";
 
-				//	Reply, Edit, Delete functions
+				//	Reply, Delete functions
 				if (!$post_row['pDeleted'])
 				{
 					echo "<tr><p style=\"text-indent: {$indpx}\"><td name='".$contID."'>";
