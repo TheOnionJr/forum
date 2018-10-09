@@ -310,7 +310,7 @@
 					}
 					echo "</div>";
 
-					
+
 					echo '<div id="' . $txID . '" style="Display:none">		
 							<form method="post">
 							<textarea id="CBox" name="postContent" type="text" > </textarea>											  
@@ -334,7 +334,6 @@
 							$rplyContent = ltrim($rplyContent);											//Removes whitespace from left side of text
 							if (!empty($rplyContent)){
 								$postNm = $post_row["pName"];
-								echo '<pre>'; print_r($post_row); echo '</pre>';
 								$rplyTo = $pID;
 								$rplyUsrnm = htmlentities($_SESSION['username'], ENT_QUOTES, 'UTF-8');
 								$rplyThID = $thID;
