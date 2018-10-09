@@ -28,14 +28,25 @@
 
 .error {
 	position: absolute;
-	margin-left: 72%;
+	margin-left: -72%;
+	font-size: 15px;
+	padding: 5px; 
+	color: #a94442;
+	background: #f2dede; 
+	border-radius: 5px; 
+	text-align: left;
+	width: 50%;
+}
+
+.errorsthread {
+	position: relative;
 	font-size: 15px;
 	padding: 5px; 
 	color: #a94442; 
 	background: #f2dede; 
 	border-radius: 5px; 
 	text-align: left;
-	width: 10%;
+	width: 20%;
 }
 
 #content {

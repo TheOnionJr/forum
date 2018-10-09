@@ -4,7 +4,9 @@ $path = $_SERVER['DOCUMENT_ROOT']; 					//Find the document root
 $path .= "/functions/postFunctions.php"; 			//Set absolute path
 include($path);
 
-$errors = array();
+
+
+$errorsthread = array();
 
 if (isset($_POST['new_thread'])) {
 	//session_start();
@@ -19,10 +21,10 @@ if (isset($_POST['new_thread'])) {
 		$title=filter_var($_POST['title'], FILTER_SANITIZE_STRING);
 
 		if (empty($text)) {                                 //Check if some post content was entered
-			array_push($errors, "Some content is required, please fill out the text box");
+			array_push($errorsthread, "Some content is required, please fill out the text box");
 		}
 		if (empty($title)) {                                                 	//Check if a title was entered
-			array_push($errors, "A title is required");
+			array_push($errorsthread, "A title is required");
 		}
 
 	  	$stmt = $con->prepare("SELECT thName FROM threads WHERE thName = ? AND thTopicID = ?");		//Prepare statement 
@@ -35,14 +37,14 @@ if (isset($_POST['new_thread'])) {
 		//Check if title exists
 		if (mysqli_num_rows($result)!=0) {													//If the query returned any rows
 				if ($user['thName'] === $title) {
-					array_push($errors, "A thread with that title already exists in this Topic. Please choose a different title");
+					array_push($errorsthread, "A thread with that title already exists in this Topic. Please choose a different title");
 				}
 		}
 		$stmt->close();
 
 		$thID=NULL;
 		$replyTo=NULL;
-		if(count($errors) == 0 ) {										//If there were no errors
+		if(count($errorsthread) == 0 ) {										//If there were no errors
 			if(canPost($username, $thID, $tID, $sID, $replyTo)) {
 
 				//IF YOU GET "Call to a member function bind_param() on boolean" THEN PLEASE UPDATE THE REQUESTS FOR USER (look DROP *)
@@ -79,11 +81,11 @@ if (isset($_POST['new_thread'])) {
 				header("Location: /view/topicview.php?tID=".$tID."&sID=".$sID);											//Returnes to the topic
 			}
 			else {
-				array_push($errors, "Error please contact the administrators");
+				array_push($errorsthread, "Error please contact the administrators");
 			}
 		}
 	} else { 
-		array_push($errors, "You need to login in order to post");
+		array_push($errorsthread, "You need to login in order to post");
 	}
 }
 
